@@ -59,8 +59,8 @@ export default function Home() {
               </div>
               <div className="relative w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden group">
                 <Image
-                  src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&h=1067&fit=crop&crop=faces"
-                  alt="Captain Maged - Coach & Owner"
+                  src="/hero-coach.jpg"
+                  alt="Mohamed Roshdy - Founder"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   priority
@@ -70,8 +70,8 @@ export default function Home() {
                 <div className="absolute bottom-6 left-6 right-6">
                   <FloatingElement yOffset={5} duration={3}>
                     <div className="bg-background/70 backdrop-blur-md rounded-xl px-5 py-3 border border-border inline-block">
-                      <div className="text-sm font-bold">Captain Maged</div>
-                      <div className="text-xs text-accent-light">Owner & Head Coach</div>
+                      <div className="text-sm font-bold">Mohamed Roshdy</div>
+                      <div className="text-xs text-accent-light">Founder</div>
                     </div>
                   </FloatingElement>
                 </div>
@@ -120,22 +120,6 @@ export default function Home() {
               </div>
             </FadeUp>
 
-            <FadeUp delay={0.4}>
-              <div className="flex gap-10 pt-4">
-                <div>
-                  <div className="text-3xl font-black text-accent-light"><AnimatedCounter target={8} suffix="+" /></div>
-                  <div className="text-xs text-muted mt-1">{t.hero.statsYears}</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-black text-accent-light"><AnimatedCounter target={500} suffix="+" /></div>
-                  <div className="text-xs text-muted mt-1">{t.hero.statsClients}</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-black text-accent-light"><AnimatedCounter target={1000} suffix="+" /></div>
-                  <div className="text-xs text-muted mt-1">{t.hero.statsPrograms}</div>
-                </div>
-              </div>
-            </FadeUp>
           </div>
         </div>
       </section>
