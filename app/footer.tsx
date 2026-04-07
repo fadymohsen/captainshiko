@@ -14,9 +14,8 @@ export function Footer() {
           Captain Shiko<span className="text-accent">.</span>
         </Link>
         <div className="flex items-center gap-8 text-sm text-muted">
-          <Link href="/about" className="hover:text-accent-light transition-colors">{t.nav.about}</Link>
+          <a href="/#about" className="hover:text-accent-light transition-colors">{t.nav.about}</a>
           <Link href="/programs" className="hover:text-accent-light transition-colors">{t.nav.programs}</Link>
-          <Link href="/contact" className="hover:text-accent-light transition-colors">{t.nav.contact}</Link>
         </div>
         <div className="flex items-center gap-4">
           {socialLinks.map((link) => (
