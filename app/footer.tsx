@@ -37,6 +37,17 @@ export function Footer() {
         <p className="text-xs text-muted text-center">
           &copy; {new Date().getFullYear()} Captain Shiko. {t.footer.rights}
         </p>
+        <p className="text-xs text-muted text-center mt-2">
+          Powered by{" "}
+          <a
+            href="https://veliq.co"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-foreground font-semibold hover:text-accent-light transition-colors"
+          >
+            VELIQ
+          </a>
+        </p>
       </div>
     </footer>
   );
