@@ -3,21 +3,9 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { type Locale, translations } from "./translations";
 
-type TranslationType = {
-  nav: { about: string; services: string; programs: string; contact: string; signUp: string };
-  hero: { badge: string; title1: string; title2: string; title3: string; desc: string; cta: string; programs: string; statsYears: string; statsClients: string; statsPrograms: string };
-  banner: readonly string[];
-  about: { label: string; title1: string; title2: string; desc: string; cta: string; card1: string; card2: string };
-  services: { label: string; title: string; items: readonly { title: string; desc: string }[] };
-  coach: { label: string; title: string; members: readonly { name: string; role: string }[] };
-  pricing: { label: string; title: string; popular: string; cta: string; plans: readonly { tier: string; price: string; period: string; features: readonly string[] }[] };
-  cta: { label: string; title1: string; title2: string; desc: string; button: string };
-  footer: { rights: string };
-};
-
 type LangContextType = {
   locale: Locale;
-  t: TranslationType;
+  t: (typeof translations)["en"] | (typeof translations)["ar"];
   toggle: () => void;
   dir: "ltr" | "rtl";
 };
