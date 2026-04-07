@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useLang } from "./lang-context";
 
-export function Navbar() {
+export function Navbar({ onBookCall }: { onBookCall?: () => void }) {
   const { locale, t, toggle } = useLang();
 
   return (
@@ -24,12 +24,21 @@ export function Navbar() {
           >
             {locale === "en" ? "عربي" : "EN"}
           </button>
-          <Link
-            href="/contact"
-            className="bg-accent text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-accent-light transition-all duration-300"
-          >
-            {t.nav.signUp}
-          </Link>
+          {onBookCall ? (
+            <button
+              onClick={onBookCall}
+              className="bg-accent text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-accent-light transition-all duration-300"
+            >
+              {t.nav.signUp}
+            </button>
+          ) : (
+            <Link
+              href="/contact"
+              className="bg-accent text-white text-sm font-semibold px-5 py-2 rounded-full hover:bg-accent-light transition-all duration-300"
+            >
+              {t.nav.signUp}
+            </Link>
+          )}
         </div>
       </div>
     </nav>
