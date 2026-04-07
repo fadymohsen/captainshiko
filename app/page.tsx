@@ -14,11 +14,8 @@ export default function Home() {
             <a href="#programs" className="hover:text-foreground transition-colors">
               Programs
             </a>
-            <a href="#results" className="hover:text-foreground transition-colors">
-              Results
-            </a>
-            <a href="#testimonials" className="hover:text-foreground transition-colors">
-              Testimonials
+            <a href="#start" className="hover:text-foreground transition-colors">
+              Contact
             </a>
           </div>
           <a
@@ -104,27 +101,6 @@ export default function Home() {
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-float">
           <span className="text-xs text-muted tracking-widest uppercase">Scroll</span>
           <div className="w-px h-8 bg-gradient-to-b from-accent/50 to-transparent" />
-        </div>
-      </section>
-
-      {/* ===== STATS BAR ===== */}
-      <section className="relative border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {[
-            { value: "500+", label: "Clients Transformed" },
-            { value: "8+", label: "Years Experience" },
-            { value: "98%", label: "Client Retention" },
-            { value: "24/7", label: "Support & Guidance" },
-          ].map((stat) => (
-            <div key={stat.label} className="flex flex-col items-center gap-2">
-              <span className="text-4xl md:text-5xl font-black text-accent">
-                {stat.value}
-              </span>
-              <span className="text-sm text-muted tracking-wide">
-                {stat.label}
-              </span>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -315,94 +291,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== RESULTS / TRANSFORMATIONS ===== */}
-      <section id="results" className="py-28 relative">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-bold tracking-[0.3em] uppercase">
-              Results
-            </span>
-            <h2 className="text-4xl sm:text-5xl font-extrabold mt-4">
-              The proof is in the <span className="gradient-text">progress</span>
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                name: "Ahmed M.",
-                duration: "12 weeks",
-                result: "Lost 18kg & gained visible muscle definition",
-                quote:
-                  "I tried everything before Captain Shiko. This was the first time something actually worked — and stuck.",
-              },
-              {
-                name: "Sara K.",
-                duration: "16 weeks",
-                result: "Complete body recomposition & lifestyle change",
-                quote:
-                  "Not only did my body transform, my entire relationship with food and training changed. Life-changing.",
-              },
-              {
-                name: "Omar H.",
-                duration: "8 weeks",
-                result: "Gained 6kg lean mass with a structured bulk",
-                quote:
-                  "The programming was next level. Every detail was planned, and I saw gains I never thought possible.",
-              },
-            ].map((client) => (
-              <div
-                key={client.name}
-                className="glass rounded-2xl p-8 flex flex-col gap-4 hover-lift"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-bold">{client.name}</h4>
-                    <span className="text-xs text-accent">{client.duration}</span>
-                  </div>
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold text-sm">
-                    {client.name.charAt(0)}
-                  </div>
-                </div>
-                <p className="text-sm font-semibold text-foreground/90">
-                  {client.result}
-                </p>
-                <p className="text-sm text-muted leading-relaxed flex-1">
-                  &ldquo;{client.quote}&rdquo;
-                </p>
-                <div className="flex gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-accent text-sm">
-                      &#9733;
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== TESTIMONIALS MARQUEE ===== */}
-      <section id="testimonials" className="py-16 border-y border-white/5 overflow-hidden">
-        <div className="flex gap-8 animate-[slide-in-left_1s_ease-out]">
-          {[
-            "\"Best investment I ever made for my health.\"",
-            "\"Captain Shiko doesn't just train your body, he trains your mind.\"",
-            "\"I've never been this consistent in my life.\"",
-            "\"Results in 4 weeks that I couldn't get in 2 years alone.\"",
-            "\"This isn't coaching. It's a transformation system.\"",
-          ].map((quote, i) => (
-            <div
-              key={i}
-              className="shrink-0 glass rounded-full px-8 py-4 text-sm text-muted whitespace-nowrap"
-            >
-              {quote}
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ===== CTA ===== */}
       <section id="start" className="py-28 relative">
         <div className="absolute inset-0 overflow-hidden">
@@ -454,9 +342,6 @@ export default function Home() {
             </a>
             <a href="#programs" className="hover:text-foreground transition-colors">
               Programs
-            </a>
-            <a href="#results" className="hover:text-foreground transition-colors">
-              Results
             </a>
             <a href="#start" className="hover:text-foreground transition-colors">
               Contact
