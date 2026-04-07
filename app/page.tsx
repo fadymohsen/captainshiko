@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLang } from "./lang-context";
@@ -12,11 +13,9 @@ import {
   ScaleIn,
   StaggerContainer,
   StaggerItem,
-  AnimatedCounter,
   FloatingElement,
   TextReveal,
   MagneticButton,
-  ParallaxImage,
 } from "./animations";
 
 const serviceImages = [
@@ -26,27 +25,103 @@ const serviceImages = [
   "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&h=667&fit=crop",
 ];
 
-const coachImages = [
-  "https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=500&h=667&fit=crop&crop=faces",
-  "https://images.unsplash.com/photo-1597347316205-36f6c451902a?w=500&h=667&fit=crop&crop=faces",
-  "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&h=667&fit=crop&crop=faces",
+const transformationImages = [
+  "/transform-1.jpg",
+  "/transform-2.jpg",
+  "/transform-3.jpg",
+  "/transform-4.jpg",
 ];
 
-const transformationImages = [
-  "https://images.unsplash.com/photo-1583454155184-870a1f63aebc?w=400&h=500&fit=crop",
-  "https://images.unsplash.com/photo-1550345332-09e3ac987658?w=400&h=500&fit=crop",
-  "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&h=500&fit=crop",
-  "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=400&h=500&fit=crop",
-];
+function BookCallModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { t, dir } = useLang();
+  const [submitted, setSubmitted] = useState(false);
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+      <div
+        dir={dir}
+        className="relative bg-surface-light border border-border rounded-2xl p-8 sm:p-10 w-full max-w-md shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close */}
+        <button onClick={onClose} className="absolute top-4 right-4 text-muted hover:text-foreground transition-colors text-xl leading-none">
+          &times;
+        </button>
+
+        {!submitted ? (
+          <>
+            <h3 className="text-2xl font-extrabold mb-2">
+              {dir === "rtl" ? "احجز مكالمتك المجانية" : "Book Your Free Call"}
+            </h3>
+            <p className="text-sm text-muted mb-6">
+              {dir === "rtl"
+                ? "سجّل بياناتك وهنتواصل معاك لحجز مكالمة مجانية مع كابتن شيكو"
+                : "Fill in your details and we'll reach out to schedule a free call with Captain Shiko"}
+            </p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setSubmitted(true);
+              }}
+              className="flex flex-col gap-4"
+            >
+              <input
+                type="text"
+                required
+                placeholder={dir === "rtl" ? "الاسم" : "Your Name"}
+                className="bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
+              />
+              <input
+                type="tel"
+                required
+                placeholder={dir === "rtl" ? "رقم الهاتف" : "Phone Number"}
+                className="bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
+                dir="ltr"
+              />
+              <textarea
+                rows={3}
+                placeholder={dir === "rtl" ? "أهلاً كابتن، عايز أحجز مكالمة مجانية..." : "Hi Captain, I'd like to book a free call..."}
+                className="bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors resize-none"
+              />
+              <button
+                type="submit"
+                className="bg-accent text-white font-bold text-sm py-3.5 rounded-full hover:bg-accent-light transition-all hover:shadow-[0_0_20px_rgba(165,34,34,0.3)]"
+              >
+                {dir === "rtl" ? "احجز الآن" : "Book Now"}
+              </button>
+            </form>
+          </>
+        ) : (
+          <div className="text-center py-8">
+            <div className="text-4xl mb-4">&#10003;</div>
+            <h3 className="text-xl font-extrabold mb-2">
+              {dir === "rtl" ? "تم التسجيل!" : "You're In!"}
+            </h3>
+            <p className="text-sm text-muted">
+              {dir === "rtl"
+                ? "هنتواصل معاك قريباً لحجز المكالمة"
+                : "We'll reach out soon to schedule your free call"}
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const { t, dir } = useLang();
+  const [showBookCall, setShowBookCall] = useState(false);
 
   return (
     <div dir={dir} className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
-      <Navbar />
+      <Navbar onBookCall={() => setShowBookCall(true)} />
+      <BookCallModal open={showBookCall} onClose={() => setShowBookCall(false)} />
 
-      {/* ===== HERO + ABOUT OWNER ===== */}
+      {/* ===== HERO ===== */}
       <section className="relative min-h-screen flex items-center pt-24 pb-20 noise">
         <div className="absolute top-[20%] right-[5%] w-[400px] h-[400px] rounded-full bg-accent/15 glow-pulse pointer-events-none" />
         <div className="absolute bottom-[10%] left-[10%] w-[300px] h-[300px] rounded-full bg-accent/8 glow-pulse pointer-events-none" style={{ animationDelay: "2s" }} />
@@ -104,12 +179,12 @@ export default function Home() {
             <FadeUp delay={0.3}>
               <div className="flex flex-wrap gap-4">
                 <MagneticButton>
-                  <Link
-                    href="/contact"
-                    className="bg-accent text-white font-bold px-8 py-4 rounded-full text-sm tracking-wider hover:bg-accent-light transition-all duration-300 hover:shadow-[0_0_30px_rgba(165,34,34,0.4)] block"
+                  <button
+                    onClick={() => setShowBookCall(true)}
+                    className="bg-accent text-white font-bold px-8 py-4 rounded-full text-sm tracking-wider hover:bg-accent-light transition-all duration-300 hover:shadow-[0_0_30px_rgba(165,34,34,0.4)]"
                   >
                     {t.hero.cta}
-                  </Link>
+                  </button>
                 </MagneticButton>
                 <Link
                   href="/programs"
@@ -119,7 +194,6 @@ export default function Home() {
                 </Link>
               </div>
             </FadeUp>
-
           </div>
         </div>
       </section>
@@ -163,27 +237,19 @@ export default function Home() {
           </SlideIn>
 
           <SlideIn direction={dir === "rtl" ? "left" : "right"}>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="aspect-[3/4] rounded-xl overflow-hidden relative card-zoom glow-border border border-transparent">
-                <ParallaxImage
-                  src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=800&fit=crop"
-                  alt={t.about.card1}
-                  className="absolute inset-0 rounded-xl"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-                <div className="absolute inset-0 flex items-end p-4 z-10">
-                  <span className="text-xs text-white/80 font-semibold">{t.about.card1}</span>
-                </div>
-              </div>
-              <div className="aspect-[3/4] rounded-xl overflow-hidden relative mt-8 card-zoom glow-border border border-transparent">
-                <ParallaxImage
-                  src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=600&h=800&fit=crop"
-                  alt={t.about.card2}
-                  className="absolute inset-0 rounded-xl"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-                <div className="absolute inset-0 flex items-end p-4 z-10">
-                  <span className="text-xs text-white/80 font-semibold">{t.about.card2}</span>
+            <div className="relative aspect-[3/4] max-w-md rounded-2xl overflow-hidden group glow-border border border-transparent mx-auto">
+              <Image
+                src="/about-owner.jpg"
+                alt="Mohamed Roshdy - Founder"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 448px"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+              <div className="absolute bottom-6 left-6">
+                <div className="bg-background/70 backdrop-blur-md rounded-xl px-5 py-3 border border-border">
+                  <div className="text-sm font-bold">Mohamed Roshdy</div>
+                  <div className="text-xs text-accent-light">Founder</div>
                 </div>
               </div>
             </div>
@@ -207,8 +273,7 @@ export default function Home() {
             {t.transformations.clients.map((client, i) => (
               <StaggerItem key={client.name}>
                 <div className="group rounded-xl overflow-hidden bg-surface-light border border-border glow-border">
-                  {/* Image */}
-                  <div className="relative aspect-[4/5] overflow-hidden">
+                  <div className="relative aspect-square overflow-hidden">
                     <Image
                       src={transformationImages[i]}
                       alt={`${client.name} transformation`}
@@ -217,12 +282,7 @@ export default function Home() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-surface-light via-transparent to-transparent" />
-                    {/* Duration badge */}
-                    <div className="absolute top-3 right-3 bg-accent text-white text-[10px] font-bold px-3 py-1 rounded-full">
-                      {client.duration}
-                    </div>
                   </div>
-                  {/* Info */}
                   <div className="p-5">
                     <h4 className="font-bold text-sm">{client.name}</h4>
                     <p className="text-xs text-muted mt-1 leading-relaxed">{client.result}</p>
@@ -267,33 +327,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== COACHES ===== */}
-      <section className="py-28">
-        <div className="max-w-7xl mx-auto px-6">
-          <FadeUp>
-            <div className="mb-14">
-              <span className="text-sm text-accent-light font-bold tracking-wider uppercase">{t.coach.label}</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">{t.coach.title}</h2>
-            </div>
-          </FadeUp>
-
-          <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {t.coach.members.map((coach, i) => (
-              <StaggerItem key={coach.name}>
-                <div className="group">
-                  <div className="aspect-[3/4] rounded-xl overflow-hidden relative mb-4 card-zoom glow-border border border-transparent">
-                    <Image src={coachImages[i]} alt={coach.name} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
-                  </div>
-                  <h3 className="font-bold text-lg">{coach.name}</h3>
-                  <p className="text-sm text-muted">{coach.role}</p>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
-
       {/* ===== CTA ===== */}
       <section id="contact" className="py-28">
         <div className="max-w-7xl mx-auto px-6">
@@ -330,10 +363,10 @@ export default function Home() {
                     </div>
                     <MagneticButton>
                       <Link
-                        href="/contact"
+                        href="/programs"
                         className="bg-accent text-white font-bold text-sm px-8 py-3.5 rounded-full hover:bg-accent-light transition-all hover:shadow-[0_0_30px_rgba(165,34,34,0.4)] block"
                       >
-                        {t.cta.button}
+                        {dir === "rtl" ? "ابدأ الآن" : "Start Now"}
                       </Link>
                     </MagneticButton>
                   </div>
