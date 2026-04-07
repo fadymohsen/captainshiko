@@ -13,9 +13,6 @@ export function Footer() {
         <Link href="/" className="text-lg font-extrabold tracking-tight">
           Captain Shiko<span className="text-accent">.</span>
         </Link>
-        <div className="flex items-center gap-8 text-sm text-muted">
-          <a href="/#plans" className="hover:text-accent-light transition-colors">{t.nav.programs}</a>
-        </div>
         <div className="flex items-center gap-4">
           {socialLinks.map((link) => (
             <a
