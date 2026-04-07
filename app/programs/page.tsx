@@ -1,20 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "../lang-context";
 import { Navbar } from "../navbar";
 import { Footer } from "../footer";
-import { FadeUp, StaggerContainer, StaggerItem, ScaleIn, MagneticButton } from "../animations";
-
-const serviceImages = [
-  "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&h=667&fit=crop",
-  "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=500&h=667&fit=crop",
-  "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&h=667&fit=crop",
-  "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&h=667&fit=crop",
-];
+import { FadeUp, ScaleIn, MagneticButton } from "../animations";
 
 type Region = "egypt" | "abroad";
 type Duration = "monthly" | "quarterly";
@@ -214,43 +206,6 @@ export default function ProgramsPage() {
               })}
             </motion.div>
           </AnimatePresence>
-        </div>
-      </section>
-
-      {/* Services grid */}
-      <section className="py-28">
-        <div className="max-w-7xl mx-auto px-6">
-          <FadeUp>
-            <div className="mb-14">
-              <span className="text-sm text-accent-light font-bold tracking-wider uppercase">{t.services.label}</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">{t.services.title}</h2>
-            </div>
-          </FadeUp>
-
-          <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {t.services.items.map((item, i) => (
-              <StaggerItem key={item.title}>
-                <div className="group relative aspect-[3/4] rounded-xl overflow-hidden cursor-pointer card-zoom glow-border border border-transparent">
-                  <Image
-                    src={serviceImages[i]}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent group-hover:via-background/60 transition-all duration-500" />
-                  <div className="absolute inset-0 flex flex-col justify-end p-6">
-                    <h3 className="text-lg font-bold mb-2 group-hover:-translate-y-2 transition-transform duration-300">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-muted leading-relaxed opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-400">
-                      {item.desc}
-                    </p>
-                  </div>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
         </div>
       </section>
 

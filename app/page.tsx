@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "./lang-context";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
@@ -18,13 +19,6 @@ import {
   MagneticButton,
 } from "./animations";
 
-const serviceImages = [
-  "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500&h=667&fit=crop",
-  "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=500&h=667&fit=crop",
-  "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&h=667&fit=crop",
-  "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&h=667&fit=crop",
-];
-
 const transformationImages = [
   "/transform-1.jpg",
   "/transform-2.jpg",
@@ -32,94 +26,23 @@ const transformationImages = [
   "/transform-4.jpg",
 ];
 
-function BookCallModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { t, dir } = useLang();
-  const [submitted, setSubmitted] = useState(false);
-
-  if (!open) return null;
-
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
-      <div
-        dir={dir}
-        className="relative bg-surface-light border border-border rounded-2xl p-8 sm:p-10 w-full max-w-md shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Close */}
-        <button onClick={onClose} className="absolute top-4 right-4 text-muted hover:text-foreground transition-colors text-xl leading-none">
-          &times;
-        </button>
-
-        {!submitted ? (
-          <>
-            <h3 className="text-2xl font-extrabold mb-2">
-              {dir === "rtl" ? "احجز مكالمتك المجانية" : "Book Your Free Call"}
-            </h3>
-            <p className="text-sm text-muted mb-6">
-              {dir === "rtl"
-                ? "سجّل بياناتك وهنتواصل معاك لحجز مكالمة مجانية مع كابتن شيكو"
-                : "Fill in your details and we'll reach out to schedule a free call with Captain Shiko"}
-            </p>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setSubmitted(true);
-              }}
-              className="flex flex-col gap-4"
-            >
-              <input
-                type="text"
-                required
-                placeholder={dir === "rtl" ? "الاسم" : "Your Name"}
-                className="bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
-              />
-              <input
-                type="tel"
-                required
-                placeholder={dir === "rtl" ? "رقم الهاتف" : "Phone Number"}
-                className="bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
-                dir="ltr"
-              />
-              <textarea
-                rows={3}
-                placeholder={dir === "rtl" ? "أهلاً كابتن، عايز أحجز مكالمة مجانية..." : "Hi Captain, I'd like to book a free call..."}
-                className="bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors resize-none"
-              />
-              <button
-                type="submit"
-                className="bg-accent text-white font-bold text-sm py-3.5 rounded-full hover:bg-accent-light transition-all hover:shadow-[0_0_20px_rgba(165,34,34,0.3)]"
-              >
-                {dir === "rtl" ? "احجز الآن" : "Book Now"}
-              </button>
-            </form>
-          </>
-        ) : (
-          <div className="text-center py-8">
-            <div className="text-4xl mb-4">&#10003;</div>
-            <h3 className="text-xl font-extrabold mb-2">
-              {dir === "rtl" ? "تم التسجيل!" : "You're In!"}
-            </h3>
-            <p className="text-sm text-muted">
-              {dir === "rtl"
-                ? "هنتواصل معاك قريباً لحجز المكالمة"
-                : "We'll reach out soon to schedule your free call"}
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+type Region = "egypt" | "abroad";
+type Duration = "monthly" | "quarterly";
 
 export default function Home() {
   const { t, dir } = useLang();
-  const [showBookCall, setShowBookCall] = useState(false);
+  const [region, setRegion] = useState<Region>("egypt");
+  const [duration, setDuration] = useState<Duration>("monthly");
+  const p = t.pricing;
+
+  const egyptPlans = [p.egypt.exerciseOnly, p.egypt.nutritionOnly, p.egypt.gold, p.egypt.vip];
+  const abroadPlans = [p.abroad.gold, p.abroad.vip];
+  const plans = region === "egypt" ? egyptPlans : abroadPlans;
+  const highlightIndex = region === "egypt" ? 2 : 0;
 
   return (
     <div dir={dir} className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
-      <Navbar onBookCall={() => setShowBookCall(true)} />
-      <BookCallModal open={showBookCall} onClose={() => setShowBookCall(false)} />
+      <Navbar />
 
       {/* ===== HERO ===== */}
       <section className="relative min-h-screen flex items-center pt-24 pb-20 noise">
@@ -177,22 +100,14 @@ export default function Home() {
             </FadeUp>
 
             <FadeUp delay={0.3}>
-              <div className="flex flex-wrap gap-4">
-                <MagneticButton>
-                  <button
-                    onClick={() => setShowBookCall(true)}
-                    className="bg-accent text-white font-bold px-8 py-4 rounded-full text-sm tracking-wider hover:bg-accent-light transition-all duration-300 hover:shadow-[0_0_30px_rgba(165,34,34,0.4)]"
-                  >
-                    {t.hero.cta}
-                  </button>
-                </MagneticButton>
-                <Link
-                  href="/programs"
-                  className="border border-white/15 text-foreground font-semibold px-8 py-4 rounded-full text-sm tracking-wide hover:border-accent/40 hover:text-accent-light transition-all duration-300"
+              <MagneticButton>
+                <a
+                  href="#plans"
+                  className="bg-accent text-white font-bold px-8 py-4 rounded-full text-sm tracking-wider hover:bg-accent-light transition-all duration-300 hover:shadow-[0_0_30px_rgba(165,34,34,0.4)] inline-block"
                 >
                   {t.hero.programs}
-                </Link>
-              </div>
+                </a>
+              </MagneticButton>
             </FadeUp>
           </div>
         </div>
@@ -225,14 +140,6 @@ export default function Home() {
                 <span className="text-muted">{t.about.title2}</span>
               </h2>
               <p className="text-muted leading-relaxed max-w-lg text-[1.05rem]">{t.about.desc}</p>
-              <MagneticButton className="w-fit">
-                <Link
-                  href="/about"
-                  className="inline-flex bg-accent text-white font-bold text-sm px-7 py-3.5 rounded-full hover:bg-accent-light transition-all"
-                >
-                  {t.about.cta}
-                </Link>
-              </MagneticButton>
             </div>
           </SlideIn>
 
@@ -294,41 +201,132 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== SERVICES ===== */}
-      <section id="services" className="py-28">
-        <div className="max-w-7xl mx-auto px-6">
+      {/* ===== PLANS ===== */}
+      <section id="plans" className="py-28 relative">
+        <div className="absolute top-[30%] left-0 w-[350px] h-[350px] rounded-full bg-accent/8 glow-pulse pointer-events-none" />
+        <div className="relative max-w-7xl mx-auto px-6">
           <FadeUp>
-            <div className="mb-14">
-              <span className="text-sm text-accent-light font-bold tracking-wider uppercase">{t.services.label}</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">{t.services.title}</h2>
+            <div className="text-center mb-10">
+              <span className="text-sm text-accent-light font-bold tracking-wider uppercase">{p.label}</span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">{p.title}</h2>
+              <p className="text-muted mt-4 max-w-xl mx-auto text-[1.05rem] leading-relaxed">{p.includes}</p>
             </div>
           </FadeUp>
 
-          <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {t.services.items.map((item, i) => (
-              <StaggerItem key={item.title}>
-                <div className="group relative aspect-[3/4] rounded-xl overflow-hidden cursor-pointer card-zoom glow-border border border-transparent">
-                  <Image
-                    src={serviceImages[i]}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent group-hover:via-background/60 transition-all duration-500" />
-                  <div className="absolute inset-0 flex flex-col justify-end p-6">
-                    <h3 className="text-lg font-bold mb-2 group-hover:-translate-y-2 transition-transform duration-300">{item.title}</h3>
-                    <p className="text-sm text-muted leading-relaxed opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-400">{item.desc}</p>
-                  </div>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+          {/* Toggles */}
+          <div className="flex flex-col items-center gap-4 mb-12">
+            <FadeUp delay={0.1}>
+              <div className="flex bg-surface-light rounded-full p-1 border border-border">
+                <button
+                  onClick={() => setRegion("egypt")}
+                  className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${region === "egypt" ? "bg-accent text-white" : "text-muted hover:text-foreground"}`}
+                >
+                  {p.regionToggle.egypt}
+                </button>
+                <button
+                  onClick={() => setRegion("abroad")}
+                  className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${region === "abroad" ? "bg-accent text-white" : "text-muted hover:text-foreground"}`}
+                >
+                  {p.regionToggle.abroad}
+                </button>
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.15}>
+              <div className="flex bg-surface-light rounded-full p-1 border border-border">
+                <button
+                  onClick={() => setDuration("monthly")}
+                  className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${duration === "monthly" ? "bg-white text-background" : "text-muted hover:text-foreground"}`}
+                >
+                  {p.durationToggle.monthly}
+                </button>
+                <button
+                  onClick={() => setDuration("quarterly")}
+                  className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 relative ${duration === "quarterly" ? "bg-white text-background" : "text-muted hover:text-foreground"}`}
+                >
+                  {p.durationToggle.quarterly}
+                  <span className="absolute -top-2 -right-2 bg-accent-light text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{p.save}</span>
+                </button>
+              </div>
+            </FadeUp>
+          </div>
+
+          {/* Plan cards */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${region}-${duration}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className={`grid gap-6 max-w-6xl mx-auto ${plans.length <= 2 ? "md:grid-cols-2 max-w-3xl" : "md:grid-cols-2 lg:grid-cols-4"}`}
+            >
+              {plans.map((plan, i) => {
+                const isVip = plan.tier === "VIP";
+                const isHighlighted = i === highlightIndex;
+                const price = duration === "monthly" ? plan.monthly : plan.quarterly;
+                const periodLabel = duration === "monthly" ? p.perMonth : p.perQuarter;
+
+                return (
+                  <motion.div
+                    key={plan.tier}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: i * 0.1 }}
+                    className={`rounded-xl p-7 flex flex-col transition-all duration-300 glow-border relative ${
+                      isVip
+                        ? "bg-accent text-white border-2 border-accent"
+                        : isHighlighted
+                          ? "bg-surface-light border-2 border-accent/40"
+                          : "bg-surface-light border border-border"
+                    }`}
+                  >
+                    {isVip && (
+                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-accent text-[10px] font-extrabold px-4 py-1 rounded-full whitespace-nowrap">
+                        {p.popular}
+                      </span>
+                    )}
+                    <h3 className={`text-sm font-bold mb-5 tracking-wider uppercase ${isVip ? "text-white/70" : "text-muted"}`}>{plan.tier}</h3>
+                    <div className="flex items-baseline gap-1.5 mb-2">
+                      <span className="text-4xl font-extrabold">{plan.currency === "$" ? `$${price}` : price}</span>
+                    </div>
+                    <div className={`text-sm mb-6 ${isVip ? "text-white/50" : "text-muted"}`}>
+                      {plan.currency !== "$" ? `${plan.currency} ${periodLabel}` : periodLabel}
+                    </div>
+                    <div className="w-full h-px bg-current opacity-10 mb-6" />
+                    <div className="flex flex-col gap-3 mb-8 flex-1">
+                      {plan.features.map((f) => (
+                        <div key={f} className="flex items-start gap-3">
+                          <svg className={`w-4 h-4 mt-0.5 shrink-0 ${isVip ? "text-white" : "text-accent-light"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span className={`text-sm ${isVip ? "text-white/80" : "text-muted"}`}>{f}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <MagneticButton>
+                      <a
+                        href="https://wa.me/201148854429"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`block text-center py-3.5 rounded-full text-sm font-bold transition-all duration-300 ${
+                          isVip
+                            ? "bg-white text-accent hover:bg-white/90"
+                            : "border border-accent/30 text-foreground hover:bg-accent/10"
+                        }`}
+                      >
+                        {p.cta}
+                      </a>
+                    </MagneticButton>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 
       {/* ===== CTA ===== */}
-      <section id="contact" className="py-28">
+      <section className="py-28">
         <div className="max-w-7xl mx-auto px-6">
           <ScaleIn>
             <div className="rounded-2xl overflow-hidden relative border border-border glow-border">
@@ -353,22 +351,12 @@ export default function Home() {
                   </FadeUp>
                 </div>
                 <FadeUp delay={0.2}>
-                  <div className="flex flex-col gap-5 items-center lg:items-end">
-                    <div className="flex items-center gap-5">
-                      {socialLinks.map((link) => (
-                        <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-accent-light hover:scale-125 transition-all duration-300" aria-label={link.label}>
-                          {link.icon}
-                        </a>
-                      ))}
-                    </div>
-                    <MagneticButton>
-                      <Link
-                        href="/programs"
-                        className="bg-accent text-white font-bold text-sm px-8 py-3.5 rounded-full hover:bg-accent-light transition-all hover:shadow-[0_0_30px_rgba(165,34,34,0.4)] block"
-                      >
-                        {dir === "rtl" ? "ابدأ الآن" : "Start Now"}
-                      </Link>
-                    </MagneticButton>
+                  <div className="flex items-center gap-5">
+                    {socialLinks.map((link) => (
+                      <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-accent-light hover:scale-125 transition-all duration-300" aria-label={link.label}>
+                        {link.icon}
+                      </a>
+                    ))}
                   </div>
                 </FadeUp>
               </div>
