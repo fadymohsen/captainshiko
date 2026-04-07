@@ -62,7 +62,7 @@ export default function Home() {
             <div className="flex flex-wrap gap-4 animate-slide-up-delay-3">
               <a
                 href="#start"
-                className="bg-accent text-background font-bold px-8 py-4 rounded-full text-sm tracking-wide hover:bg-accent-dim transition-all hover:shadow-[0_0_30px_rgba(212,255,0,0.3)]"
+                className="bg-accent text-background font-bold px-8 py-4 rounded-full text-sm tracking-wide hover:bg-accent-dim transition-all hover:shadow-[0_0_30px_rgba(125,211,252,0.3)]"
               >
                 BEGIN YOUR TRANSFORMATION
               </a>
@@ -279,7 +279,7 @@ export default function Home() {
                   href="#start"
                   className={`text-center py-3.5 rounded-full text-sm font-bold tracking-wide transition-all ${
                     plan.highlighted
-                      ? "bg-accent text-background hover:bg-accent-dim hover:shadow-[0_0_30px_rgba(212,255,0,0.2)]"
+                      ? "bg-accent text-background hover:bg-accent-dim hover:shadow-[0_0_30px_rgba(125,211,252,0.2)]"
                       : "border border-white/10 text-foreground hover:border-accent/40 hover:text-accent"
                   }`}
                 >
@@ -313,7 +313,7 @@ export default function Home() {
             href="https://www.instagram.com/shikoahmed88"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-accent text-background font-bold px-10 py-4 rounded-full text-sm tracking-wide hover:bg-accent-dim transition-all hover:shadow-[0_0_40px_rgba(212,255,0,0.3)]"
+            className="bg-accent text-background font-bold px-10 py-4 rounded-full text-sm tracking-wide hover:bg-accent-dim transition-all hover:shadow-[0_0_40px_rgba(125,211,252,0.3)]"
           >
             FOLLOW ON INSTAGRAM
           </a>
