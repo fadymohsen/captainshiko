@@ -14,7 +14,7 @@ export function Navbar() {
         </Link>
         <div className="hidden md:flex items-center gap-10 text-sm text-muted">
           <a href="/#about" className="hover:text-foreground transition-colors">{t.nav.about}</a>
-          <Link href="/programs" className="hover:text-foreground transition-colors">{t.nav.programs}</Link>
+          <a href="/#plans" className="hover:text-foreground transition-colors">{t.nav.programs}</a>
         </div>
         <div className="flex items-center gap-3">
           <button

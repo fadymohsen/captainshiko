@@ -47,7 +47,7 @@ export const translations = {
       after: "After",
       clients: [
         { name: "Ahmed M.", duration: "12 Weeks", result: "Lost 18kg & gained visible muscle definition" },
-        { name: "Sara K.", duration: "16 Weeks", result: "Complete body recomposition & lifestyle change" },
+        { name: "Karim A.", duration: "16 Weeks", result: "Complete body recomposition & lifestyle change" },
         { name: "Omar H.", duration: "8 Weeks", result: "Gained 6kg lean mass with structured bulk" },
         { name: "Youssef R.", duration: "20 Weeks", result: "From skinny to muscular — total transformation" },
       ],
@@ -83,20 +83,8 @@ export const translations = {
       perQuarter: "/3 mo",
       includes: "Includes customized nutrition plan + training program tailored to your body, goals & daily routine",
       egypt: {
-        exerciseOnly: {
-          tier: "Exercise Program",
-          monthly: "1,500",
-          quarterly: "3,000",
-          currency: "EGP",
-          features: [
-            "Personalized training program",
-            "Progressive overload system",
-            "Monthly plan updates",
-            "Messaging support",
-          ],
-        },
-        nutritionOnly: {
-          tier: "Nutrition Plan",
+        basic: {
+          tier: "Basic Plan",
           monthly: "1,500",
           quarterly: "3,000",
           currency: "EGP",
@@ -250,7 +238,7 @@ export const translations = {
       after: "بعد",
       clients: [
         { name: "أحمد م.", duration: "١٢ أسبوع", result: "خسر ١٨ كجم وبنى عضلات واضحة" },
-        { name: "سارة ك.", duration: "١٦ أسبوع", result: "تحول كامل في الجسم ونمط الحياة" },
+        { name: "كريم أ.", duration: "١٦ أسبوع", result: "تحول كامل في الجسم ونمط الحياة" },
         { name: "عمر ح.", duration: "٨ أسابيع", result: "زاد ٦ كجم عضلات صافية بتضخيم منظم" },
         { name: "يوسف ر.", duration: "٢٠ أسبوع", result: "من نحيف لعضلي — تحول كامل" },
       ],
@@ -286,20 +274,8 @@ export const translations = {
       perQuarter: "/٣ شهور",
       includes: "شامل نظام غذائي صحي مناسب لجسمك وهدفك وطبيعة يومك مع نظام تدريبي يساعدك توصل لهدفك أسرع",
       egypt: {
-        exerciseOnly: {
-          tier: "برنامج تمارين",
-          monthly: "١٬٥٠٠",
-          quarterly: "٣٬٠٠٠",
-          currency: "ج.م",
-          features: [
-            "برنامج تدريبي مخصص",
-            "نظام زيادة تدريجية",
-            "تحديثات شهرية للخطة",
-            "دعم رسائل",
-          ],
-        },
-        nutritionOnly: {
-          tier: "نظام غذائي",
+        basic: {
+          tier: "الباقة الأساسية",
           monthly: "١٬٥٠٠",
           quarterly: "٣٬٠٠٠",
           currency: "ج.م",

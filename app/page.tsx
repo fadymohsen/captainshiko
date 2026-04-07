@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "./lang-context";
@@ -35,10 +34,10 @@ export default function Home() {
   const [duration, setDuration] = useState<Duration>("monthly");
   const p = t.pricing;
 
-  const egyptPlans = [p.egypt.exerciseOnly, p.egypt.nutritionOnly, p.egypt.gold, p.egypt.vip];
+  const egyptPlans = [p.egypt.basic, p.egypt.gold, p.egypt.vip];
   const abroadPlans = [p.abroad.gold, p.abroad.vip];
   const plans = region === "egypt" ? egyptPlans : abroadPlans;
-  const highlightIndex = region === "egypt" ? 2 : 0;
+  const highlightIndex = region === "egypt" ? 1 : 0;
 
   return (
     <div dir={dir} className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -86,7 +85,7 @@ export default function Home() {
             </FadeUp>
 
             <FadeUp delay={0.1}>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
                 <TextReveal text={t.hero.title1} />
                 <br />
                 <span className="gradient-text"><TextReveal text={t.hero.title2} /></span>
@@ -258,7 +257,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className={`grid gap-6 max-w-6xl mx-auto ${plans.length <= 2 ? "md:grid-cols-2 max-w-3xl" : "md:grid-cols-2 lg:grid-cols-4"}`}
+              className={`grid gap-6 max-w-5xl mx-auto ${plans.length <= 2 ? "md:grid-cols-2 max-w-3xl" : "md:grid-cols-3"}`}
             >
               {plans.map((plan, i) => {
                 const isVip = plan.tier === "VIP";
@@ -305,7 +304,7 @@ export default function Home() {
                     </div>
                     <MagneticButton>
                       <a
-                        href="https://wa.me/201148854429"
+                        href={`https://wa.me/201148854429?text=${encodeURIComponent(`Hi Captain Shiko! I'm interested in the ${plan.tier} plan (${plan.currency === "$" ? `$${price}` : `${price} ${plan.currency}`} ${duration === "monthly" ? "monthly" : "3 months"}). I'd like to get started!`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`block text-center py-3.5 rounded-full text-sm font-bold transition-all duration-300 ${
