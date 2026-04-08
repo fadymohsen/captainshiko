@@ -267,10 +267,10 @@ export default function Home() {
                     )}
                     <h3 className={`text-sm font-bold mb-5 tracking-wider uppercase ${isVip ? "text-accent-light" : "text-muted"}`}>{plan.tier}</h3>
                     <div className="flex items-baseline gap-1.5 mb-2">
-                      <span className={`text-4xl font-extrabold ${isVip ? "text-foreground" : ""}`}>{plan.currency === "$" ? `$${price}` : price}</span>
+                      <span className={`text-4xl font-extrabold ${isVip ? "text-foreground" : ""}`}>{price}</span>
                     </div>
                     <div className="text-sm mb-6 text-muted">
-                      {plan.currency !== "$" ? `${plan.currency} ${periodLabel}` : periodLabel}
+                      {plan.currency} {periodLabel}
                     </div>
                     <div className="w-full h-px bg-white/10 mb-6" />
                     <div className="flex flex-col gap-3 mb-8 flex-1">
@@ -285,7 +285,7 @@ export default function Home() {
                     </div>
                     <MagneticButton>
                       <a
-                        href={`https://wa.me/201148854429?text=${encodeURIComponent(`Hi Captain Shiko! I'm interested in the ${plan.tier} plan (${plan.currency === "$" ? `$${price}` : `${price} ${plan.currency}`} ${duration === "monthly" ? "monthly" : "3 months"}). I'd like to get started!`)}`}
+                        href={`https://wa.me/201148854429?text=${encodeURIComponent(`Hi Captain Shiko! I'm interested in the ${plan.tier} plan (${price} ${plan.currency} ${duration === "monthly" ? "monthly" : "3 months"}). I'd like to get started!`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`block text-center py-3.5 rounded-full text-sm font-bold transition-all duration-300 ${
