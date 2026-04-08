@@ -10,7 +10,7 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/40 backdrop-blur-xl border-b border-white/5">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link href={`/${locale}`} className="text-xl font-extrabold tracking-tight">
+        <Link href={`/${locale}/#top`} className="text-xl font-extrabold tracking-tight" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           Captain Shiko<span className="text-accent">.</span>
         </Link>
         <div className="hidden md:flex items-center gap-10 text-sm text-muted">
