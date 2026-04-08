@@ -25,19 +25,15 @@ const transformationImages = [
   "/transform-4.jpg",
 ];
 
-type Region = "egypt" | "abroad";
 type Duration = "monthly" | "quarterly";
 
 export default function Home() {
   const { t, dir, locale } = useLang();
-  const [region, setRegion] = useState<Region>("egypt");
   const [duration, setDuration] = useState<Duration>("monthly");
   const p = t.pricing;
 
-  const egyptPlans = [p.egypt.basic, p.egypt.gold, p.egypt.vip];
-  const abroadPlans = [p.abroad.gold, p.abroad.vip];
-  const plans = region === "egypt" ? egyptPlans : abroadPlans;
-  const highlightIndex = region === "egypt" ? 1 : 0;
+  const plans = [p.egypt.basic, p.egypt.gold, p.egypt.vip];
+  const highlightIndex = 1;
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -217,22 +213,6 @@ export default function Home() {
             <FadeUp delay={0.1}>
               <div className="flex bg-surface-light rounded-full p-1 border border-border">
                 <button
-                  onClick={() => setRegion("egypt")}
-                  className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${region === "egypt" ? "bg-accent text-white" : "text-muted hover:text-foreground"}`}
-                >
-                  {p.regionToggle.egypt}
-                </button>
-                <button
-                  onClick={() => setRegion("abroad")}
-                  className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${region === "abroad" ? "bg-accent text-white" : "text-muted hover:text-foreground"}`}
-                >
-                  {p.regionToggle.abroad}
-                </button>
-              </div>
-            </FadeUp>
-            <FadeUp delay={0.15}>
-              <div className="flex bg-surface-light rounded-full p-1 border border-border">
-                <button
                   onClick={() => setDuration("monthly")}
                   className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${duration === "monthly" ? "bg-white text-background" : "text-muted hover:text-foreground"}`}
                 >
@@ -252,12 +232,12 @@ export default function Home() {
           {/* Plan cards */}
           <AnimatePresence mode="wait">
             <motion.div
-              key={`${region}-${duration}`}
+              key={duration}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className={`grid gap-6 max-w-5xl mx-auto ${plans.length <= 2 ? "md:grid-cols-2 max-w-3xl" : "md:grid-cols-3"}`}
+              className="grid gap-6 max-w-5xl mx-auto md:grid-cols-3"
             >
               {plans.map((plan, i) => {
                 const isVip = plan.tier === "VIP";
