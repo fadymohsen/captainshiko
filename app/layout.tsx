@@ -16,7 +16,32 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Captain Shiko | Elite Online Fitness Coaching",
   description:
-    "Transform your body and mindset with Captain Shiko — elite online personal training by Captain Maged. Customized programs and results that speak for themselves.",
+    "Transform your body with Captain Shiko — personalized training programs, nutrition plans, and 1-on-1 online coaching by Mohamed Roshdy.",
+  icons: {
+    icon: "/favicon.svg",
+  },
+  openGraph: {
+    title: "Captain Shiko | Elite Online Fitness Coaching",
+    description:
+      "Transform your body with Captain Shiko — personalized training programs, nutrition plans, and 1-on-1 online coaching by Mohamed Roshdy.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 800,
+        height: 1067,
+        alt: "Captain Shiko - Mohamed Roshdy",
+      },
+    ],
+    type: "website",
+    siteName: "Captain Shiko",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Captain Shiko | Elite Online Fitness Coaching",
+    description:
+      "Transform your body with Captain Shiko — personalized training programs, nutrition plans, and 1-on-1 online coaching.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({
