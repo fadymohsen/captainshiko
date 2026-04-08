@@ -5,12 +5,12 @@ import { useLang } from "./lang-context";
 import { socialLinks } from "./social-links";
 
 export function Footer() {
-  const { t } = useLang();
+  const { t, locale } = useLang();
 
   return (
     <footer className="border-t border-border py-10">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-        <Link href="/" className="text-lg font-extrabold tracking-tight">
+        <Link href={`/${locale}`} className="text-lg font-extrabold tracking-tight">
           Captain Shiko<span className="text-accent">.</span>
         </Link>
         <div className="flex items-center gap-4">

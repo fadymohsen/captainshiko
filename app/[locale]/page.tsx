@@ -3,10 +3,10 @@
 import Image from "next/image";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLang } from "./lang-context";
-import { Navbar } from "./navbar";
-import { Footer } from "./footer";
-import { socialLinks } from "./social-links";
+import { useLang } from "../lang-context";
+import { Navbar } from "../navbar";
+import { Footer } from "../footer";
+import { socialLinks } from "../social-links";
 import {
   FadeUp,
   SlideIn,
@@ -16,7 +16,7 @@ import {
   FloatingElement,
   TextReveal,
   MagneticButton,
-} from "./animations";
+} from "../animations";
 
 const transformationImages = [
   "/transform-1.jpg",
@@ -29,7 +29,7 @@ type Region = "egypt" | "abroad";
 type Duration = "monthly" | "quarterly";
 
 export default function Home() {
-  const { t, dir } = useLang();
+  const { t, dir, locale } = useLang();
   const [region, setRegion] = useState<Region>("egypt");
   const [duration, setDuration] = useState<Duration>("monthly");
   const p = t.pricing;
@@ -40,7 +40,7 @@ export default function Home() {
   const highlightIndex = region === "egypt" ? 1 : 0;
 
   return (
-    <div dir={dir} className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
       <Navbar />
 
       {/* ===== HERO ===== */}
@@ -101,7 +101,7 @@ export default function Home() {
             <FadeUp delay={0.3}>
               <MagneticButton>
                 <a
-                  href="#plans"
+                  href={`/${locale}/#plans`}
                   className="bg-accent text-white font-bold px-8 py-4 rounded-full text-sm tracking-wider hover:bg-accent-light transition-all duration-300 hover:shadow-[0_0_30px_rgba(165,34,34,0.4)] inline-block"
                 >
                   {t.hero.programs}
