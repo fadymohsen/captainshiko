@@ -144,19 +144,20 @@ export default function AboutPage() {
                     </div>
 
                     {/* Text Column */}
-                    <div className="w-full lg:w-1/2 flex flex-col gap-6">
+                    <div className="w-full lg:w-1/2 flex flex-col gap-8">
                       <FadeUp delay={0.2}>
-                        <div className="flex items-center gap-4">
-                          <span className="text-4xl font-black text-accent/20">0{i + 1}</span>
-                          <div className="h-px flex-grow bg-gradient-to-r from-accent/20 to-transparent" />
+                        <div className="flex items-center gap-4 mb-4">
+                          <span className="text-5xl font-black text-accent">0{i + 1}</span>
+                          <div className="h-1.5 flex-grow bg-accent rounded-full opacity-20" />
                         </div>
-                        <h3 className="text-2xl sm:text-3xl font-black">{client.name}</h3>
-                        <div className="flex gap-4">
-                          <span className="px-4 py-1.5 rounded-full bg-accent text-white text-xs font-bold uppercase tracking-widest">
+                        <h3 className="text-3xl sm:text-4xl font-black mb-4">{client.name}</h3>
+                        <div className="flex gap-4 mb-6">
+                          <span className="px-6 py-2 rounded-full bg-accent text-white text-sm font-black uppercase tracking-widest shadow-lg shadow-accent/20">
                             {client.duration}
                           </span>
                         </div>
-                        <p className="text-muted text-lg leading-relaxed font-medium bg-surface-light p-6 rounded-2xl border border-white/5 italic">
+                        <p className="text-muted text-lg lg:text-xl leading-relaxed font-semibold bg-surface-light p-8 rounded-[2rem] border border-white/5 italic relative overflow-hidden group-hover:border-accent/30 transition-colors">
+                           <span className="absolute top-0 left-0 w-1 h-full bg-accent opacity-50" />
                           "{client.result}"
                         </p>
                       </FadeUp>
