@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "../lang-context";
@@ -305,7 +306,36 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== CTA ===== */}
+      {/* ===== SEE ALL PLANS CTA ===== */}
+      <section className="pb-28">
+        <div className="max-w-7xl mx-auto px-6">
+          <FadeUp>
+            <div className="bg-surface-light/30 border border-white/5 rounded-[2.5rem] p-8 sm:p-12 text-center relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <h3 className="text-2xl sm:text-3xl font-black mb-6 relative z-10">
+                {locale === "en" ? "Want more options?" : "عايز خيارات أكتر؟"}
+              </h3>
+              <p className="text-muted mb-10 max-w-lg mx-auto relative z-10 font-medium">
+                {locale === "en" 
+                  ? "Explore our full range of 5 specialized transformation programs designed for every goal."
+                  : "اكتشف الـ ٥ باقات المتخصصة اللي صممناها عشان تناسب كل الأهداف ومستويات اللياقة."}
+              </p>
+              <div className="relative z-10">
+                <MagneticButton>
+                  <Link
+                    href={`/${locale}/plans`}
+                    className="inline-block bg-accent text-white font-black px-10 py-5 rounded-full text-sm uppercase tracking-widest hover:bg-accent-light transition-all shadow-xl"
+                  >
+                    {(t as any).nav.seeAllPlans}
+                  </Link>
+                </MagneticButton>
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ===== SOCIAL CTA ===== */}
       <section className="py-28">
         <div className="max-w-7xl mx-auto px-6">
           <ScaleIn>
