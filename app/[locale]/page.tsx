@@ -110,8 +110,8 @@ export default function Home() {
       </section>
 
       {/* ===== SCROLLING BANNER ===== */}
-      <section className="py-4 bg-accent -rotate-1 scale-105 overflow-hidden relative z-10">
-        <div className="flex animate-scroll-left whitespace-nowrap">
+      <section className="py-4 bg-accent overflow-hidden relative z-10 flex items-center">
+        <div className="flex animate-scroll-left w-max whitespace-nowrap will-change-transform">
           {[...Array(2)].map((_, j) => (
             <div key={j} className="flex shrink-0">
               {t.banner.map((text, i) => (
