@@ -21,7 +21,6 @@ export function Navbar() {
 
   const navLinks = [
     { name: t.nav.aboutMe, href: `/${locale}/about`, isLink: true },
-    { name: t.nav.programs, href: `/${locale}/#plans` },
     { name: t.nav.plans, href: `/${locale}/plans`, isLink: true },
   ];
 

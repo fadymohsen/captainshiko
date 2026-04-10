@@ -153,21 +153,14 @@ export default function Home() {
           </SlideIn>
 
           <SlideIn direction={dir === "rtl" ? "left" : "right"}>
-            <div className="relative aspect-[3/4] max-w-md rounded-2xl overflow-hidden group glow-border border border-transparent mx-auto">
+            <div className="relative aspect-square rounded-[3rem] overflow-hidden group glow-border border border-white/5 shadow-2xl">
               <Image
-                src="/about-owner.jpg"
-                alt="Mohamed Roshdy - Founder"
+                src="/about hero section.png"
+                alt="Captain Shiko"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 448px"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-              <div className="absolute bottom-6 left-6">
-                <div className="bg-background/70 backdrop-blur-md rounded-xl px-5 py-3 border border-border">
-                  <div className="text-sm font-bold">Mohamed Roshdy</div>
-                  <div className="text-xs text-accent-light">Founder</div>
-                </div>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
           </SlideIn>
         </div>

@@ -86,21 +86,6 @@ export default function AboutPage() {
             </StaggerContainer>
           </section>
 
-          {/* Global Reach Section */}
-          <section className="mb-32 relative">
-             <div className="absolute inset-0 bg-accent/5 -mx-6 sm:-mx-12 rounded-[3rem] pointer-events-none" />
-             <div className="relative p-12 sm:p-20 text-center max-w-4xl mx-auto">
-                <FadeUp>
-                  <h2 className="text-3xl sm:text-4xl font-black mb-8 uppercase tracking-tight">
-                    {content.global.title}
-                  </h2>
-                  <p className="text-muted text-lg leading-relaxed font-medium">
-                    {content.global.text}
-                  </p>
-                </FadeUp>
-             </div>
-          </section>
-
           {/* Success Stories Section (Transformations) */}
           <section className="mb-32">
             <FadeUp>
