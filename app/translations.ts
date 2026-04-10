@@ -3,7 +3,7 @@ export type Locale = "en" | "ar";
 export const translations = {
   en: {
     nav: {
-      about: "About",
+      aboutMe: "About Me",
       programs: "Programs",
       plans: "Plans",
       contact: "Contact",
@@ -12,6 +12,28 @@ export const translations = {
     },
     common: {
       knowMore: "Know More",
+    },
+    aboutPage: {
+      hero: {
+        title: "Who is Captain Shiko?",
+        text: "Hi, I'm Captain Shiko, a personal trainer and nutrition specialist. My goal is to help you change your life and body for the better through studied and proven scientific methods. I believe that fitness is not just about lifting weights in the gym, but an integrated lifestyle that combines proper nutrition, smart training, and the right mindset.",
+      },
+      philosophy: {
+        title: "My Training Philosophy",
+        item1: "Train smart, not just hard - designing programs that fit each person's level and ensure continuous development while avoiding injuries.",
+        item2: "Nutrition without deprivation - I don't believe in harsh systems, but in flexibility that allows you to enjoy your favorite meals within your needs.",
+        item3: "Building sustainable habits - I focus on educating subscribers to be able to maintain their results for life.",
+      },
+      global: {
+        title: "Our Services Cross Borders",
+        text: "The goal is to provide an integrated experience that suits every subscriber wherever they are. International plans include coverage for global payment gateway costs, in addition to providing a custom nutrition guide with products and brands available in global markets (Europe, America, and the Gulf), with a follow-up system that takes into account time differences to ensure continuous technical and sports support with professional standards.",
+      },
+      certificates: {
+        title: "Certificates & Accreditations",
+      },
+      social: {
+        title: "Follow me on social media",
+      }
     },
     hero: {
       badge: "Elite Online Coaching",
@@ -166,36 +188,7 @@ export const translations = {
     footer: {
       rights: "All rights reserved.",
     },
-    contactPage: {
-      title: "Get In Touch",
-      desc: "Have questions about our programs? Want to start your transformation? Reach out — we'd love to hear from you.",
-      ownerLabel: "Meet The Owner",
-      ownerName: "Mohamed Roshdy",
-      ownerRole: "Owner & Head Coach",
-      ownerBio: "Mohamed Roshdy founded Captain Shiko with one mission: to make elite-level coaching accessible to everyone. With 8+ years in the fitness industry, certifications from ISSA & NASM, and hundreds of successful transformations — he's not just a coach, he's a partner in your journey.",
-      phone: "Phone",
-      email: "Email",
-      followUs: "Follow Us",
-    },
-    aboutPage: {
-      heroTitle1: "The Man Behind",
-      heroTitle2: "The Mission.",
-      heroDesc: "Mohamed Roshdy — owner, head coach, and the driving force behind Captain Shiko. From day one, the goal has been simple: help people become the strongest version of themselves.",
-      storyLabel: "Our Story",
-      storyTitle: "Started From Passion. Built On Discipline.",
-      storyP1: "Mohamed Roshdy started his fitness journey over 8 years ago. What began as a personal mission to transform his own body quickly turned into a calling to help others do the same.",
-      storyP2: "With certifications from ISSA and NASM, and hundreds of successful client transformations, Captain Shiko has grown from a solo coaching practice into a full team of elite coaches — all sharing the same philosophy: no shortcuts, just results.",
-      storyP3: "Every program is built on science, tailored to the individual, and delivered with the kind of accountability that actually works. This isn't a template factory — it's a transformation system.",
-      valuesLabel: "What We Stand For",
-      values: [
-        { title: "Science Over Hype", desc: "Every program is evidence-based. No fads, no gimmicks — just proven methods." },
-        { title: "Accountability First", desc: "We don't disappear after sending your plan. We're in it with you, every step." },
-        { title: "No Cookie-Cutter", desc: "Your body is unique. Your plan should be too. 100% personalized, always." },
-        { title: "Results That Last", desc: "We build sustainable habits, not quick fixes that fade in a month." },
-      ],
-      ctaTitle: "Ready to join the team?",
-      ctaButton: "Start Your Journey",
-    },
+
     detailedPlans: {
       "elite-transformation": {
         name: "Elite Transformation",
@@ -282,6 +275,7 @@ export const translations = {
   ar: {
     nav: {
       about: "عن المدرب",
+      aboutMe: "من أنا",
       programs: "البرامج",
       plans: "الباقات",
       contact: "تواصل",
@@ -290,6 +284,28 @@ export const translations = {
     },
     common: {
       knowMore: "اعرف أكتر",
+    },
+    aboutPage: {
+      hero: {
+        title: "من هو كابتن شيكو؟",
+        text: "مرحباً، أنا كابتن شيكو، مدرب شخصي وأخصائي تغذية. هدفي هو مساعدتك على تغيير حياتك وجسمك نحو الأفضل من خلال أساليب علمية مدروسة ومجربة. أؤمن بأن اللياقة البدنية ليست مجرد أوزان نرفعها في الجيم، بل هي أسلوب حياة متكامل يجمع بين التغذية السليمة، التدريب الذكي، والعقلية الصحيحة.",
+      },
+      philosophy: {
+        title: "فلسفتي في التدريب",
+        item1: "التدريب بذكاء وليس بجهد فقط - تصميم برامج تناسب مستوى كل شخص وتضمن التطور المستمر وتجنب الإصابات.",
+        item2: "تغذية بدون حرمان - لا أؤمن بالأنظمة القاسية، بل بالمرونة التي تسمح لك بالاستمتاع بوجباتك المفضلة ضمن احتياجاتك.",
+        item3: "بناء عادات مستدامة - أركز على تثقيف المشتركين ليكونوا قادرين على الحفاظ على نتائجهم مدى الحياة.",
+      },
+      global: {
+        title: "خدماتنا تتخطى الحدود",
+        text: "الهدف هو توفير تجربة متكاملة تناسب كل مشترك أينما كان. الباقات الدولية تشمل تغطية لتكاليف بوابات الدفع العالمية، بالإضافة إلى توفير دليل تغذية مخصص بالمنتجات والبراندات المتاحة في الأسواق العالمية (أوروبا، أمريكا، والخليج)، مع نظام متابعة يراعي فروق التوقيت لضمان استمرارية الدعم الفني والرياضي بمعايير احترافية.",
+      },
+      certificates: {
+        title: "الشهادات والاعتمادات",
+      },
+      social: {
+        title: "تابعني على منصات التواصل",
+      }
     },
     hero: {
       badge: "تدريب أونلاين متقدم",
@@ -444,36 +460,7 @@ export const translations = {
     footer: {
       rights: "جميع الحقوق محفوظة.",
     },
-    contactPage: {
-      title: "تواصل معانا",
-      desc: "عندك أسئلة عن برامجنا؟ عايز تبدأ تحولك؟ كلمنا — هنكون سعيدين نسمع منك.",
-      ownerLabel: "تعرّف على المالك",
-      ownerName: "محمد رشدي",
-      ownerRole: "المالك والمدرب الرئيسي",
-      ownerBio: "محمد رشدي أسس كابتن شيكو بمهمة واحدة: نخلي التدريب المحترف متاح للكل. بخبرة أكتر من ٨ سنين في مجال اللياقة، شهادات من ISSA و NASM، ومئات التحولات الناجحة — هو مش بس مدرب، هو شريك في رحلتك.",
-      phone: "الهاتف",
-      email: "الإيميل",
-      followUs: "تابعنا",
-    },
-    aboutPage: {
-      heroTitle1: "الرجل وراء",
-      heroTitle2: "المهمة.",
-      heroDesc: "محمد رشدي — المالك والمدرب الرئيسي والقوة الدافعة وراء كابتن شيكو. من اليوم الأول، الهدف كان بسيط: نساعد الناس يبقوا أقوى نسخة من نفسهم.",
-      storyLabel: "قصتنا",
-      storyTitle: "بدأنا بشغف. اتبنينا بانضباط.",
-      storyP1: "محمد رشدي بدأ رحلته في اللياقة من أكتر من ٨ سنين. اللي بدأ كمهمة شخصية لتحويل جسمه اتحول بسرعة لرسالة يساعد بيها غيره.",
-      storyP2: "بشهادات من ISSA و NASM، ومئات التحولات الناجحة، كابتن شيكو كبر من تدريب فردي لفريق كامل من المدربين المحترفين — كلهم بنفس الفلسفة: بدون اختصارات، بس نتايج.",
-      storyP3: "كل برنامج مبني على علم، مخصص للفرد، ومقدم بنوع المسؤولية اللي فعلاً بيشتغل. دي مش مصنع قوالب — ده نظام تحول.",
-      valuesLabel: "اللي بنؤمن بيه",
-      values: [
-        { title: "العلم فوق الكلام", desc: "كل برنامج مبني على أدلة. بدون صيحات أو حيل — بس طرق مثبتة." },
-        { title: "المسؤولية أولاً", desc: "مش بنختفي بعد ما نبعتلك الخطة. احنا معاك في كل خطوة." },
-        { title: "مفيش قوالب جاهزة", desc: "جسمك مميز. خطتك لازم تكون كده. ١٠٠٪ مخصصة، دايماً." },
-        { title: "نتايج تدوم", desc: "بنبني عادات مستدامة، مش حلول سريعة بتختفي في شهر." },
-      ],
-      ctaTitle: "جاهز تنضم للفريق؟",
-      ctaButton: "ابدأ رحلتك",
-    },
+
     detailedPlans: {
       "elite-transformation": {
         name: "باقة التحول الشامل",

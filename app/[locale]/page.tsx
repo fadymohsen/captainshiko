@@ -136,6 +136,19 @@ export default function Home() {
                 <span className="text-muted">{t.about.title2}</span>
               </h2>
               <p className="text-muted leading-relaxed max-w-lg text-[1.05rem]">{t.about.desc}</p>
+              <div className="mt-4">
+                <MagneticButton>
+                  <Link
+                    href={`/${locale}/about`}
+                    className="inline-flex items-center gap-2 text-accent-light font-bold hover:gap-4 transition-all duration-300"
+                  >
+                    {(t as any).common.knowMore}
+                    <svg className={`w-4 h-4 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7-7 7M5 12h16" />
+                    </svg>
+                  </Link>
+                </MagneticButton>
+              </div>
             </div>
           </SlideIn>
 
