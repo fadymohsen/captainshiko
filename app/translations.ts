@@ -76,7 +76,7 @@ export const translations = {
       clients: [
         { name: "Ahmed M.", duration: "12 Weeks", result: "Lost 18kg & gained visible muscle definition" },
         { name: "Karim A.", duration: "16 Weeks", result: "Complete body recomposition & lifestyle change" },
-        { name: "Omar H.", duration: "8 Weeks", result: "Gained 6kg lean mass with structured bulk" },
+        { name: "Captain Shiko", duration: "Founder", result: "Founder Transformation - lead by example." },
         { name: "Youssef R.", duration: "20 Weeks", result: "From skinny to muscular — total transformation" },
       ],
     },
@@ -370,7 +370,7 @@ export const translations = {
       clients: [
         { name: "أحمد م.", duration: "١٢ أسبوع", result: "خسر ١٨ كجم وبنى عضلات واضحة" },
         { name: "كريم أ.", duration: "١٦ أسبوع", result: "تحول كامل في الجسم ونمط الحياة" },
-        { name: "عمر ح.", duration: "٨ أسابيع", result: "زاد ٦ كجم عضلات صافية بتضخيم منظم" },
+        { name: "كابتن شيكو", duration: "المؤسس", result: "تحول المؤسس - القدوة أولاً." },
         { name: "يوسف ر.", duration: "٢٠ أسبوع", result: "من نحيف لعضلي — تحول كامل" },
       ],
     },
