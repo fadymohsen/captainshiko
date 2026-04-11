@@ -11,6 +11,7 @@ import {
   ScaleIn,
   MagneticButton,
 } from "../../animations";
+import { CertificateCarousel } from "../../certificates-carousel";
 
 export default function AboutPage() {
   const { t, locale, dir } = useLang();
@@ -153,26 +154,16 @@ export default function AboutPage() {
             </div>
           </section>
 
-          {/* Certificates Section */}
-          <section className="mb-32 text-center">
+          <section className="mb-32">
             <FadeUp>
-              <h2 className="text-3xl sm:text-4xl font-black mb-12 uppercase tracking-tight">
-                {content.certificates.title}
-              </h2>
-              {/* CERTIFICATES CAROUSEL PLACEHOLDER */}
-              <div className="w-full h-[400px] rounded-[2.5rem] bg-surface-light border-2 border-dashed border-white/10 flex flex-col items-center justify-center p-8 group hover:border-accent/30 transition-all">
-                <div className="w-20 h-20 rounded-full bg-accent/5 flex items-center justify-center mb-6 text-muted">
-                  <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                  </svg>
-                </div>
-                <h4 className="text-xl font-bold uppercase tracking-[0.2em] mb-2 opacity-30">
-                  CERTIFICATES CAROUSEL PLACEHOLDER
-                </h4>
-                <p className="text-xs text-muted max-w-xs mx-auto">
-                  Insert your multi-certificate slider component here later to showcase your academic achievements and professional accreditations.
-                </p>
+              <div className="text-center mb-16">
+                <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight">
+                  {content.certificates.title}
+                </h2>
+                <div className="w-20 h-1.5 bg-accent mx-auto mt-6 rounded-full" />
               </div>
+              
+              <CertificateCarousel />
             </FadeUp>
           </section>
 

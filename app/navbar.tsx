@@ -20,6 +20,7 @@ export function Navbar() {
   }, [isOpen]);
 
   const navLinks = [
+    { name: t.nav.home, href: `/${locale}`, isLink: true },
     { name: t.nav.aboutMe, href: `/${locale}/about`, isLink: true },
     { name: t.nav.plans, href: `/${locale}/plans`, isLink: true },
   ];

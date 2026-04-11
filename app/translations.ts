@@ -3,6 +3,7 @@ export type Locale = "en" | "ar";
 export const translations = {
   en: {
     nav: {
+      home: "Home",
       aboutMe: "About Me",
       programs: "Programs",
       plans: "Plans",
@@ -274,6 +275,7 @@ export const translations = {
   },
   ar: {
     nav: {
+      home: "الرئيسية",
       about: "عن المدرب",
       aboutMe: "من أنا",
       programs: "البرامج",
