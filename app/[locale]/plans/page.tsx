@@ -12,7 +12,7 @@ import {
 } from "../../animations";
 
 export default function PlansPage() {
-  const { t, locale, dir } = useLang();
+  const { t, locale, dir, region } = useLang();
   
   // We'll use the detailedPlans data we added to translations.ts
   // Object.entries is better here but we want a specific order if possible.
@@ -74,12 +74,16 @@ export default function PlansPage() {
                     
                     <div className="mb-8 p-4 rounded-xl bg-background/40 border border-white/5">
                       <div className="text-xs text-muted uppercase tracking-widest mb-1">
-                        {locale === "en" ? "Local Subscription" : "الاشتراك من داخل مصر"}
+                        {region === "egypt" 
+                          ? (locale === "en" ? "Local Subscription" : "الاشتراك من داخل مصر")
+                          : (locale === "en" ? "Global Subscription" : "الاشتراك الدولي")}
                       </div>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-black">{plan.localPricing.monthly}</span>
+                        <span className="text-3xl font-black">
+                          {region === "egypt" ? plan.localPricing.monthly : plan.globalPricing.monthly}
+                        </span>
                         <span className="text-sm text-muted font-bold uppercase tracking-tight">
-                          {plan.localPricing.currency} {locale === "en" ? "/Mo" : "شهرياً"}
+                          {region === "egypt" ? plan.localPricing.currency : plan.globalPricing.currency} {locale === "en" ? "/Mo" : "شهرياً"}
                         </span>
                       </div>
                     </div>

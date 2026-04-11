@@ -15,12 +15,9 @@ import {
   MagneticButton,
 } from "../../../animations";
 
-type Region = "local" | "global";
-
 export default function PlanDetailPage({ params }: { params: Promise<{ locale: string, planId: string }> }) {
-  const { t, locale, dir } = useLang();
+  const { t, locale, dir, region: detectedRegion } = useLang();
   const { planId } = use(params);
-  const [region, setRegion] = useState<Region>("local");
 
   const plan = (t as any).detailedPlans?.[planId];
 
@@ -36,7 +33,7 @@ export default function PlanDetailPage({ params }: { params: Promise<{ locale: s
     );
   }
 
-  const currentPricing = region === "local" ? plan.localPricing : plan.globalPricing;
+  const currentPricing = detectedRegion === "egypt" ? plan.localPricing : plan.globalPricing;
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -164,25 +161,10 @@ export default function PlanDetailPage({ params }: { params: Promise<{ locale: s
                         {locale === "en" ? "Secure Your Spot" : "احجز مكانك الآن"}
                       </h3>
 
-                      {/* Region Toggle */}
-                      <div className="flex bg-background/80 rounded-2xl p-1.5 border border-white/5 mb-10">
-                        <button
-                          onClick={() => setRegion("local")}
-                          className={`flex-1 py-3.5 rounded-xl text-[10px] font-black tracking-[0.1em] uppercase transition-all duration-500 ${region === "local" ? "bg-accent text-white shadow-xl scale-105" : "text-muted hover:text-foreground"}`}
-                        >
-                          {locale === "en" ? "Local (EGP)" : "داخل مصر"}
-                        </button>
-                        <button
-                          onClick={() => setRegion("global")}
-                          className={`flex-1 py-3.5 rounded-xl text-[10px] font-black tracking-[0.1em] uppercase transition-all duration-500 ${region === "global" ? "bg-accent text-white shadow-xl scale-105" : "text-muted hover:text-foreground"}`}
-                        >
-                          {locale === "en" ? "Global (USD)" : "خارج مصر"}
-                        </button>
-                      </div>
 
                       <AnimatePresence mode="wait">
                         <motion.div
-                          key={region}
+                          key={detectedRegion}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
@@ -231,8 +213,8 @@ export default function PlanDetailPage({ params }: { params: Promise<{ locale: s
                           <a
                             href={`https://wa.me/201148854429?text=${encodeURIComponent(
                               locale === "en" 
-                                ? `Hi Captain Shiko! I want to join the ${plan.name} (${region === 'local' ? 'Local' : 'Global'}).`
-                                : `أهلاً كابتن شيكو! حابب أشترك في ${plan.name} (${region === 'local' ? 'داخل مصر' : 'خارج مصر'}).`
+                                ? `Hi Captain Shiko! I want to join the ${plan.name} (${detectedRegion === 'egypt' ? 'Local' : 'Global'}).`
+                                : `أهلاً كابتن شيكو! حابب أشترك في ${plan.name} (${detectedRegion === 'egypt' ? 'داخل مصر' : 'خارج مصر'}).`
                             )}`}
                             target="_blank"
                             className="w-full block text-center bg-white text-background font-black py-5 rounded-2xl text-xs uppercase tracking-[0.2em] hover:bg-accent hover:text-white transition-all shadow-xl active:scale-95"
