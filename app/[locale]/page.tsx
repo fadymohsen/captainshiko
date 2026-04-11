@@ -249,7 +249,8 @@ export default function Home() {
               className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto"
             >
               {plans.map((plan, i) => {
-                const isVip = plan.tier === "VIP" || (region === "abroad" && plan.tier === "VIP");
+                const tierName = plan.tier as string;
+                const isVip = tierName === "VIP";
                 const isHighlighted = (region === "egypt" && i === 1) || (region === "abroad" && i === 0);
                 const price = duration === "monthly" ? plan.monthly : plan.quarterly;
                 const periodLabel = duration === "monthly" ? p.perMonth : p.perQuarter;
