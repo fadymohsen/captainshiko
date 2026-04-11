@@ -272,6 +272,27 @@ export const translations = {
         globalPricing: { monthly: "100", quarterly: "220", currency: "USD" }
       }
     },
+    transformationsPage: {
+      title: "Transformations",
+      subtitle: "Results that speak for themselves",
+      galleryTitle: "Our Hall of Fame",
+      ctaTitle: "Ready to be our next success?",
+      ctaButton: "Start Your Transformation",
+      items: [
+        { name: "Ahmed S.", age: 28, result: "The Standard - setting the bar for excellence.", img: "/transformations/focus-1.png" },
+        { name: "Moustafa K.", age: 34, result: "Core Recomposition - abdominal sculpting.", img: "/transformations/focus-2.jpeg" },
+        { name: "Captain Shiko", result: "Founder Transformation - lead by example.", img: "/transformations/focus-3.jpeg" },
+        { name: "Omar J.", age: 25, result: "Posture Correction - peak performance focus.", img: "/transformations/focus-6.jpeg" },
+        { name: "Hany R.", age: 39, result: "Complete lifestyle overhaul and fat loss.", img: "/transformations/tran-2.jpeg" },
+        { name: "Ziad F.", age: 23, result: "Massive fat loss and muscle toning.", img: "/transformations/tran-1.jpeg" },
+        { name: "Ibrahim H.", age: 52, result: "Lifelong Vitality - age is just a number.", img: "/transformations/focus-4.jpeg" },
+        { name: "Yasser G.", age: 48, result: "Health First - reversing age through fitness.", img: "/transformations/focus-5.jpeg" },
+        { name: "Khaled A.", age: 27, result: "Muscle gain and definition mastery.", img: "/transformations/tran-3.jpeg" },
+        { name: "Samer L.", age: 30, result: "Athletic body recomposition and strength.", img: "/transformations/tran-4.jpeg" },
+        { name: "Tarek E.", age: 33, result: "Strength and endurance peak performance.", img: "/transformations/tran-5.jpeg" },
+        { name: "Amr N.", age: 29, result: "A journey from zero to peak fitness.", img: "/transformations/tran-6.jpeg" }
+      ]
+    }
   },
   ar: {
     nav: {
@@ -545,5 +566,26 @@ export const translations = {
         globalPricing: { monthly: "100", quarterly: "220", currency: "$" }
       }
     },
+    transformationsPage: {
+      title: "التحولات",
+      subtitle: "نتائج تتحدث عن نفسها",
+      galleryTitle: "معرض النجاح",
+      ctaTitle: "جاهز تكون قصة نجاحنا الجاية؟",
+      ctaButton: "ابدأ رحلة تغييرك دلوقتي",
+      items: [
+        { name: "أحمد س.", age: 28, result: "المعيار - وضعنا هنا أول وأهم نموذج للالتزام والنتيجة.", img: "/transformations/focus-1.png" },
+        { name: "مصطفى ك.", age: 34, result: "نحت القوام - عملية متكاملة لمنطقة البطن.", img: "/transformations/focus-2.jpeg" },
+        { name: "كابتن شيكو", result: "تحول المؤسس - القدوة أولاً.", img: "/transformations/focus-3.jpeg" },
+        { name: "عمر ج.", age: 25, result: "تحسين القوام - تصحيح الوضعية والأداء البدني.", img: "/transformations/focus-6.jpeg" },
+        { name: "هاني ر.", age: 39, result: "تغيير كامل في نمط الحياة وخسارة الدهون.", img: "/transformations/tran-2.jpeg" },
+        { name: "زياد ف.", age: 23, result: "خسارة وزن كبيرة مع بناء كتلة عضلية.", img: "/transformations/tran-1.jpeg" },
+        { name: "إبراهيم هـ.", age: 52, result: "الحيوية الدائمة - إثبات أن القوة ليس لها عمر.", img: "/transformations/focus-4.jpeg" },
+        { name: "ياسر ج.", age: 48, result: "الصحة أولاً - استعادة الشباب من خلال اللياقة.", img: "/transformations/focus-5.jpeg" },
+        { name: "خالد أ.", age: 27, result: "إتقان بناء العضلات والبروز العضلي.", img: "/transformations/tran-3.jpeg" },
+        { name: "سامر ل.", age: 30, result: "إعادة هيكلة الجسم وزيادة القوة البدنية.", img: "/transformations/tran-4.jpeg" },
+        { name: "طارق ع.", age: 33, result: "وصول لأقصى مستويات القوة والتحمل.", img: "/transformations/tran-5.jpeg" },
+        { name: "عمرو ن.", age: 29, result: "رحلة من الصفر للوصول للياقة الكاملة.", img: "/transformations/tran-6.jpeg" }
+      ]
+    }
   },
 } as const;

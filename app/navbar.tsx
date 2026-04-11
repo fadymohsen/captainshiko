@@ -23,6 +23,7 @@ export function Navbar() {
     { name: t.nav.home, href: `/${locale}`, isLink: true },
     { name: t.nav.aboutMe, href: `/${locale}/about`, isLink: true },
     { name: t.nav.plans, href: `/${locale}/plans`, isLink: true },
+    { name: t.transformationsPage.title, href: `/${locale}/transformations`, isLink: true },
   ];
 
   return (

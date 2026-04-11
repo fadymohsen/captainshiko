@@ -20,10 +20,10 @@ import {
 } from "../animations";
 
 const transformationImages = [
-  "/transform-1.jpg",
-  "/transform-2.jpg",
-  "/transform-3.jpg",
-  "/transform-4.jpg",
+  "/transformations/focus-1.png",
+  "/transformations/focus-2.jpeg",
+  "/transformations/focus-3.jpeg",
+  "/transformations/focus-6.jpeg",
 ];
 
 type Duration = "monthly" | "quarterly";
@@ -218,6 +218,20 @@ export default function Home() {
               </StaggerItem>
             ))}
           </StaggerContainer>
+
+          <FadeUp delay={0.4}>
+            <div className="mt-16 text-center">
+              <Link
+                href={`/${locale}/transformations`}
+                className="inline-flex items-center gap-2 group px-8 py-4 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all font-bold uppercase tracking-widest text-sm"
+              >
+                {t.transformationsPage.galleryTitle}
+                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </div>
+          </FadeUp>
         </div>
       </section>
 
