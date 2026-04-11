@@ -30,21 +30,17 @@ export function LangProvider({
   useEffect(() => {
     async function detectRegion() {
       try {
-        // Use GeoJS as it's often more reliable and faster for global detection
-        // Adding a timestamp to bust any cache
-        const response = await fetch(`https://get.geojs.io/v1/ip/geo.json?t=${Date.now()}`, {
+        // Fetch from our own local API route to avoid being blocked by ad-blockers
+        // and to benefit from edge headers like x-vercel-ip-country.
+        const response = await fetch("/api/geo", {
           cache: "no-store",
-          headers: { "Accept": "application/json" }
         });
         
-        if (!response.ok) throw new Error("Geo detection failed");
+        if (!response.ok) throw new Error("Local geo check failed");
         
         const data = await response.json();
         
-        // Console log for debugging in production (temporary)
-        console.log("Detected country:", data.country_code);
-
-        if (data.country_code === "EG" || data.country === "Egypt") {
+        if (data.region === "egypt") {
           setRegion("egypt");
         } else {
           setRegion("abroad");
