@@ -5,12 +5,12 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 const certificates = [
-  "/certficates/cert-1.jpeg",
-  "/certficates/cert-2.jpeg",
-  "/certficates/cert-3.jpeg",
-  "/certficates/cert-4.jpeg",
-  "/certficates/cert-5.jpeg",
-  "/certficates/cert-6.jpeg",
+  "/certficates/cert-1.png",
+  "/certficates/cert-2.png",
+  "/certficates/cert-3.png",
+  "/certficates/cert-4.png",
+  "/certficates/cert-5.png",
+  "/certficates/cert-6.png",
 ];
 
 export function CertificateCarousel() {

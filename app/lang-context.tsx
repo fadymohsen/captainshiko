@@ -30,8 +30,6 @@ export function LangProvider({
   useEffect(() => {
     async function detectRegion() {
       try {
-        // Fetch from our own local API route to avoid being blocked by ad-blockers
-        // and to benefit from edge headers like x-vercel-ip-country.
         const response = await fetch("/api/geo", {
           cache: "no-store",
         });
@@ -39,6 +37,7 @@ export function LangProvider({
         if (!response.ok) throw new Error("Local geo check failed");
         
         const data = await response.json();
+        console.log(`Region detected: ${data.region} (Source: ${data.source}, Country: ${data.country})`);
         
         if (data.region === "egypt") {
           setRegion("egypt");

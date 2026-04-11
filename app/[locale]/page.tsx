@@ -32,12 +32,27 @@ export default function Home() {
   const { t, locale, dir, region } = useLang();
   const [duration, setDuration] = useState<Duration>("monthly");
   const p = t.pricing;
+  const detailed = (t as any).detailedPlans;
+  const planSlugs = [
+    "elite-transformation",
+    "self-starter",
+    "elite-coaching",
+    "fuel-and-focus",
+    "power-and-performance"
+  ];
 
-  const plans = region === "egypt" 
-    ? [p.egypt.basic, p.egypt.gold, p.egypt.vip]
-    : [p.abroad.gold, p.abroad.vip];
-    
-  const highlightIndex = region === "egypt" ? 1 : 0;
+  const plans = planSlugs.map(slug => {
+    const planData = detailed[slug];
+    const pricing = region === "egypt" ? planData.localPricing : planData.globalPricing;
+    return {
+      slug,
+      name: planData.name,
+      brief: planData.brief,
+      monthly: pricing.monthly,
+      quarterly: pricing.quarterly,
+      currency: pricing.currency,
+    };
+  });
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -249,63 +264,37 @@ export default function Home() {
               className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto"
             >
               {plans.map((plan, i) => {
-                const tierName = plan.tier as string;
-                const isVip = tierName === "VIP";
-                const isHighlighted = (region === "egypt" && i === 1) || (region === "abroad" && i === 0);
+                const isHighlighted = plan.slug === "elite-transformation";
+                const isVip = plan.slug === "elite-coaching";
                 const price = duration === "monthly" ? plan.monthly : plan.quarterly;
                 const periodLabel = duration === "monthly" ? p.perMonth : p.perQuarter;
 
                 return (
                   <motion.div
-                    key={plan.tier}
+                    key={plan.slug}
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: i * 0.1 }}
-                    className={`rounded-xl p-7 flex flex-col transition-all duration-300 glow-border relative bg-surface-light w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] min-w-[300px] max-w-[350px] ${
-                      isVip
-                        ? "border-2 border-accent/50 shadow-[0_0_30px_rgba(139,26,26,0.15)]"
-                        : isHighlighted
-                          ? "border-2 border-accent/30"
-                          : "border border-border"
-                    }`}
+                    className="rounded-[2rem] p-8 flex flex-col transition-all duration-300 glow-border relative bg-surface-light w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] min-w-[300px] max-w-[350px] border border-white/10 hover:border-accent/30 shadow-xl"
                   >
-                    {isVip && (
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-accent text-white text-[10px] font-extrabold px-4 py-1 rounded-full whitespace-nowrap">
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        {p.popular}
-                      </div>
-                    )}
-                    <h3 className={`text-sm font-bold mb-5 tracking-wider uppercase ${isVip ? "text-accent-light" : "text-muted"}`}>{plan.tier}</h3>
-                    <div className="flex items-baseline gap-1.5 mb-2">
-                      <span className={`text-4xl font-extrabold ${isVip ? "text-foreground" : ""}`}>{price}</span>
+                    <h3 className="text-lg font-black mb-4 tracking-tight text-foreground">{plan.name}</h3>
+                    <div className="flex items-baseline gap-1.5 mb-1">
+                      <span className="text-4xl font-black text-foreground">{price}</span>
                     </div>
-                    <div className="text-sm mb-6 text-muted">
+                    <div className="text-sm mb-6 text-muted font-bold">
                       {plan.currency} {periodLabel}
                     </div>
-                    <div className="w-full h-px bg-white/10 mb-6" />
-                    <div className="flex flex-col gap-3 mb-8 flex-1">
-                      {plan.features.map((f) => (
-                        <div key={f} className="flex items-start gap-3">
-                          <svg className="w-4 h-4 mt-0.5 shrink-0 text-accent-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
-                          <span className="text-sm text-muted">{f}</span>
-                        </div>
-                      ))}
-                    </div>
+                    <div className="w-full h-px bg-white/5 mb-6" />
+                    <p className="text-sm text-muted leading-relaxed mb-8 flex-1 italic">
+                      "{plan.brief}"
+                    </p>
                     <MagneticButton>
-                      <a
-                        href={`https://wa.me/201148854429?text=${encodeURIComponent(`Hi Captain Shiko! I'm interested in the ${plan.tier} plan (${price} ${plan.currency} ${duration === "monthly" ? "monthly" : "3 months"}). I'd like to get started!`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`block text-center py-3.5 rounded-full text-sm font-bold transition-all duration-300 ${
-                          isVip
-                            ? "bg-accent text-white hover:bg-accent-light"
-                            : "border border-accent/30 text-foreground hover:bg-accent/10"
-                        }`}
+                      <Link
+                        href={`/${locale}/plans/${plan.slug}`}
+                        className="block text-center py-4 rounded-full text-xs font-black tracking-widest uppercase bg-accent text-white hover:bg-accent-light transition-all duration-300 shadow-lg shadow-accent/20"
                       >
-                        {p.cta}
-                      </a>
+                        {(t as any).common.knowMore}
+                      </Link>
                     </MagneticButton>
                   </motion.div>
                 );
