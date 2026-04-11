@@ -30,16 +30,28 @@ export function LangProvider({
   useEffect(() => {
     async function detectRegion() {
       try {
-        const response = await fetch("https://ipapi.co/json/");
+        // Use GeoJS as it's often more reliable and faster for global detection
+        // Adding a timestamp to bust any cache
+        const response = await fetch(`https://get.geojs.io/v1/ip/geo.json?t=${Date.now()}`, {
+          cache: "no-store",
+          headers: { "Accept": "application/json" }
+        });
+        
+        if (!response.ok) throw new Error("Geo detection failed");
+        
         const data = await response.json();
-        if (data.country_code === "EG") {
+        
+        // Console log for debugging in production (temporary)
+        console.log("Detected country:", data.country_code);
+
+        if (data.country_code === "EG" || data.country === "Egypt") {
           setRegion("egypt");
         } else {
           setRegion("abroad");
         }
       } catch (error) {
-        console.error("Failed to detect region:", error);
-        // Silently default to abroad
+        console.error("Region detection error:", error);
+        // Default to abroad for global safety
         setRegion("abroad");
       }
     }
