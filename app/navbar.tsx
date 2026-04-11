@@ -120,7 +120,7 @@ export function Navbar() {
                       <Link 
                         href={link.href} 
                         onClick={() => setIsOpen(false)}
-                        className="text-[10vw] sm:text-[8vw] md:text-6xl font-black uppercase tracking-tighter hover:text-accent transition-colors block leading-none"
+                        className="text-[7.5vw] sm:text-[6vw] md:text-5xl font-black uppercase tracking-tighter hover:text-accent transition-colors block leading-none"
                       >
                         {link.name}
                       </Link>
@@ -128,7 +128,7 @@ export function Navbar() {
                       <a 
                         href={link.href} 
                         onClick={() => setIsOpen(false)}
-                        className="text-[10vw] sm:text-[8vw] md:text-6xl font-black uppercase tracking-tighter hover:text-accent transition-colors block leading-none"
+                        className="text-[7.5vw] sm:text-[6vw] md:text-5xl font-black uppercase tracking-tighter hover:text-accent transition-colors block leading-none"
                       >
                         {link.name}
                       </a>
