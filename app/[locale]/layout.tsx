@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Almarai } from "next/font/google";
 import { LangProvider } from "../lang-context";
 import type { Locale } from "../translations";
+
+const almarai = Almarai({
+  subsets: ["arabic"],
+  weight: ["300", "400", "700", "800"], // Almarai supports these
+});
 
 const locales: Locale[] = ["en", "ar"];
 
@@ -64,7 +70,10 @@ export default async function LocaleLayout({
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   return (
-    <div lang={locale} dir={dir}>
+    <div lang={locale} dir={dir} className={locale === "ar" ? almarai.className : ""}>
+      {locale === "ar" && (
+        <style dangerouslySetInnerHTML={{ __html: `* { --font-sans: ${almarai.style.fontFamily} !important; }` }} />
+      )}
       <LangProvider locale={locale as Locale}>{children}</LangProvider>
     </div>
   );
