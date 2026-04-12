@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { ImageWithSkeleton } from "./image-with-skeleton";
 import { motion, AnimatePresence } from "framer-motion";
 
 const certificates = [
@@ -34,10 +34,9 @@ export function CertificateCarousel() {
           >
             {/* Certificate Frame */}
             <div className="relative w-full h-full rounded-2xl overflow-hidden glassmorphism shadow-2xl flex items-center justify-center bg-black/40">
-              <Image
+              <ImageWithSkeleton
                 src={certificates[currentIndex]}
                 alt={`Certificate ${currentIndex + 1}`}
-                fill
                 className="object-contain"
                 sizes="(max-width: 1024px) 100vw, 800px"
                 priority

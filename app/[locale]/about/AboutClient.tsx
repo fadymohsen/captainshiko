@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useLang } from "../../lang-context";
 import { Navbar } from "../../navbar";
 import { Footer } from "../../footer";
+import { ImageWithSkeleton } from "../../image-with-skeleton";
 import {
   FadeUp,
   StaggerContainer,
@@ -44,10 +44,9 @@ export function AboutClient({ dbTransformations }: { dbTransformations: any[] })
               <div className="lg:col-span-5">
                 <ScaleIn delay={0.2}>
                   <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden group glow-border border border-white/5 shadow-2xl">
-                    <Image
+                    <ImageWithSkeleton
                       src="/about hero section.png"
                       alt="Captain Shiko"
-                      fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 1024px) 100vw, 500px"
                       priority
@@ -117,10 +116,9 @@ export function AboutClient({ dbTransformations }: { dbTransformations: any[] })
                     <div className="w-full lg:w-1/2">
                       <FadeUp delay={0.1}>
                         <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden group glow-border border border-white/5">
-                          <Image
+                          <ImageWithSkeleton
                             src={client.imagePath || client.img}
                             alt={locale === 'ar' ? (client.nameAr || client.name) : (client.nameEn || client.name)}
-                            fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
                             sizes="(max-width: 1024px) 100vw, 600px"
                           />

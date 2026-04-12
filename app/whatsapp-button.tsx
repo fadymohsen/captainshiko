@@ -7,7 +7,11 @@ export function WhatsAppButton() {
   const { locale, dir } = useLang();
   const phoneNumber = "201148854429";
   
-  const pulseVariants = {
+  const message = locale === "en" 
+    ? "Hi Captain Shiko! I'm interested in your coaching programs."
+    : "أهلاً كابتن شيكو! حابب أستفسر عن برامج التدريب والمتابعة.";
+
+  const pulseVariants: any = {
     animate: {
       scale: [1, 1.1, 1],
       opacity: [0.5, 0.8, 0.5],
@@ -19,20 +23,16 @@ export function WhatsAppButton() {
     },
   };
 
-  const message = locale === "en" 
-    ? "Hi Captain Shiko! I'm interested in your coaching programs."
-    : "أهلاً كابتن شيكو! حابب أستفسر عن برامج التدريب والمتابعة.";
-
   return (
     <div 
-      className={`fixed bottom-8 ${dir === 'rtl' ? 'left-8' : 'right-8'} z-[9999] group`}
+      className={`fixed bottom-8 ${locale === 'ar' ? 'left-8' : 'right-8'} z-[110] p-2 rounded-full bg-accent text-white shadow-[0_10px_30px_rgba(139,26,26,0.3)] hover:scale-110 hover:bg-accent-light transition-all duration-300 group border border-white/10`}
       style={{ direction: 'ltr' }} // Keep button icons and layout consistent internally
     >
       {/* Pulse effect */}
       <motion.div
         variants={pulseVariants}
         animate="animate"
-        className="absolute inset-0 bg-[#25D366] rounded-full blur-xl"
+        className="absolute inset-0 bg-accent rounded-full blur-xl"
       />
       
       <motion.a
@@ -43,10 +43,10 @@ export function WhatsAppButton() {
         animate={{ scale: 1, opacity: 1 }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="relative flex items-center justify-center w-16 h-16 bg-[#25D366] text-white rounded-full shadow-2xl transition-shadow hover:shadow-[#25D366]/40"
+        className="relative flex items-center justify-center w-12 h-12 bg-accent text-white rounded-full shadow-2xl transition-shadow hover:shadow-accent/40"
       >
         <svg 
-          className="w-9 h-9" 
+          className="w-7 h-7" 
           fill="currentColor" 
           viewBox="0 0 24 24"
         >

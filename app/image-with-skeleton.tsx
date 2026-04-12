@@ -9,13 +9,15 @@ export function ImageWithSkeleton({
   alt, 
   sizes, 
   className = "",
-  aspectRatio = "aspect-square"
+  aspectRatio = "aspect-square",
+  priority = false
 }: { 
   src: string; 
   alt: string; 
   sizes?: string; 
   className?: string;
   aspectRatio?: string;
+  priority?: boolean;
 }) {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,6 +30,7 @@ export function ImageWithSkeleton({
         fill
         className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}
         sizes={sizes}
+        priority={priority}
         onLoad={() => setIsLoading(false)}
       />
     </div>

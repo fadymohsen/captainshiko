@@ -14,6 +14,7 @@ const locales: Locale[] = ["en", "ar"];
 
 const metadataByLocale: Record<Locale, Metadata> = {
   en: {
+    metadataBase: "https://captainshiko.com",
     title: "Captain Shiko | Elite Online Fitness Coaching",
     description:
       "Transform your body with Captain Shiko — personalized training programs, nutrition plans, and 1-on-1 online coaching by Mohamed Roshdy.",
@@ -27,6 +28,7 @@ const metadataByLocale: Record<Locale, Metadata> = {
     },
   },
   ar: {
+    metadataBase: "https://captainshiko.com",
     title: "كابتن شيكو | تدريب لياقة أونلاين",
     description:
       "حوّل جسمك مع كابتن شيكو — برامج تدريب مخصصة، خطط تغذية، ومتابعة شخصية مع محمد رشدي.",

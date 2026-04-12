@@ -18,7 +18,6 @@ import {
   TextReveal,
   MagneticButton,
 } from "../animations";
-import { Skeleton } from "../skeleton";
 import { ImageWithSkeleton } from "../image-with-skeleton";
 
 // Removed hardcoded transformationImages in favor of translations.transformationsData
@@ -61,10 +60,9 @@ export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbT
                 FITNESS
               </div>
               <div className="relative w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden group">
-                <Image
+                <ImageWithSkeleton
                   src="/hero-coach.jpg"
                   alt="Mohamed Roshdy - Founder"
-                  fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   priority
                   sizes="(max-width: 768px) 100vw, 448px"
@@ -163,10 +161,9 @@ export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbT
 
           <SlideIn direction={dir === "rtl" ? "left" : "right"}>
             <div className="relative aspect-square rounded-[3rem] overflow-hidden group glow-border border border-white/5 shadow-2xl">
-              <Image
+              <ImageWithSkeleton
                 src="/about hero section.png"
                 alt="Captain Shiko"
-                fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -188,8 +185,8 @@ export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbT
           </FadeUp>
 
           <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {(dbTransformations && dbTransformations.length > 0 ? dbTransformations : t.transformationsData.slice(0, 4)).map((client: any) => (
-              <StaggerItem key={client.name}>
+            {(dbTransformations && dbTransformations.length > 0 ? dbTransformations : t.transformationsData.slice(0, 4)).map((client: any, i: number) => (
+              <StaggerItem key={client.id || `${client.name}-${i}`}>
                 <div className="group rounded-xl overflow-hidden bg-surface-light border border-border glow-border">
                   <div className="relative aspect-square overflow-hidden">
                     <ImageWithSkeleton
