@@ -15,6 +15,19 @@ export default auth((req) => {
   if (isAdminRoute && !isLoggedIn) {
     return Response.redirect(new URL('/admin/login', req.nextUrl));
   }
+
+  // Locale Redirection for public pages
+  const pathname = req.nextUrl.pathname;
+  if (!isAdminRoute && !isAuthRoute) {
+    const locales = ['/en', '/ar'];
+    const hasLocale = locales.some((loc) => pathname === loc || pathname.startsWith(`${loc}/`));
+
+    if (!hasLocale) {
+      // Redirect to /en/path
+      const newPathname = `/en${pathname === '/' ? '' : pathname}`;
+      return Response.redirect(new URL(newPathname, req.nextUrl));
+    }
+  }
 })
 
 // Safely match routes, excluding next statics to avoid unnecessary invocations
