@@ -11,6 +11,7 @@ import {
   StaggerItem,
   MagneticButton,
 } from "../../../animations";
+import { ImageWithSkeleton } from "../../../image-with-skeleton";
 
 export function PlanDetailClient({ plan }: { plan: any }) {
   const { locale, dir, region: detectedRegion } = useLang();
@@ -112,7 +113,13 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                   <div className="relative group">
                     <div className="absolute inset-x-0 -inset-y-4 bg-accent/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                     <div className="relative aspect-[9/16] max-w-[400px] mx-auto lg:mx-0 rounded-[2.5rem] overflow-hidden bg-surface-light border-4 border-white/5 shadow-2xl">
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/80 flex flex-col items-center justify-center p-10 text-center">
+                      <ImageWithSkeleton
+                        src="/hero-coach.jpg" // Using this as a placeholder for the reel concept
+                        alt="Visual Guide"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        aspectRatio="aspect-[9/16]"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/80 flex flex-col items-center justify-center p-10 text-center z-20">
                         <motion.div 
                           animate={{ scale: [1, 1.1, 1] }} 
                           transition={{ repeat: Infinity, duration: 2 }}

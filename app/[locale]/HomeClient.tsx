@@ -18,6 +18,8 @@ import {
   TextReveal,
   MagneticButton,
 } from "../animations";
+import { Skeleton } from "../skeleton";
+import { ImageWithSkeleton } from "../image-with-skeleton";
 
 // Removed hardcoded transformationImages in favor of translations.transformationsData
 
@@ -190,14 +192,13 @@ export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbT
               <StaggerItem key={client.name}>
                 <div className="group rounded-xl overflow-hidden bg-surface-light border border-border glow-border">
                   <div className="relative aspect-square overflow-hidden">
-                    <Image
+                    <ImageWithSkeleton
                       src={client.imagePath || client.img}
                       alt={`${locale === 'ar' ? (client.nameAr || client.name) : (client.nameEn || client.name)} transformation`}
-                      fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-surface-light via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-surface-light via-transparent to-transparent z-20" />
                   </div>
                   <div className="p-5">
                     <div className="flex justify-between items-start mb-1">

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useLang } from "../../lang-context";
 import { Navbar } from "../../navbar";
 import { Footer } from "../../footer";
+import { ImageWithSkeleton } from "../../image-with-skeleton";
 
 export function TransformationsClient({ dbTransformations }: { dbTransformations: any[] }) {
   const { t, locale, dir } = useLang();
@@ -57,11 +58,11 @@ export function TransformationsClient({ dbTransformations }: { dbTransformations
                   className="group relative"
                 >
                   <div className="relative aspect-[3/4] overflow-hidden rounded-3xl border border-white/5 bg-white/5 shadow-2xl">
-                    <Image
+                    <ImageWithSkeleton
                       src={item.imagePath || item.img}
                       alt={locale === 'ar' ? (item.nameAr || item.name) : (item.nameEn || item.name)}
-                      fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      aspectRatio="aspect-[3/4]"
                     />
                     
                     {/* Persistent Name & Age Info */}

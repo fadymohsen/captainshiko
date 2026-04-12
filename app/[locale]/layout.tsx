@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Almarai } from "next/font/google";
 import { LangProvider } from "../lang-context";
 import type { Locale } from "../translations";
+import { WhatsAppButton } from "../whatsapp-button";
 
 const almarai = Almarai({
   subsets: ["arabic"],
@@ -74,7 +75,10 @@ export default async function LocaleLayout({
       {locale === "ar" && (
         <style dangerouslySetInnerHTML={{ __html: `* { --font-sans: ${almarai.style.fontFamily} !important; }` }} />
       )}
-      <LangProvider locale={locale as Locale}>{children}</LangProvider>
+      <LangProvider locale={locale as Locale}>
+        {children}
+        <WhatsAppButton />
+      </LangProvider>
     </div>
   );
 }
