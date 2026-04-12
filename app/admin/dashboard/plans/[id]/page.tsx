@@ -100,7 +100,7 @@ export default async function EditPlanPage({ params }: { params: Promise<{ id: s
           </div>
         </div>
 
-        <div className="pt-6 flex gap-4">
+        <div className="pt-6 flex flex-col sm:flex-row gap-4">
           <button type="submit" className="bg-accent hover:bg-accent-light text-white font-black uppercase tracking-widest px-8 py-4 rounded-xl transition-all shadow-lg flex-1 md:flex-none">
             Save Changes
           </button>

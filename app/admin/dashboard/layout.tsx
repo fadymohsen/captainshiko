@@ -1,4 +1,5 @@
 import { auth, signOut } from "@/auth";
+import MobileNav from "./MobileNav";
 
 export default async function DashboardLayout({
   children,
@@ -38,16 +39,8 @@ export default async function DashboardLayout({
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto p-6 md:p-10 relative">
-        {/* Mobile Header Placeholder */}
-        <div className="md:hidden mb-8 flex justify-between items-center border-b border-white/5 pb-4">
-          <h2 className="text-xl font-black">Admin<span className="text-accent">Panel</span></h2>
-          <form action={async () => {
-            'use server';
-            await signOut({ redirectTo: '/admin/login' });
-          }}>
-            <button className="text-xs text-muted uppercase font-bold tracking-widest border border-white/10 px-3 py-1.5 rounded-lg">Logout</button>
-          </form>
-        </div>
+        {/* Mobile Header (Interactive) */}
+        <MobileNav />
         
         {children}
       </main>
