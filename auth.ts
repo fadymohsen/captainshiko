@@ -13,11 +13,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.username || !credentials?.password) return null;
+        if (!credentials?.password) return null;
         
-        const admin = await prisma.admin.findUnique({
-          where: { username: credentials.username as string }
-        });
+        // Find the first admin by ID or any criteria since username is pointless
+        const admin = await prisma.admin.findFirst();
         
         if (!admin) return null;
         

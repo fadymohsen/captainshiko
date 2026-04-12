@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import SignOutButton from "./SignOutButton";
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,11 +31,9 @@ export default function MobileNav() {
             <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/policies" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Policies</Link>
             <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/purchases" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Purchases</Link>
             
-            <form action="/api/auth/signout" method="POST" className="mt-8">
-               <button type="submit" className="w-full py-4 px-6 rounded-xl border border-red-500/20 text-red-400 text-lg font-bold tracking-wider hover:bg-red-500/10 transition-colors">
-                  Sign Out
-               </button>
-            </form>
+            <div className="mt-8">
+              <SignOutButton className="w-full py-4 px-6 rounded-xl border border-red-500/20 text-red-400 text-lg font-bold tracking-wider hover:bg-red-500/10 transition-colors" />
+            </div>
           </nav>
         </div>
       )}

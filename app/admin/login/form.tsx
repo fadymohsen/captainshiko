@@ -15,18 +15,16 @@ export function LoginForm() {
     setError('');
 
     const formData = new FormData(e.currentTarget);
-    const username = formData.get('username') as string;
     const password = formData.get('password') as string;
 
     try {
       const res = await signIn('credentials', {
         redirect: false,
-        username,
         password,
       });
 
       if (res?.error) {
-        setError('Invalid username or password');
+        setError('Invalid password');
       } else {
         router.push('/admin/dashboard');
         router.refresh(); // Ensure the layout securely recalculates
@@ -46,16 +44,7 @@ export function LoginForm() {
         </div>
       )}
       
-      <div className="flex flex-col gap-2">
-        <label className="text-xs uppercase tracking-widest font-bold text-muted ml-1">Username</label>
-        <input
-          type="text"
-          name="username"
-          required
-          className="bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent focus:bg-white/10 transition-all"
-          placeholder="admin"
-        />
-      </div>
+      {/* Password Only Login */}
 
       <div className="flex flex-col gap-2">
         <label className="text-xs uppercase tracking-widest font-bold text-muted ml-1">Password</label>

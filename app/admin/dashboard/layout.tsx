@@ -1,5 +1,6 @@
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
 import MobileNav from "./MobileNav";
+import SignOutButton from "./SignOutButton";
 
 export default async function DashboardLayout({
   children,
@@ -26,14 +27,7 @@ export default async function DashboardLayout({
         </nav>
 
         <div className="mt-auto">
-          <form action={async () => {
-            'use server';
-            await signOut({ redirectTo: '/admin/login' });
-          }}>
-            <button className="w-full py-3 px-4 rounded-xl border border-white/10 text-muted text-sm font-bold tracking-wider hover:text-red-400 hover:border-red-500/30 hover:bg-red-500/10 transition-colors">
-              Sign Out
-            </button>
-          </form>
+          <SignOutButton />
         </div>
       </aside>
 

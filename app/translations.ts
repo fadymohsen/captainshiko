@@ -73,13 +73,21 @@ export const translations = {
       desc: "Our clients don't just change — they evolve. Real people, real progress, zero filters.",
       before: "Before",
       after: "After",
-      clients: [
-        { name: "Ahmed M.", duration: "12 Weeks", result: "Lost 18kg & gained visible muscle definition" },
-        { name: "Karim A.", duration: "16 Weeks", result: "Complete body recomposition & lifestyle change" },
-        { name: "Captain Shiko", duration: "Founder", result: "Founder Transformation - lead by example." },
-        { name: "Youssef R.", duration: "20 Weeks", result: "From skinny to muscular — total transformation" },
-      ],
     },
+    transformationsData: [
+      { name: "Ahmed S.", age: 28, result: "The Standard - setting the bar for excellence.", img: "/transformations/focus-1.png", duration: "12 Weeks" },
+      { name: "Moustafa K.", age: 34, result: "Core Recomposition - abdominal sculpting.", img: "/transformations/focus-2.jpeg", duration: "16 Weeks" },
+      { name: "Captain Shiko", age: 0, result: "Founder Transformation - lead by example.", img: "/transformations/focus-3.jpeg", duration: "Founder" },
+      { name: "Omar J.", age: 25, result: "Posture Correction - peak performance focus.", img: "/transformations/focus-6.jpeg", duration: "14 Weeks" },
+      { name: "Hany R.", age: 39, result: "Complete lifestyle overhaul and fat loss.", img: "/transformations/tran-2.jpeg", duration: "12 Weeks" },
+      { name: "Ziad F.", age: 23, result: "Massive fat loss and muscle toning.", img: "/transformations/tran-1.jpeg", duration: "10 Weeks" },
+      { name: "Ibrahim H.", age: 52, result: "Lifelong Vitality - age is just a number.", img: "/transformations/focus-4.jpeg", duration: "20 Weeks" },
+      { name: "Yasser G.", age: 48, result: "Health First - reversing age through fitness.", img: "/transformations/focus-5.jpeg", duration: "18 Weeks" },
+      { name: "Khaled A.", age: 27, result: "Muscle gain and definition mastery.", img: "/transformations/tran-3.jpeg", duration: "12 Weeks" },
+      { name: "Samer L.", age: 30, result: "Athletic body recomposition and strength.", img: "/transformations/tran-4.jpeg", duration: "16 Weeks" },
+      { name: "Tarek E.", age: 33, result: "Strength and endurance peak performance.", img: "/transformations/tran-5.jpeg", duration: "12 Weeks" },
+      { name: "Amr N.", age: 29, result: "A journey from zero to peak fitness.", img: "/transformations/tran-6.jpeg", duration: "24 Weeks" }
+    ],
     services: {
       label: "What We Do",
       title: "PROGRAMS",
@@ -278,20 +286,6 @@ export const translations = {
       galleryTitle: "Our Hall of Fame",
       ctaTitle: "Ready to be our next success?",
       ctaButton: "Start Your Transformation",
-      items: [
-        { name: "Ahmed S.", age: 28, result: "The Standard - setting the bar for excellence.", img: "/transformations/focus-1.png" },
-        { name: "Moustafa K.", age: 34, result: "Core Recomposition - abdominal sculpting.", img: "/transformations/focus-2.jpeg" },
-        { name: "Captain Shiko", result: "Founder Transformation - lead by example.", img: "/transformations/focus-3.jpeg" },
-        { name: "Omar J.", age: 25, result: "Posture Correction - peak performance focus.", img: "/transformations/focus-6.jpeg" },
-        { name: "Hany R.", age: 39, result: "Complete lifestyle overhaul and fat loss.", img: "/transformations/tran-2.jpeg" },
-        { name: "Ziad F.", age: 23, result: "Massive fat loss and muscle toning.", img: "/transformations/tran-1.jpeg" },
-        { name: "Ibrahim H.", age: 52, result: "Lifelong Vitality - age is just a number.", img: "/transformations/focus-4.jpeg" },
-        { name: "Yasser G.", age: 48, result: "Health First - reversing age through fitness.", img: "/transformations/focus-5.jpeg" },
-        { name: "Khaled A.", age: 27, result: "Muscle gain and definition mastery.", img: "/transformations/tran-3.jpeg" },
-        { name: "Samer L.", age: 30, result: "Athletic body recomposition and strength.", img: "/transformations/tran-4.jpeg" },
-        { name: "Tarek E.", age: 33, result: "Strength and endurance peak performance.", img: "/transformations/tran-5.jpeg" },
-        { name: "Amr N.", age: 29, result: "A journey from zero to peak fitness.", img: "/transformations/tran-6.jpeg" }
-      ]
     }
   },
   ar: {
@@ -367,13 +361,21 @@ export const translations = {
       desc: "عملائنا مش بس بيتغيروا — دول بيتطوروا بجد. ناس طبيعية، تقدم حقيقي، ومن غير أي فلاتر ولا حوارات.",
       before: "قبل",
       after: "بعد",
-      clients: [
-        { name: "أحمد م.", duration: "١٢ أسبوع", result: "خس ١٨ كيلو وبنى عضلات صافية" },
-        { name: "كريم أ.", duration: "١٦ أسبوع", result: "تحول كامل في شكل الجسم وتغيير حياته" },
-        { name: "كابتن شيكو", duration: "المدرب", result: "تحول المدرب نفسه - أنا ببني نفسي قُدامك." },
-        { name: "يوسف ر.", duration: "٢٠ أسبوع", result: "من جسم رفيع لفورمة — تحول من الآخر" },
-      ],
     },
+    transformationsData: [
+      { name: "أحمد س.", age: 28, result: "المعيار - ده كان أول وأهم نموذج للالتزام والنتايج.", img: "/transformations/focus-1.png", duration: "١٢ أسبوع" },
+      { name: "مصطفى ك.", age: 34, result: "نحت القوام - تغيير كامل لمنطقة البطن.", img: "/transformations/focus-2.jpeg", duration: "١٦ أسبوع" },
+      { name: "كابتن شيكو", age: 0, result: "تحول المدرب - أنا ببني نفسي قُدامك.", img: "/transformations/focus-3.jpeg", duration: "المدرب" },
+      { name: "عمر ج.", age: 25, result: "تحسين القوام - ظبطنا وضعية الجسم والأداء البدني.", img: "/transformations/focus-6.jpeg", duration: "١٤ أسبوع" },
+      { name: "هاني ر.", age: 39, result: "تغيير كامل في نظام الحياة وخسارة دهون من الآخر.", img: "/transformations/tran-2.jpeg", duration: "١٢ أسبوع" },
+      { name: "زياد ف.", age: 23, result: "خسارة وزن كبيرة مع بناء عضلات صافية.", img: "/transformations/tran-1.jpeg", duration: "١٠ أسابيع" },
+      { name: "إبراهيم هـ.", age: 52, result: "الحيوية الدائمة - إثبات إن السن مجرد رقم والقوة ملهاش عمر.", img: "/transformations/focus-4.jpeg", duration: "٢٠ أسبوع" },
+      { name: "ياسر ج.", age: 48, result: "الصحة أولاً - رجّعنا الشباب من خلال اللياقة البدنية.", img: "/transformations/focus-5.jpeg", duration: "١٨ أسبوع" },
+      { name: "خالد أ.", age: 27, result: "بناء عضلات وبروز عضلي مثالي.", img: "/transformations/tran-3.jpeg", duration: "١٢ أسبوع" },
+      { name: "سامر ل.", age: 30, result: "إعادة هيكلة الجسم وزيادة القوة والتحمل.", img: "/transformations/tran-4.jpeg", duration: "١٦ أسبوع" },
+      { name: "طارق ع.", age: 33, result: "أقصى مستويات القوة والتحمل البدني.", img: "/transformations/tran-5.jpeg", duration: "١٢ أسبوع" },
+      { name: "عمرو ن.", age: 29, result: "رحلة من الصفر لحد اللياقة البدنية الكاملة.", img: "/transformations/tran-6.jpeg", duration: "٢٤ أسبوع" }
+    ],
     services: {
       label: "بنعمل إيه هنا",
       title: "برامجنا",
@@ -572,20 +574,6 @@ export const translations = {
       galleryTitle: "صور الأبطال",
       ctaTitle: "جاهز تكون بطل قصة نجاحنا الجاية؟",
       ctaButton: "ابدأ رحلة التغيير دلوقتي",
-      items: [
-        { name: "أحمد س.", age: 28, result: "المعيار - ده كان أول وأهم نموذج للالتزام والنتايج.", img: "/transformations/focus-1.png" },
-        { name: "مصطفى ك.", age: 34, result: "نحت القوام - تغيير كامل لمنطقة البطن.", img: "/transformations/focus-2.jpeg" },
-        { name: "كابتن شيكو", result: "تحول المدرب - أنا ببني نفسي قُدامك.", img: "/transformations/focus-3.jpeg" },
-        { name: "عمر ج.", age: 25, result: "تحسين القوام - ظبطنا وضعية الجسم والأداء البدني.", img: "/transformations/focus-6.jpeg" },
-        { name: "هاني ر.", age: 39, result: "تغيير كامل في نظام الحياة وخسارة دهون من الآخر.", img: "/transformations/tran-2.jpeg" },
-        { name: "زياد ف.", age: 23, result: "خسارة وزن كبيرة مع بناء عضلات صافية.", img: "/transformations/tran-1.jpeg" },
-        { name: "إبراهيم هـ.", age: 52, result: "الحيوية الدائمة - إثبات إن السن مجرد رقم والقوة ملهاش عمر.", img: "/transformations/focus-4.jpeg" },
-        { name: "ياسر ج.", age: 48, result: "الصحة أولاً - رجّعنا الشباب من خلال اللياقة البدنية.", img: "/transformations/focus-5.jpeg" },
-        { name: "خالد أ.", age: 27, result: "بناء عضلات وبروز عضلي مثالي.", img: "/transformations/tran-3.jpeg" },
-        { name: "سامر ل.", age: 30, result: "إعادة هيكلة الجسم وزيادة القوة والتحمل.", img: "/transformations/tran-4.jpeg" },
-        { name: "طارق ع.", age: 33, result: "أقصى مستويات القوة والتحمل البدني.", img: "/transformations/tran-5.jpeg" },
-        { name: "عمرو ن.", age: 29, result: "رحلة من الصفر لحد اللياقة البدنية الكاملة.", img: "/transformations/tran-6.jpeg" }
-      ]
     }
-  },
-} as const;
+  }
+};

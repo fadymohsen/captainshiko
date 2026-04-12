@@ -104,9 +104,9 @@ export default function AboutPage() {
             </FadeUp>
 
             <div className="flex flex-col gap-24 sm:gap-40">
-              {((t as any).transformations.clients || []).map((client: any, i: number) => {
+              {((t as any).transformationsData.slice(0, 3) || []).map((client: any, i: number) => {
                 const isEven = i % 2 === 0;
-                const imgPath = `/transform-${i + 1}.jpg`;
+                const imgPath = client.img;
                 
                 return (
                   <div 

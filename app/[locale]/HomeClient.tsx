@@ -19,12 +19,7 @@ import {
   MagneticButton,
 } from "../animations";
 
-const transformationImages = [
-  "/transformations/focus-1.png",
-  "/transformations/focus-2.jpeg",
-  "/transformations/focus-3.jpeg",
-  "/transformations/focus-6.jpeg",
-];
+// Removed hardcoded transformationImages in favor of translations.transformationsData
 
 type Duration = "monthly" | "quarterly";
 
@@ -94,7 +89,7 @@ export function HomeClient({ dbPlans }: { dbPlans: any[] }) {
             </FadeUp>
 
             <FadeUp delay={0.1}>
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
+              <h1 className={`font-black tracking-tight ${locale === 'ar' ? 'text-5xl sm:text-6xl lg:text-8xl leading-[1.3] mb-4' : 'text-4xl sm:text-5xl lg:text-7xl leading-[1.1]'}`}>
                 <TextReveal text={t.hero.title1} />
                 <br />
                 <span className="gradient-text"><TextReveal text={t.hero.title2} /></span>
@@ -104,7 +99,7 @@ export function HomeClient({ dbPlans }: { dbPlans: any[] }) {
             </FadeUp>
 
             <FadeUp delay={0.2}>
-              <p className="text-muted max-w-md leading-relaxed text-[1.05rem]">{t.hero.desc}</p>
+              <p className={`text-muted max-w-md leading-relaxed ${locale === 'ar' ? 'text-lg mt-4' : 'text-[1.05rem]'}`}>{t.hero.desc}</p>
             </FadeUp>
 
             <FadeUp delay={0.3}>
@@ -123,7 +118,7 @@ export function HomeClient({ dbPlans }: { dbPlans: any[] }) {
 
       {/* ===== SCROLLING BANNER ===== */}
       <section className="py-4 bg-accent overflow-hidden relative z-10 flex items-center">
-        <div className="flex animate-scroll-left w-max whitespace-nowrap will-change-transform">
+        <div className={`flex ${dir === 'rtl' ? 'animate-scroll-right' : 'animate-scroll-left'} w-max whitespace-nowrap will-change-transform`}>
           {[...Array(2)].map((_, j) => (
             <div key={j} className="flex shrink-0">
               {t.banner.map((text, i) => (
@@ -191,12 +186,12 @@ export function HomeClient({ dbPlans }: { dbPlans: any[] }) {
           </FadeUp>
 
           <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {t.transformations.clients.map((client, i) => (
+            {t.transformationsData.slice(0, 4).map((client: any) => (
               <StaggerItem key={client.name}>
                 <div className="group rounded-xl overflow-hidden bg-surface-light border border-border glow-border">
                   <div className="relative aspect-square overflow-hidden">
                     <Image
-                      src={transformationImages[i]}
+                      src={client.img}
                       alt={`${client.name} transformation`}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -205,8 +200,11 @@ export function HomeClient({ dbPlans }: { dbPlans: any[] }) {
                     <div className="absolute inset-0 bg-gradient-to-t from-surface-light via-transparent to-transparent" />
                   </div>
                   <div className="p-5">
-                    <h4 className="font-bold text-sm">{client.name}</h4>
-                    <p className="text-xs text-muted mt-1 leading-relaxed">{client.result}</p>
+                    <div className="flex justify-between items-start mb-1">
+                      <h4 className="font-bold text-sm">{client.name}</h4>
+                      <span className="text-[10px] font-bold text-accent-light px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20">{client.duration}</span>
+                    </div>
+                    <p className="text-xs text-muted leading-relaxed">{client.result}</p>
                   </div>
                 </div>
               </StaggerItem>
