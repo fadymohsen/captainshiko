@@ -13,6 +13,12 @@ export function Footer() {
         <Link href={`/${locale}/#top`} className="text-lg font-extrabold tracking-tight" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           Captain Shiko<span className="text-accent">.</span>
         </Link>
+        <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold uppercase tracking-widest text-muted">
+          <Link href={`/${locale}/faq`} className="hover:text-foreground transition-colors">FAQ</Link>
+          <Link href={`/${locale}/policies/terms`} className="hover:text-foreground transition-colors">{locale === 'en' ? 'Terms' : 'شروط الخدمة'}</Link>
+          <Link href={`/${locale}/policies/privacy`} className="hover:text-foreground transition-colors">{locale === 'en' ? 'Privacy' : 'الخصوصية'}</Link>
+          <Link href={`/${locale}/policies/refund`} className="hover:text-foreground transition-colors">{locale === 'en' ? 'Refund Policy' : 'سياسة الاسترجاع'}</Link>
+        </div>
         <div className="flex items-center gap-4">
           {socialLinks.map((link) => (
             <a

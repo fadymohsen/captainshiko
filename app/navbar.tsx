@@ -9,6 +9,7 @@ export function Navbar() {
   const { locale, t, dir } = useLang();
   const otherLocale = locale === "en" ? "ar" : "en";
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobilePoliciesOpen, setIsMobilePoliciesOpen] = useState(false);
 
   // Lock scroll when menu is open
   useEffect(() => {
@@ -24,6 +25,7 @@ export function Navbar() {
     { name: t.nav.aboutMe, href: `/${locale}/about`, isLink: true },
     { name: t.nav.plans, href: `/${locale}/plans`, isLink: true },
     { name: t.transformationsPage.title, href: `/${locale}/transformations`, isLink: true },
+    { name: locale === 'en' ? 'FAQ' : 'الأسئلة الشائعة', href: `/${locale}/faq`, isLink: true },
   ];
 
   return (
@@ -43,7 +45,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-10 text-sm font-bold text-muted uppercase tracking-widest">
+          <div className="hidden md:flex items-center gap-6 lg:gap-10 text-sm font-bold text-muted uppercase tracking-widest">
             {navLinks.map((link) => (
               link.isLink ? (
                 <Link key={link.href} href={link.href} className="hover:text-foreground transition-colors">{link.name}</Link>
@@ -51,6 +53,21 @@ export function Navbar() {
                 <a key={link.href} href={link.href} className="hover:text-foreground transition-colors">{link.name}</a>
               )
             ))}
+
+            {/* Policies Dropdown - Desktop */}
+            <div className="relative group p-4 -m-4">
+              <button className="flex items-center gap-1 hover:text-foreground transition-colors uppercase">
+                {locale === 'en' ? 'Policies' : 'السياسات'}
+                <svg className="w-3 h-3 group-hover:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div className="absolute top-full right-0 mt-0 w-48 bg-background/95 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0">
+                <Link href={`/${locale}/policies/terms`} className="block px-5 py-3 hover:bg-white/5 hover:text-accent-light transition-colors">{locale === 'en' ? 'Terms' : 'شروط الخدمة'}</Link>
+                <Link href={`/${locale}/policies/privacy`} className="block px-5 py-3 hover:bg-white/5 hover:text-accent-light transition-colors">{locale === 'en' ? 'Privacy' : 'الخصوصية'}</Link>
+                <Link href={`/${locale}/policies/refund`} className="block px-5 py-3 hover:bg-white/5 hover:text-accent-light transition-colors">{locale === 'en' ? 'Refund Policy' : 'سياسة الاسترجاع'}</Link>
+              </div>
+            </div>
           </div>
 
           {/* Actions & Hamburger */}
@@ -108,7 +125,7 @@ export function Navbar() {
 
             <div className="flex flex-col h-full relative z-10">
               {/* Staggered Navigation */}
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 overflow-y-auto pr-4">
                 {navLinks.map((link, i) => (
                   <motion.div
                     key={link.href}
@@ -135,6 +152,38 @@ export function Navbar() {
                     )}
                   </motion.div>
                 ))}
+
+                {/* Mobile Policies Dropdown/List */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: navLinks.length * 0.1 + 0.2, duration: 0.5 }}
+                >
+                  <button 
+                    onClick={() => setIsMobilePoliciesOpen(!isMobilePoliciesOpen)}
+                    className="w-full text-left flex items-center justify-between text-[7.5vw] sm:text-[6vw] md:text-5xl font-black uppercase tracking-tighter hover:text-accent transition-colors block leading-none"
+                  >
+                    <span>{locale === 'en' ? 'Policies' : 'السياسات'}</span>
+                    <svg className={`w-8 h-8 transition-transform duration-300 ${isMobilePoliciesOpen ? 'rotate-180 text-accent' : 'text-muted'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" /></svg>
+                  </button>
+                  
+                  <AnimatePresence>
+                    {isMobilePoliciesOpen && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden mt-6"
+                      >
+                        <div className="flex flex-col gap-5 pl-4 border-l-2 border-white/10">
+                          <Link href={`/${locale}/policies/terms`} onClick={() => setIsOpen(false)} className="text-2xl font-black uppercase tracking-tighter hover:text-accent-light transition-colors">{locale === 'en' ? 'Terms Of Service' : 'شروط الخدمة'}</Link>
+                          <Link href={`/${locale}/policies/privacy`} onClick={() => setIsOpen(false)} className="text-2xl font-black uppercase tracking-tighter hover:text-accent-light transition-colors">{locale === 'en' ? 'Privacy Policy' : 'سياسة الخصوصية'}</Link>
+                          <Link href={`/${locale}/policies/refund`} onClick={() => setIsOpen(false)} className="text-2xl font-black uppercase tracking-tighter hover:text-accent-light transition-colors">{locale === 'en' ? 'Refund Policy' : 'سياسة الاسترجاع'}</Link>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               </div>
 
               {/* Bottom Actions Cluster */}

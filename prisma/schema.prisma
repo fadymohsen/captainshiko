@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Plan {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  nameEn      String
+  nameAr      String
+  briefEn     String
+  briefAr     String
+  priceMonthlyEgp String?
+  priceQuarterlyEgp String?
+  priceMonthlyUsd String?
+  priceQuarterlyUsd String?
+  featuresEn  String   // Stored as JSON string
+  featuresAr  String   // Stored as JSON string
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  purchases   Purchase[]
+}
+
+model FAQ {
+  id         String   @id @default(cuid())
+  questionEn String
+  questionAr String
+  answerEn   String
+  answerAr   String
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Policy {
+  id          String   @id @default(cuid())
+  slug        String   @unique // e.g., 'privacy', 'refund', 'terms'
+  titleEn     String
+  titleAr     String
+  contentEn   String   // Rich Text (HTML)
+  contentAr   String   // Rich Text (HTML)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Purchase {
+  id           String   @id @default(cuid())
+  clientName   String
+  email        String?
+  whatsapp     String?
+  planId       String
+  plan         Plan     @relation(fields: [planId], references: [id])
+  amount       Float
+  currency     String
+  status       String   @default("COMPLETED")
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

@@ -1,27 +1,23 @@
-import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/auth"
 
-const locales = ["en", "ar"];
-const defaultLocale = "en";
+export default auth((req) => {
+  const isLoggedIn = !!req.auth;
+  const isAdminRoute = req.nextUrl.pathname.startsWith('/admin');
+  const isAuthRoute = req.nextUrl.pathname.startsWith('/admin/login');
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return Response.redirect(new URL('/admin/dashboard', req.nextUrl));
+    }
+    return;
+  }
 
-  // Check if the pathname already starts with a locale
-  const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-  );
+  if (isAdminRoute && !isLoggedIn) {
+    return Response.redirect(new URL('/admin/login', req.nextUrl));
+  }
+})
 
-  if (pathnameHasLocale) return NextResponse.next();
-
-  // Redirect to default locale
-  const url = request.nextUrl.clone();
-  url.pathname = `/${defaultLocale}${pathname}`;
-  return NextResponse.redirect(url);
-}
-
+// Safely match routes, excluding next statics to avoid unnecessary invocations
 export const config = {
-  matcher: [
-    // Match all paths except Next.js internals and static files
-    "/((?!_next|api|favicon\\.ico|.*\\..*).*)",
-  ],
-};
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\.png|.*\\.jpeg|.*\\.jpg|.*\\.svg|.*\\.webp).*)'],
+}
