@@ -28,17 +28,23 @@ export async function updateTransformationOrder(ids: string[]) {
 }
 
 export async function deleteTransformation(id: string) {
+  console.log("Attempting to delete transformation:", id);
   try {
     const transformation = await prisma.transformation.findUnique({
       where: { id }
     });
 
-    if (transformation?.imagePath.includes('public.blob.vercel-storage.com')) {
-        // Delete from Vercel Blob
+    if (!transformation) {
+      console.error("Transformation not found for deletion:", id);
+      return { success: false, error: "Transformation not found" };
+    }
+
+    if (transformation.imagePath.includes('public.blob.vercel-storage.com')) {
+        console.log("Deleting blob image:", transformation.imagePath);
         try {
             await del(transformation.imagePath);
         } catch (e) {
-            console.warn("Could not delete from cloud:", e);
+            console.warn("Could not delete from cloud (non-fatal):", e);
         }
     }
 
@@ -46,10 +52,14 @@ export async function deleteTransformation(id: string) {
       where: { id }
     });
 
+    console.log("Transformation deleted from database:", id);
+    revalidatePath('/admin/dashboard/transformations');
     revalidatePath('/', 'layout');
+    
     return { success: true };
   } catch (error) {
-    return { success: false, error: "Failed to delete" };
+    console.error("Delete error details:", error);
+    return { success: false, error: "Failed to delete from database" };
   }
 }
 

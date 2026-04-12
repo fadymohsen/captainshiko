@@ -27,7 +27,7 @@ export function TransformationList({ initialItems }: { initialItems: any[] }) {
         setItems(items.filter(i => i.id !== id));
         router.refresh();
       } else {
-        alert('Failed to delete');
+        alert(res.error || 'Failed to delete');
       }
     }
   };
