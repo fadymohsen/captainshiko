@@ -35,6 +35,11 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+[dir="rtl"] {
+  --font-sans: var(--font-tajwal);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
 /* Vertical text */
 .vertical-text {
   writing-mode: vertical-rl;

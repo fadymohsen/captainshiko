@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Nunito, Geist_Mono } from "next/font/google";
+import { Nunito, Geist_Mono, Tajwal } from "next/font/google";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -11,6 +11,12 @@ const nunito = Nunito({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const tajwal = Tajwal({
+  variable: "--font-tajwal",
+  subsets: ["arabic"],
+  weight: ["400", "500", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -51,7 +57,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${nunito.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${nunito.variable} ${geistMono.variable} ${tajwal.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">{children}</body>
