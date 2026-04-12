@@ -58,6 +58,22 @@ body {
   50% { opacity: 0.6; filter: blur(100px); }
 }
 
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+@keyframes spin-slow {
+  100% { transform: rotate(360deg); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 4s linear infinite;
+}
+
 .glow-pulse {
   animation: glow-pulse 4s ease-in-out infinite;
 }

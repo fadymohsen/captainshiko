@@ -45,7 +45,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-10 text-sm font-bold text-muted uppercase tracking-widest">
+          <div className="hidden md:flex items-center gap-6 lg:gap-10 text-sm font-bold text-white uppercase tracking-widest">
             {navLinks.map((link) => (
               link.isLink ? (
                 <Link key={link.href} href={link.href} className="hover:text-foreground transition-colors">{link.name}</Link>
@@ -75,9 +75,13 @@ export function Navbar() {
             <div className="hidden md:flex items-center gap-3">
               <Link
                 href={`/${otherLocale}`}
-                className="text-[10px] font-black border border-white/15 px-4 py-1.5 rounded-full text-muted hover:text-foreground hover:border-white/30 transition-all uppercase tracking-widest bg-white/5"
+                className="group flex items-center gap-2 text-[10px] font-black border border-white/20 px-4 py-1.5 rounded-full text-white hover:border-accent/50 hover:bg-accent/10 transition-all uppercase tracking-widest bg-white/[0.03] shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(220,38,38,0.15)] relative overflow-hidden"
               >
-                {locale === "en" ? "عربي" : "EN"}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer" />
+                <svg className="w-3.5 h-3.5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="relative z-10">{locale === "en" ? "عربي" : "EN"}</span>
               </Link>
               <Link
                 href={`/${locale}/plans`}
@@ -218,12 +222,13 @@ export function Navbar() {
                   <Link
                     href={`/${otherLocale}`}
                     onClick={() => setIsOpen(false)}
-                    className="w-full flex items-center justify-center gap-4 py-4 rounded-2xl border border-white/10 text-muted hover:text-foreground hover:bg-white/5 transition-all text-sm font-black uppercase tracking-[0.2em]"
+                    className="group relative overflow-hidden w-full flex items-center justify-center gap-4 py-4 rounded-2xl border border-white/20 text-white hover:border-accent/50 hover:bg-accent/10 transition-all text-sm font-black uppercase tracking-[0.2em] shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(220,38,38,0.15)]"
                   >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer" />
+                    <svg className="w-5 h-5 text-accent relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
                     </svg>
-                    {locale === "en" ? "عربي" : "English"}
+                    <span className="relative z-10">{locale === "en" ? "عربي" : "English"}</span>
                   </Link>
                 </motion.div>
               </div>
