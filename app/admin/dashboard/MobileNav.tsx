@@ -27,6 +27,7 @@ export default function MobileNav() {
           <nav className="flex flex-col gap-4">
             <Link onClick={() => setIsOpen(false)} href="/admin/dashboard" className="py-4 px-6 rounded-xl bg-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Dashboard</Link>
             <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/plans" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Services & Plans</Link>
+            <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/transformations" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Transformations</Link>
             <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/faqs" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">FAQs</Link>
             <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/policies" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Policies</Link>
             <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/purchases" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Purchases</Link>

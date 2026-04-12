@@ -1,14 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 import { HomeClient } from "./HomeClient";
-
-const prisma = new PrismaClient();
 
 export const revalidate = 60; // optionally cache for 60 seconds
 
 export default async function HomePage() {
-  const plans = await prisma.plan.findMany({
-    orderBy: { order: 'asc' }
-  });
+  const [plans, transformations] = await Promise.all([
+    prisma.plan.findMany({
+      where: { isActive: true },
+      orderBy: { order: 'asc' }
+    }),
+    prisma.transformation.findMany({
+      orderBy: { order: 'asc' },
+      take: 4
+    })
+  ]);
 
-  return <HomeClient dbPlans={plans} />;
+  return <HomeClient dbPlans={plans} dbTransformations={transformations} />;
 }

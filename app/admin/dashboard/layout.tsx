@@ -21,6 +21,7 @@ export default async function DashboardLayout({
         <nav className="flex flex-col gap-2 flex-grow">
           <a href="/admin/dashboard" className="py-3 px-4 rounded-xl bg-white/5 text-sm font-bold tracking-wider hover:bg-white/10 transition-colors">Dashboard</a>
           <a href="/admin/dashboard/plans" className="py-3 px-4 rounded-xl text-muted text-sm font-bold tracking-wider hover:bg-white/5 hover:text-foreground transition-colors">Services & Plans</a>
+          <a href="/admin/dashboard/transformations" className="py-3 px-4 rounded-xl text-muted text-sm font-bold tracking-wider hover:bg-white/5 hover:text-foreground transition-colors">Transformations</a>
           <a href="/admin/dashboard/faqs" className="py-3 px-4 rounded-xl text-muted text-sm font-bold tracking-wider hover:bg-white/5 hover:text-foreground transition-colors">FAQs</a>
           <a href="/admin/dashboard/policies" className="py-3 px-4 rounded-xl text-muted text-sm font-bold tracking-wider hover:bg-white/5 hover:text-foreground transition-colors">Policies</a>
           <a href="/admin/dashboard/purchases" className="py-3 px-4 rounded-xl text-muted text-sm font-bold tracking-wider hover:bg-white/5 hover:text-foreground transition-colors">Purchases</a>

@@ -23,7 +23,7 @@ import {
 
 type Duration = "monthly" | "quarterly";
 
-export function HomeClient({ dbPlans }: { dbPlans: any[] }) {
+export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbTransformations: any[] }) {
   const { t, locale, dir, region } = useLang();
   const [duration, setDuration] = useState<Duration>("monthly");
   const p = t.pricing;
@@ -186,13 +186,13 @@ export function HomeClient({ dbPlans }: { dbPlans: any[] }) {
           </FadeUp>
 
           <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {t.transformationsData.slice(0, 4).map((client: any) => (
+            {(dbTransformations && dbTransformations.length > 0 ? dbTransformations : t.transformationsData.slice(0, 4)).map((client: any) => (
               <StaggerItem key={client.name}>
                 <div className="group rounded-xl overflow-hidden bg-surface-light border border-border glow-border">
                   <div className="relative aspect-square overflow-hidden">
                     <Image
-                      src={client.img}
-                      alt={`${client.name} transformation`}
+                      src={client.imagePath || client.img}
+                      alt={`${locale === 'ar' ? (client.nameAr || client.name) : (client.nameEn || client.name)} transformation`}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -201,10 +201,14 @@ export function HomeClient({ dbPlans }: { dbPlans: any[] }) {
                   </div>
                   <div className="p-5">
                     <div className="flex justify-between items-start mb-1">
-                      <h4 className="font-bold text-sm">{client.name}</h4>
-                      <span className="text-[10px] font-bold text-accent-light px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20">{client.duration}</span>
+                      <h4 className="font-bold text-sm">{locale === 'ar' ? client.nameAr : client.nameEn}</h4>
+                      <span className="text-[10px] font-bold text-accent-light px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20">
+                        {locale === 'ar' ? client.durationAr : client.durationEn}
+                      </span>
                     </div>
-                    <p className="text-xs text-muted leading-relaxed">{client.result}</p>
+                    <p className="text-xs text-muted leading-relaxed">
+                        {locale === 'ar' ? client.resultAr : client.resultEn}
+                    </p>
                   </div>
                 </div>
               </StaggerItem>

@@ -30,7 +30,7 @@ export function LangProvider({
   useEffect(() => {
     async function detectRegion() {
       try {
-        const response = await fetch("/api/geo", {
+        const response = await fetch("/api/geography", {
           cache: "no-store",
         });
         
