@@ -21,17 +21,25 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
       const res = await fetch(`/api/admin/purchases/${id}/sync`, {
         method: "POST",
       });
-      const data = await res.json();
+      
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        throw new Error(`Server returned non-JSON response (Status: ${res.status})`);
+      }
+
       if (data.success) {
         setPurchases(prev => 
           prev.map(p => p.id === id ? { ...p, status: data.status } : p)
         );
         alert(`Status synced! Current Fawaterak status: ${data.fawaterakStatus}`);
       } else {
-        alert("Sync failed: " + data.error);
+        alert("Sync failed: " + (data.error || "Unknown server error"));
       }
-    } catch (err) {
-      alert("Sync error occurred");
+    } catch (err: any) {
+      alert("Sync error: " + err.message);
     }
   };
 
