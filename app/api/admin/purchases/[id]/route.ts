@@ -4,12 +4,13 @@ import prisma from "@/lib/prisma";
 // PATCH: Update order status (e.g., Mark as Paid)
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const { status } = await req.json();
     const updated = await prisma.purchase.update({
-      where: { id: params.id },
+      where: { id },
       data: { status },
     });
     return NextResponse.json(updated);
@@ -21,11 +22,12 @@ export async function PATCH(
 // DELETE: Remove an order
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await prisma.purchase.delete({
-      where: { id: params.id },
+      where: { id },
     });
     return NextResponse.json({ success: true });
   } catch (error) {
