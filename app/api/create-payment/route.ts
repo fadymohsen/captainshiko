@@ -69,9 +69,9 @@ export async function POST(req: Request) {
         },
       ],
       redirectionUrls: {
-        successUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/payment/success?purchaseId=${purchase.id}`,
-        failUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/plans`,
-        pendingUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/plans`,
+        successUrl: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://captainshiko.vercel.app'}/payment/success`,
+        failUrl: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://captainshiko.vercel.app'}/payment/fail`,
+        pendingUrl: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://captainshiko.vercel.app'}/payment/pending`
       },
     });
 
