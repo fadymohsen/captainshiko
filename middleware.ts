@@ -22,7 +22,6 @@ export default auth((req) => {
   }
 
   // Locale Redirection for public pages
-  const pathname = req.nextUrl.pathname;
   if (!isAdminRoute && !isAuthRoute) {
     const locales = ['/en', '/ar'];
     const hasLocale = locales.some((loc) => pathname === loc || pathname.startsWith(`${loc}/`));
