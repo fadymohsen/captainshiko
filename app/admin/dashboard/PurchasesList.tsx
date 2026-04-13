@@ -18,8 +18,10 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
 
   const handleSync = async (id: string) => {
     try {
-      const res = await fetch(`/api/admin/purchases/${id}/sync`, {
+      const res = await fetch(`/api/admin/purchases/${id}`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "sync" }),
       });
       
       const text = await res.text();
