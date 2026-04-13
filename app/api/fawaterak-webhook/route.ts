@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     
     // Check various possible status fields for maximum reliability
     const isPaid = 
-      remoteInvoice.paymentStatus === "paid" || 
+      remoteInvoice.payment_status === "paid" || 
       (remoteInvoice as any).invoice_status === "paid" ||
       (remoteInvoice as any).paid === 1;
 

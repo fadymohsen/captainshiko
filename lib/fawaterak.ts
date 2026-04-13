@@ -47,8 +47,8 @@ export interface FawaterakInvoiceDataResponse {
     invoice_id: number;
     invoice_id_fawaterk: number;
     invoice_key: string;
-    paymentStatus: string; // "paid", "unpaid", "expired", "error"
-    paymentMethod: string;
+    payment_status: string; // "paid", "unpaid", "expired", "error"
+    payment_method: string;
     region: string;
     amount: number;
     currency: string;
