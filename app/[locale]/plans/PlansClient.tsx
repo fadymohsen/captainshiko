@@ -197,7 +197,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
                     <div>
                       <h2 className="text-2xl font-bold">{ct.title}</h2>
                       <p className="text-sm text-muted">
-                        {locale === "en" ? selectedPlan.nameEn : selectedPlan.nameAr} • <span className="text-[10px] opacity-30">Build v1.0.5</span>
+                        {locale === "en" ? selectedPlan.nameEn : selectedPlan.nameAr} • <span className="text-[10px] text-accent">v1.0.5-LIVE</span>
                       </p>
                     </div>
                   </div>
