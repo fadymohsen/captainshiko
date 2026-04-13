@@ -85,12 +85,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ 
       status: "success",
       url: paymentData.url || paymentData.payment_data?.redirectTo, 
-      paymentData: paymentData.payment_data, // Contains FawryCode, etc.
+      paymentData: paymentData.payment_data,
       invoiceId: paymentData.invoice_id
     });
 
   } catch (error: any) {
     console.error("Create Payment Error:", error);
-    return NextResponse.json({ error: error.message || "Internal server error" }, { status: 500 });
+    // Ensure we always return a string for 'error'
+    const message = error.message || (typeof error === 'string' ? error : "Internal server error");
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

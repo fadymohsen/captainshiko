@@ -50,18 +50,20 @@ export function PlansClient({ plans }: { plans: any[] }) {
       
       const data = await res.json();
       
+      if (!res.ok) {
+        throw new Error(data.error || "Payment initialization failed");
+      }
+      
       if (data.url && paymentMethodId === 2) {
         window.location.href = data.url;
       } else if (data.paymentData || data.invoiceId) {
         setPaymentResponse(data);
         setLoading(false);
-      } else {
-        alert(data.error || "Something went wrong");
-        setLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-      alert("Checkout failed. Please try again.");
+    } catch (err: any) {
+      console.error("Checkout Error:", err);
+      const errorMessage = err.message || (typeof err === 'string' ? err : "Checkout failed. Please try again.");
+      alert(errorMessage);
       setLoading(false);
     }
   };
