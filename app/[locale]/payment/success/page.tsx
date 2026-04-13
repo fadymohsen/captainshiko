@@ -12,13 +12,16 @@ import Link from "next/link";
 function SuccessContent() {
   const { t, locale } = useLang();
   const searchParams = useSearchParams();
-  const purchaseId = searchParams.get("purchaseId");
-  const [orderDetails, setOrderDetails] = useState<any>(null);
+  const [purchaseId, setPurchaseId] = useState<string | null>(null);
 
   useEffect(() => {
-    // In a real app, we'd fetch order details from an API using purchaseId
-    // For now, we'll wait for the webhook to update the status in the background
-  }, [purchaseId]);
+    const fromUrl = searchParams.get("purchaseId");
+    if (fromUrl) {
+      setPurchaseId(fromUrl);
+    } else {
+      setPurchaseId(localStorage.getItem("lastPurchaseId"));
+    }
+  }, [searchParams]);
 
   const handleWhatsApp = () => {
     const phone = "201148854429"; // Captain Roshdy's Number

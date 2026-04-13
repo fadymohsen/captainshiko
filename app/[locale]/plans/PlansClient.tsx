@@ -57,7 +57,9 @@ export function PlansClient({ plans }: { plans: any[] }) {
       
       if (data.url && paymentMethodId === 2) {
         window.location.href = data.url;
-      } else if (data.paymentData || data.invoiceId) {
+        if (data.invoiceId) {
+          localStorage.setItem("lastPurchaseId", data.invoiceId.toString());
+        }
         setPaymentResponse(data);
         setLoading(false);
       }
