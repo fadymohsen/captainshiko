@@ -85,10 +85,11 @@ export const fawaterakClient = {
     } catch (error: any) {
       if (error.response) {
         console.error('Fawaterak API Error Response:', error.response.data);
-        throw new Error(error.response.data.message || 'Fawaterak API Error');
+        const detail = typeof error.response.data === 'string' ? error.response.data : JSON.stringify(error.response.data);
+        throw new Error(`FAWATERAK_API_ERROR: ${detail}`);
       }
       console.error('Fawaterak Init Payment Error:', error.message);
-      throw error;
+      throw new Error(`INIT_ERROR: ${error.message}`);
     }
   },
 
