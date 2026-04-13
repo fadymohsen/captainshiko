@@ -51,7 +51,8 @@ export function PlansClient({ plans }: { plans: any[] }) {
       const data = await res.json();
       
       if (!res.ok) {
-        throw new Error(data.error || "Payment initialization failed");
+        const errorMsg = typeof data.error === 'string' ? data.error : JSON.stringify(data.error);
+        throw new Error(errorMsg || "Payment initialization failed");
       }
       
       if (data.url && paymentMethodId === 2) {
