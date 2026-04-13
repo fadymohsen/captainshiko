@@ -70,10 +70,15 @@ export async function POST(
         },
       });
 
+      const fawaterakStatusLabel = 
+        remoteInvoice.payment_status || 
+        (remoteInvoice as any).invoice_status || 
+        (isPaid ? "paid" : "pending");
+
       return NextResponse.json({ 
         success: true, 
         status: updated.status,
-        fawaterakStatus: remoteInvoice.payment_status 
+        fawaterakStatus: fawaterakStatusLabel
       });
     }
 
