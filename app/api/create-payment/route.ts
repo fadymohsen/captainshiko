@@ -91,9 +91,11 @@ export async function POST(req: Request) {
     });
 
   } catch (error: any) {
-    console.error("Create Payment Error:", error);
-    // Ensure we always return a string for 'error'
-    const message = error.message || (typeof error === 'string' ? error : "Internal server error");
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("DEBUG - Create Payment Failure:", error);
+    return NextResponse.json({ 
+      error: error.message || "Internal server error",
+      details: error.response?.data || error.stack || "No extra details",
+      step: "API Execution"
+    }, { status: 500 });
   }
 }

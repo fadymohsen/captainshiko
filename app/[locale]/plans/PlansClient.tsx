@@ -51,8 +51,8 @@ export function PlansClient({ plans }: { plans: any[] }) {
       const data = await res.json();
       
       if (!res.ok) {
-        const errorMsg = typeof data.error === 'string' ? data.error : JSON.stringify(data.error);
-        throw new Error(errorMsg || "Payment initialization failed");
+        alert("DEBUG - SERVER RAW RESPONSE: " + JSON.stringify(data));
+        throw new Error(data.error || "Payment failed");
       }
       
       if (data.url && paymentMethodId === 2) {
@@ -197,7 +197,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
                     <div>
                       <h2 className="text-2xl font-bold">{ct.title}</h2>
                       <p className="text-sm text-muted">
-                        {locale === "en" ? selectedPlan.nameEn : selectedPlan.nameAr} • <span className="text-[10px] text-accent">v1.0.5-LIVE</span>
+                        {locale === "en" ? selectedPlan.nameEn : selectedPlan.nameAr} • <span className="text-[10px] text-accent">v1.0.6-DEBUG</span>
                       </p>
                     </div>
                   </div>
