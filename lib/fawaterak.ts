@@ -1,9 +1,22 @@
 import axios from 'axios';
 
-const API_KEY = process.env.FAWATERAK_API_KEY;
-const BASE_URL = process.env.FAWATERAK_API_URL || 'https://staging.fawaterk.com/api/v2';
+export const fawaterakClient = {
+  /**
+   * Initialize a payment with Fawaterak.
+   */
+  async initPayment(data: FawaterakInitPayRequest): Promise<FawaterakInitPayResponse['data']> {
+    const API_KEY = process.env.FAWATERAK_API_KEY;
+    const BASE_URL = process.env.FAWATERAK_API_URL || 'https://staging.fawaterk.com/api/v2';
 
-export interface FawaterakInvoiceItem {
+    if (!API_KEY) throw new Error("FAWATERAK_API_KEY is missing from environment");
+
+    try {
+      const response = await axios.post(`${BASE_URL}/invoiceInitPay`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY}`,
+        },
+      });
   name: string;
   price: number;
   quantity: number;
@@ -19,6 +32,7 @@ export interface FawaterakInitPayRequest {
     email: string;
     phone: string;
   };
+  vendor_id?: number | string;
   cartItems: FawaterakInvoiceItem[];
   redirectionUrls: {
     successUrl: string;
@@ -97,6 +111,9 @@ export const fawaterakClient = {
    * Securely fetch invoice data from Fawaterak server for verification.
    */
   async getInvoiceData(invoiceId: string | number): Promise<FawaterakInvoiceDataResponse['data']> {
+    const API_KEY = process.env.FAWATERAK_API_KEY;
+    const BASE_URL = process.env.FAWATERAK_API_URL || 'https://staging.fawaterk.com/api/v2';
+    
     try {
       const response = await axios.get(`${BASE_URL}/getInvoiceData/${invoiceId}`, {
         headers: {
