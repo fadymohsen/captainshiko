@@ -1,9 +1,14 @@
 import { auth } from "@/auth"
 
 export default auth((req) => {
+  const pathname = req.nextUrl.pathname;
+  
+  // IMMEDIATELY ignore all API routes
+  if (pathname.startsWith('/api')) return;
+
   const isLoggedIn = !!req.auth;
-  const isAdminRoute = req.nextUrl.pathname.startsWith('/admin');
-  const isAuthRoute = req.nextUrl.pathname.startsWith('/admin/login');
+  const isAdminRoute = pathname.startsWith('/admin');
+  const isAuthRoute = pathname.startsWith('/admin/login');
 
   if (isAuthRoute) {
     if (isLoggedIn) {
