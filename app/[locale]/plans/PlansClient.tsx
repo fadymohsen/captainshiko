@@ -63,8 +63,13 @@ export function PlansClient({ plans }: { plans: any[] }) {
       }
     } catch (err: any) {
       console.error("Checkout Error:", err);
-      const errorMessage = err.message || (typeof err === 'string' ? err : "Checkout failed. Please try again.");
-      alert(errorMessage);
+      // Ultra-robust error display
+      let msg = "Unknown Error";
+      if (err.message) msg = err.message;
+      else if (typeof err === 'string') msg = err;
+      else msg = JSON.stringify(err);
+      
+      alert("Error Details: " + msg);
       setLoading(false);
     }
   };
@@ -192,7 +197,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
                     <div>
                       <h2 className="text-2xl font-bold">{ct.title}</h2>
                       <p className="text-sm text-muted">
-                        {locale === "en" ? selectedPlan.nameEn : selectedPlan.nameAr}
+                        {locale === "en" ? selectedPlan.nameEn : selectedPlan.nameAr} • <span className="text-[10px] opacity-30">Build v1.0.5</span>
                       </p>
                     </div>
                   </div>

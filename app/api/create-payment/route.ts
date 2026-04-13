@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { fawaterakClient } from "@/lib/fawaterak";
 
 export async function POST(req: Request) {
+  console.log("POST /api/create-payment - Start");
   try {
     const body = await req.json();
     const { planId, clientName, email, whatsapp, region, planType, paymentMethodId } = body;
