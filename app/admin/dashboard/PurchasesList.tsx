@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { 
+  RefreshCw,
   MessageCircle, 
   CheckCircle2, 
   Trash2, 
@@ -14,6 +15,25 @@ import {
 
 export function PurchasesList({ initialPurchases }: { initialPurchases: any[] }) {
   const [purchases, setPurchases] = useState(initialPurchases);
+
+  const handleSync = async (id: string) => {
+    try {
+      const res = await fetch(`/api/admin/purchases/${id}/sync`, {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPurchases(prev => 
+          prev.map(p => p.id === id ? { ...p, status: data.status } : p)
+        );
+        alert(`Status synced! Current Fawaterak status: ${data.fawaterakStatus}`);
+      } else {
+        alert("Sync failed: " + data.error);
+      }
+    } catch (err) {
+      alert("Sync error occurred");
+    }
+  };
 
   const handleUpdateStatus = async (id: string, newStatus: string) => {
     try {
@@ -118,6 +138,17 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right">
                     <div className="flex items-center justify-end gap-2">
+                      {/* Sync with Fawaterak */}
+                      {purchase.status !== "COMPLETED" && (
+                        <button
+                          onClick={() => handleSync(purchase.id)}
+                          className="p-2 rounded-xl bg-amber-600/10 text-amber-500 hover:bg-amber-600 hover:text-white transition-all shadow-sm"
+                          title="Sync with Fawaterak"
+                        >
+                          <RefreshCw className="w-4 h-4" />
+                        </button>
+                      )}
+
                       {/* WhatsApp Chat */}
                       {purchase.whatsapp && (
                         <button

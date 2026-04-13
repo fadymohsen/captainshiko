@@ -25,6 +25,7 @@ export async function POST(req: Request) {
     console.log(`Webhook Verification for Invoice ${invoice_id}: isPaid=${isPaid}`, remoteInvoice);
 
     // Find local purchase
+    console.log(`Searching for local purchase with invoiceId: ${invoice_id}`);
     const purchase = await prisma.purchase.findUnique({
       where: { invoiceId: invoice_id.toString() },
     });
