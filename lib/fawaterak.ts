@@ -1,22 +1,6 @@
 import axios from 'axios';
 
-export const fawaterakClient = {
-  /**
-   * Initialize a payment with Fawaterak.
-   */
-  async initPayment(data: FawaterakInitPayRequest): Promise<FawaterakInitPayResponse['data']> {
-    const API_KEY = process.env.FAWATERAK_API_KEY;
-    const BASE_URL = process.env.FAWATERAK_API_URL || 'https://staging.fawaterk.com/api/v2';
-
-    if (!API_KEY) throw new Error("FAWATERAK_API_KEY is missing from environment");
-
-    try {
-      const response = await axios.post(`${BASE_URL}/invoiceInitPay`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${API_KEY}`,
-        },
-      });
+export interface FawaterakInvoiceItem {
   name: string;
   price: number;
   quantity: number;
@@ -80,8 +64,14 @@ export const fawaterakClient = {
    * Initialize a payment with Fawaterak.
    */
   async initPayment(data: FawaterakInitPayRequest): Promise<FawaterakInitPayResponse['data']> {
+    const API_KEY = process.env.FAWATERAK_API_KEY;
+    const BASE_URL = process.env.FAWATERAK_API_URL || 'https://staging.fawaterk.com/api/v2';
+
+    if (!API_KEY) throw new Error("FAWATERAK_API_KEY is missing from environment");
+
     try {
-      console.log('Fawaterak Payload:', JSON.stringify(data, null, 2));
+      console.log('Fawaterak - Initializing Payment with vendor_id:', data.vendor_id);
+      
       const response = await axios.post(`${BASE_URL}/invoiceInitPay`, data, {
         headers: {
           'Content-Type': 'application/json',
@@ -89,12 +79,11 @@ export const fawaterakClient = {
         },
       });
 
-      console.log('Fawaterak Response:', JSON.stringify(response.data, null, 2));
-
       if (response.data.status === 'success') {
         return response.data.data;
       } else {
-        throw new Error(response.data.message || 'Failed to initialize payment');
+        const detail = typeof response.data.message === 'string' ? response.data.message : JSON.stringify(response.data.message);
+        throw new Error(detail || 'Failed to initialize payment');
       }
     } catch (error: any) {
       if (error.response) {
@@ -114,6 +103,8 @@ export const fawaterakClient = {
     const API_KEY = process.env.FAWATERAK_API_KEY;
     const BASE_URL = process.env.FAWATERAK_API_URL || 'https://staging.fawaterk.com/api/v2';
     
+    if (!API_KEY) throw new Error("FAWATERAK_API_KEY is missing from environment");
+
     try {
       const response = await axios.get(`${BASE_URL}/getInvoiceData/${invoiceId}`, {
         headers: {
