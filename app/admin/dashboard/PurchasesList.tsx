@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { format } from "date-fns";
 import { 
   MessageCircle, 
   CheckCircle2, 
@@ -79,10 +78,12 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
               purchases.map((purchase) => (
                 <tr key={purchase.id} className="hover:bg-white/[0.02] transition-colors group">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium">{format(new Date(purchase.createdAt), "MMM dd, yyyy")}</div>
+                    <div className="text-sm font-medium">
+                      {new Date(purchase.createdAt).toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })}
+                    </div>
                     <div className="text-[10px] text-muted flex items-center gap-1 mt-1">
                       <Clock className="w-3 h-3" />
-                      {format(new Date(purchase.createdAt), "hh:mm a")}
+                      {new Date(purchase.createdAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                     </div>
                   </td>
                   <td className="px-6 py-4">
