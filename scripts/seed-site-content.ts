@@ -125,7 +125,6 @@ async function main() {
 <h2>14. تواصل معنا</h2>
 <p>لأي استفسار بخصوص هذه الشروط:</p>
 <p>واتساب: 8830 303 155 20+</p>
-<p>البريد: support@captainshiko.com</p>
       `,
       contentEn: `
 <h1>Terms of Service</h1>
@@ -188,7 +187,6 @@ async function main() {
 <h2>14. Contact Us</h2>
 <p>For questions regarding these terms:</p>
 <p>WhatsApp: +20 155 303 8830</p>
-<p>Email: support@captainshiko.com</p>
       `,
     },
     {
@@ -216,8 +214,7 @@ async function main() {
 <h2>5. حقوقك</h2>
 <p>لديك الحق في طلب تصحيح بياناتك أو حذفها عند انتهاء فترة اشتراكك.</p>
 
-<h2>6. تواصل معنا</h2>
-<p>البريد: support@captainshiko.com</p>
+<p>تواصل معنا عبر واتساب للمزيد من المعلومات بخصوص بياناتك.</p>
       `,
       contentEn: `
 <h1>Privacy Policy</h1>
@@ -240,8 +237,7 @@ async function main() {
 <h2>5. Your Rights</h2>
 <p>You have the right to request the rectification or deletion of your data once your subscription ends.</p>
 
-<h2>6. Contact Us</h2>
-<p>Email: support@captainshiko.com</p>
+<p>Contact us via WhatsApp for more information regarding your data rights.</p>
       `,
     },
     {
@@ -260,7 +256,7 @@ async function main() {
 <p>لا يتم إصدار استرداد بمجرد البدء في تصميم الخطة أو تسليمها للعميل، حيث تم استثمار الوقت والجهد الفني في التخصيص.</p>
 
 <h2>4. طلبات الاسترداد</h2>
-<p>يتم تقديم الطلبات عبر support@captainshiko.com وتُراجع خلال 3-5 أيام عمل.</p>
+<p>يتم تقديم الطلبات عبر التواصل المباشر وتُراجع خلال 3-5 أيام عمل.</p>
       `,
       contentEn: `
 <h1>Refund Policy</h1>
@@ -274,7 +270,7 @@ async function main() {
 <p>No refunds are issued once plan design commences or after delivery to the client, as significant technical effort and time have been invested in customization.</p>
 
 <h2>4. Refund Process</h2>
-<p>Requests must be sent via support@captainshiko.com and are reviewed within 3-5 business days.</p>
+<p>Requests must be sent via direct communication and are reviewed within 3-5 business days.</p>
       `,
     },
   ];
