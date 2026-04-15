@@ -3,9 +3,9 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Seeding FAQs and Policies...");
+  console.log("Seeding Professional FAQs and Legal Policies...");
 
-  // 1. Clear existing FAQs to avoid duplicates (FAQs don't have unique slugs)
+  // 1. Clear existing FAQs to avoid duplicates
   await prisma.fAQ.deleteMany({});
 
   // 1. FAQs Data
@@ -125,61 +125,179 @@ async function main() {
   const policiesData = [
     {
       slug: "privacy",
-      titleAr: "سياسة الخصوصية",
-      titleEn: "Privacy Policy",
+      titleAr: "سياسة الخصوصية وحماية البيانات",
+      titleEn: "Privacy Policy & Data Protection",
       contentAr: `
-<h3>المعلومات التي نجمعها</h3>
-<p>نحن نلتزم بحماية خصوصيتك. نجمع معلومات مثل الاسم، البريد الإلكتروني، ورقم الواتساب عند اشتراكك في أحد برامجنا لضمان تقديم أفضل خدمة متابعة.</p>
-<h3>كيفية استخدام البيانات</h3>
-<p>تستخدم البيانات لتصميم برامجك الغذائية والتدريبية، وللتواصل معك بخصوص تطور مستواك.</p>
-<h3>أمن البيانات</h3>
-<p>نستخدم تقنيات تشفير متطورة لحماية بياناتك الشخصية ومعلومات الدفع الخاصة بك.</p>
+<h2>1. مقدمة</h2>
+<p>نحن في "Captain Shiko" نولي أهمية قصوى لخصوصية عملائنا. توضح هذه السياسة كيفية جمع واستخدام وحماية بياناتك الشخصية عند استخدامك لخدماتنا الاستشارية.</p>
+
+<h2>2. البيانات التي نجمعها</h2>
+<p>لتقديم خطط غذائية وتدريبية مخصصة، نقوم بجمع البيانات التالية:</p>
+<ul>
+  <li><strong>المعلومات الشخصية:</strong> الاسم، البريد الإلكتروني، رقم الهاتف (الواتساب).</li>
+  <li><strong>المعلومات الصحية والبدنية:</strong> العمر، الطول، الوزن، نسبة الدهون، التاريخ الطبي، والإصابات السابقة (يتم جمعها بموافقتك الصريحة).</li>
+  <li><strong>معلومات الدفع:</strong> يتم معالجة جميع المدفوعات عبر مزود الخدمة المعتمد "Fawaterak"، ولا نقوم بتخزين تفاصيل بطاقات الائتمان على خوادمنا.</li>
+</ul>
+
+<h2>3. الغرض من معالجة البيانات</h2>
+<p>تستخدم بياناتك حصرياً للأغراض التالية:</p>
+<ul>
+  <li>تصميم وتعديل البرامج التدريبية والغذائية.</li>
+  <li>المتابعة الدورية وتقييم النتائج.</li>
+  <li>إرسال التحديثات الهامة والرد على استفساراتك.</li>
+</ul>
+
+<h2>4. مشاركة البيانات</h2>
+<p>نحن لا نبيع أو نؤجر بياناتك لأطراف خارجية. يتم مشاركة معلومات محدودة فقط مع أطراف ثالثة موثوقة مثل:</p>
+<ul>
+  <li>بوابة الدفع "Fawaterak" لمعالجة المعاملات المالية.</li>
+  <li>مزودي خدمات الاستضافة السحابية لضمان استمرارية الخدمة.</li>
+</ul>
+
+<h2>5. حقوقك القانونية</h2>
+<p>بموجب قوانين حماية البيانات، لديك الحق في:</p>
+<ul>
+  <li>الوصول إلى بياناتك وطلب نسخة منها.</li>
+  <li>تصحيح أي معلومات غير دقيقة.</li>
+  <li>طلب حذف بياناتك عند انتهاء الخدمة (مع مراعاة المتطلبات القانونية للاحتفاظ بالسجلات).</li>
+</ul>
+
+<h2>6. أمن البيانات</h2>
+<p>نطبق إجراءات تقنية وإدارية صارمة لحماية بياناتك من الوصول غير المصرح به أو الفقدان أو التعديل.</p>
       `,
       contentEn: `
-<h3>Information We Collect</h3>
-<p>We are committed to protecting your privacy. We collect information such as name, email, and WhatsApp number to ensure the best coaching services.</p>
-<h3>How We Use Data</h3>
-<p>Data is used to design your nutrition and training programs and to communicate regarding your progress.</p>
-<h3>Data Security</h3>
-<p>We use advanced encryption technologies to protect your personal data and payment information.</p>
+<h2>1. Introduction</h2>
+<p>At "Captain Shiko," we prioritize the privacy of our clients. This policy outlines how we collect, use, and protect your personal data when using our coaching services.</p>
+
+<h2>2. Data We Collect</h2>
+<p>To provide personalized nutrition and training plans, we collect the following:</p>
+<ul>
+  <li><strong>Personal Information:</strong> Name, email address, phone number (WhatsApp).</li>
+  <li><strong>Health & Physical Data:</strong> Age, height, weight, body fat percentage, medical history, and previous injuries (collected with your explicit consent).</li>
+  <li><strong>Payment Information:</strong> All payments are processed via our authorized provider "Fawaterak." We do not store credit card details on our servers.</li>
+</ul>
+
+<h2>3. Purpose of Processing</h2>
+<p>Your data is used exclusively for:</p>
+<ul>
+  <li>Designing and modifying training and nutrition programs.</li>
+  <li>Regular progress monitoring and evaluations.</li>
+  <li>Sending important updates and responding to inquiries.</li>
+</ul>
+
+<h2>4. Data Sharing</h2>
+<p>We do not sell or rent your data to third parties. Limited information is only shared with trusted partners such as:</p>
+<ul>
+  <li>Payment gateway "Fawaterak" for transaction processing.</li>
+  <li>Cloud hosting providers to ensure service availability.</li>
+</ul>
+
+<h2>5. Your Rights</h2>
+<p>Under data protection laws, you have the right to:</p>
+<ul>
+  <li>Access your data and request a copy.</li>
+  <li>Rectify any inaccurate information.</li>
+  <li>Request the deletion of your data once services conclude (subject to legal record-keeping requirements).</li>
+</ul>
+
+<h2>6. Data Security</h2>
+<p>We implement strict technical and administrative measures to protect your data from unauthorized access, loss, or modification.</p>
       `,
     },
     {
       slug: "terms",
-      titleAr: "الشروط والأحكام",
-      titleEn: "Terms & Conditions",
+      titleAr: "الشروط والأحكام العامة",
+      titleEn: "General Terms & Conditions",
       contentAr: `
-<h3>استخدام البرنامج</h3>
-<p>باشتراكك في برامج كابتن محمد رشدي، فإنك توافق على الالتزام بالتوجيهات والتعليمات لضمان سلامتك وتحقيق النتائج.</p>
-<h3>إخلاء المسؤولية الطبية</h3>
-<p>البرامج مصممة للأفراد الأصحاء. يجب عليك استشارة طبيبك قبل البدء في أي نشاط رياضي مكثف أو تغيير جذري في النظام الغذائي.</p>
-<h3>الملكية الفكرية</h3>
-<p>جميع الخطط التدريبية والغذائية والكتب المتاحة هي ملكية فكرية لموقع كابتن شيكو ولا يجوز تداولها أو نشرها.</p>
+<h2>1. الشروط العامة</h2>
+<p>من خلال الاشتراك في برامجنا، فإنك توافق على الالتزام الكامل بهذه الشروط. الخدمات مقدمة للأفراد الذين تزيد أعمارهم عن 18 عاماً (أو بموافقة ولي الأمر).</p>
+
+<h2>2. إخلاء المسؤولية الطبية</h2>
+<p><strong>هام جداً:</strong> المعلومات والبرامج المقدمة ليست بديلاً عن النصيحة الطبية المهنية. يجب عليك استشارة طبيبك قبل البدء في أي نظام رياضي أو غذائي مكثف. باشتراكك، فإنك تقر بأنك في حالة صحية تسمح لك بممارسة النشاط البدني وتتحمل كامل المسؤولية عن أي إصابات ناتجة عن عدم الالتزام بالتعليمات أو إخفاء معلومات طبية.</p>
+
+<h2>3. التزامات العميل</h2>
+<ul>
+  <li>تقديم معلومات دقيقة وصادقة عن الحالة البدنية.</li>
+  <li>الالتزام بتعليمات الكوتش فيما يخص الأداء الحركي لتجنب الإصابات.</li>
+  <li>عدم مشاركة محتوى البرنامج (الفيديوهات والخطط) مع أطراف أخرى، حيث أنها ملكية فكرية محمية.</li>
+</ul>
+
+<h2>4. الدفع والاشتراكات</h2>
+<ul>
+  <li>تعتبر الرسوم المدفوعة مقابل الوقت والخبرة المستثمرة في تصميم الخطط المخصصة.</li>
+  <li>يتم تفعيل الاشتراك فور تأكيد الدفع من بوابة "Fawaterak".</li>
+</ul>
+
+<h2>5. الملكية الفكرية</h2>
+<p>جميع الخطط التدريبية، الكتب الإلكترونية، والوصفات هي ملكية حصرية لـ "Captain Shiko". يمنع منعاً باتاً نشرها أو تداولها تجارياً دون إذن كتابي مسبق.</p>
+
+<h2>6. تعديل الشروط</h2>
+<p>نحتفظ بالحق في تعديل هذه الشروط في أي وقت، وسيتم إخطار المشتركين الحاليين بأي تغييرات جوهرية.</p>
       `,
       contentEn: `
-<h3>Program Use</h3>
-<p>By subscribing to Coach Mohamed Rushdy's programs, you agree to follow the guidelines and instructions to ensure your safety and results.</p>
-<h3>Medical Disclaimer</h3>
-<p>Programs are designed for healthy individuals. Consult your physician before starting any intense physical activity or radical dietary changes.</p>
-<h3>Intellectual Property</h3>
-<p>All training and nutrition plans and books are the intellectual property of Captain Shiko and may not be distributed or published.</p>
+<h2>1. General Terms</h2>
+<p>By subscribing to our programs, you agree to comply fully with these terms. Services are intended for individuals aged 18+ (or with parental consent).</p>
+
+<h2>2. Medical Disclaimer</h2>
+<p><strong>IMPORTANT:</strong> The information and programs provided are not a substitute for professional medical advice. Always consult your physician before starting any intense physical activity or dietary program. By subscribing, you acknowledge that you are in good health to perform physical activities and assume full responsibility for any injuries resulting from non-compliance with instructions or withholding medical information.</p>
+
+<h2>3. Client Obligations</h2>
+<ul>
+  <li>Provide accurate and honest information regarding physical condition.</li>
+  <li>Follow the coach's instructions regarding technique and form to avoid injury.</li>
+  <li>Do not share program content (videos, plans) with third parties, as it is protected intellectual property.</li>
+</ul>
+
+<h2>4. Payments & Subscriptions</h2>
+<ul>
+  <li>Fees are paid in exchange for the time and expertise invested in designing customized plans.</li>
+  <li>Subscriptions are activated immediately upon payment confirmation via "Fawaterak."</li>
+</ul>
+
+<h2>5. Intellectual Property</h2>
+<p>All training plans, e-books, and recipes are the exclusive property of "Captain Shiko." Publishing or commercial distribution without prior written consent is strictly prohibited.</p>
+
+<h2>6. Amendments</h2>
+<p>We reserve the right to amend these terms at any time. Current subscribers will be notified of any material changes.</p>
       `,
     },
     {
       slug: "refund",
-      titleAr: "سياسة الاسترجاع",
-      titleEn: "Refund Policy",
+      titleAr: "سياسة الاسترداد والإلغاء",
+      titleEn: "Refund & Cancellation Policy",
       contentAr: `
-<h3>طبيعة الخدمة</h3>
-<p>نظراً لأن جميع برامجنا هي منتجات رقمية وخدمات استشارية يتم تصميمها خصيصاً لكل عميل، فإن المبالغ المدفوعة غير قابلة للاسترجاع بمجرد استلام البرنامج.</p>
-<h3>الحالات الاستثنائية</h3>
-<p>في حال وجود خطأ تقني في الدفع أو تكرار العملية، يتم التواصل مع الدعم الفني لاسترداد المبلغ الزائد.</p>
+<h2>1. طبيعة الخدمة الرقمية</h2>
+<p>نظراً لأن الخدمات المقدمة هي منتجات رقمية (خطط مصممة خصيصاً) واستشارات مبنية على الوقت، فإن جميع المبيعات تعتبر <strong>نهائية وغير قابلة للاسترداد</strong> بمجرد بدء العمل على تصميم البرنامج أو تسليمه.</p>
+
+<h2>2. لماذا لا يوجد استرداد؟</h2>
+<p>بمجرد اشتراكك، يتم حجز مكان في قائمة المتابعة الخاصة بالكوتش ويبدأ العمل فوراً على تحليل بياناتك وتصميم خطتك المخصصة، وهذه الجهود غير قابلة للاسترداد.</p>
+
+<h2>3. الحالات الاستثنائية</h2>
+<p>يتم النظر في استرداد المبالغ فقط في الحالات التالية:</p>
+<ul>
+  <li>وجود خطأ تقني أدى إلى خصم المبلغ مرتين (سيتم استرداد المبلغ الزائد بالكامل).</li>
+  <li>إذا لم يتم تسليم البرنامج أو البدء في الخدمة خلال الفترة الزمنية المتفق عليها (3-5 أيام عمل من تاريخ اكتمال البيانات).</li>
+</ul>
+
+<h2>4. طلبات الإلغاء</h2>
+<p>يمكنك طلب إلغاء الاشتراك قبل إرسال بياناتك الصحية والبدنية الأولية. في هذه الحالة، قد يتم خصم رسوم إدارية وبنكية بسيطة قبل إعادة المبلغ.</p>
       `,
       contentEn: `
-<h3>Nature of Service</h3>
-<p>Since all our programs are digital products and consulting services tailored specifically for each client, payments are non-refundable once the program is received.</p>
-<h3>Exceptional Cases</h3>
-<p>In case of technical payment errors or duplicate transactions, please contact support to refund the extra amount.</p>
+<h2>1. Nature of Digital Service</h2>
+<p>Given that our services are customized digital products and time-based consulting, all sales are <strong>final and non-refundable</strong> once work has begun on designing the program or after delivery.</p>
+
+<h2>2. No-Refund Rationale</h2>
+<p>Upon subscription, a slot is reserved in the coach's roster, and work begins immediately on analyzing your data and designing your plan. These efforts are non-retrievable.</p>
+
+<h2>3. Exceptional Cases</h2>
+<p>Refunds are only considered in the following scenarios:</p>
+<ul>
+  <li>Technical errors resulting in double billing (duplicate amount will be fully refunded).</li>
+  <li>Failure to deliver the program or start the service within the agreed-upon timeframe (3-5 business days from data completion).</li>
+</ul>
+
+<h2>4. Cancellation Requests</h2>
+<p>You may request a cancellation before submitting your initial health and physical data. In such cases, minor administrative and banking fees may be deducted before processing the refund.</p>
       `,
     },
   ];

@@ -4,9 +4,20 @@ import Link from "next/link";
 import { useLang } from "./lang-context";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export function Navbar() {
   const { locale, t, dir } = useLang();
+  const pathname = usePathname();
+  
+  // Construct path for the other locale
+  const getOtherLocalePath = () => {
+    if (!pathname) return `/${otherLocale}`;
+    const segments = pathname.split('/');
+    segments[1] = otherLocale; // replace current locale segment
+    return segments.join('/');
+  };
+
   const otherLocale = locale === "en" ? "ar" : "en";
   const [isOpen, setIsOpen] = useState(false);
   const [isMobilePoliciesOpen, setIsMobilePoliciesOpen] = useState(false);
@@ -74,7 +85,7 @@ export function Navbar() {
           <div className="flex items-center gap-3 relative z-[110]">
             <div className="hidden md:flex items-center gap-3">
               <Link
-                href={`/${otherLocale}`}
+                href={getOtherLocalePath()}
                 className="group flex items-center gap-2 text-[10px] font-black border border-white/20 px-4 py-1.5 rounded-full text-white hover:border-accent/50 hover:bg-accent/10 transition-all uppercase tracking-widest bg-white/[0.03] shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(220,38,38,0.15)] relative overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer" />
@@ -220,7 +231,7 @@ export function Navbar() {
                   transition={{ delay: 0.7 }}
                 >
                   <Link
-                    href={`/${otherLocale}`}
+                    href={getOtherLocalePath()}
                     onClick={() => setIsOpen(false)}
                     className="group relative overflow-hidden w-full flex items-center justify-center gap-4 py-4 rounded-2xl border border-white/20 text-white hover:border-accent/50 hover:bg-accent/10 transition-all text-sm font-black uppercase tracking-[0.2em] shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(220,38,38,0.15)]"
                   >

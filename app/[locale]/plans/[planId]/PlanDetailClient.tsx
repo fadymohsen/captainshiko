@@ -288,7 +288,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
             >
               <button 
                 onClick={() => setIsCheckoutOpen(false)}
-                className="absolute top-6 right-6 p-2 rounded-full hover:bg-white/5 text-muted transition-colors"
+                className={`absolute top-6 ${dir === 'rtl' ? 'left-6' : 'right-6'} p-2 rounded-full hover:bg-white/5 text-muted transition-colors`}
               >
                 <X className="w-5 h-5" />
               </button>

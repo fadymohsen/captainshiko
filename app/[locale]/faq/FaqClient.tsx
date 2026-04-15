@@ -53,7 +53,7 @@ export function FaqClient({ faqs }: { faqs: any[] }) {
                   <div className="rounded-2xl border border-white/5 bg-surface-light overflow-hidden transition-colors hover:border-accent/30">
                     <button
                       onClick={() => toggle(faq.id)}
-                      className="w-full text-left p-6 sm:p-8 flex items-center justify-between gap-4"
+                      className="w-full text-start p-6 sm:p-8 flex items-center justify-between gap-4"
                     >
                       <h3 className="text-lg sm:text-xl font-bold leading-tight">{question}</h3>
                       <div className={`flex-shrink-0 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center transition-transform duration-300 ${isOpen ? 'rotate-180 bg-accent/20 text-accent-light' : ''}`}>
