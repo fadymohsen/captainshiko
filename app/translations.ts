@@ -312,7 +312,7 @@ export const translations = {
         quarterly: "900",
         currency: "$",
         features: [
-          "Direct communication (weekly Zoom or phone call).",
+          "Direct communication (monthly Zoom call).",
           "Daily or real-time adjustment of the nutrition plan according to your circumstances (travel, invitations).",
           "Priority in response.",
           "Limited number of slots."
@@ -660,7 +660,7 @@ export const translations = {
         quarterly: "900",
         currency: "$",
         features: [
-          "تواصل مباشر (مكالمة زووم أو تليفون أسبوعية).",
+          "تواصل مباشر (مكالمة زووم شهرياً).",
           "تعديل يومي أو لحظي للنظام الغذائي حسب ظروفك (سفر، عزومات).",
           "أولوية في الرد.",
           "أماكن محدودة لضمان الجودة."
