@@ -77,6 +77,7 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
   };
 
   const openWhatsApp = (phone: string, name: string, plan: string) => {
+    // Note: We use the customer's phone here, so no need to hardcode Roshdy's number
     const cleanPhone = phone.replace(/\D/g, "");
     const text = encodeURIComponent(
       `Hello ${name}! I'm Captain Shiko. I received your subscription for the ${plan} plan. Let's start your transformation!`

@@ -152,7 +152,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
                       
                       <Link
                         href={`/${locale}/plans/${plan.slug}`}
-                        className="block w-full text-center py-3 rounded-full text-xs font-medium text-muted hover:text-foreground transition-all duration-300"
+                        className="block w-full text-center py-4 rounded-full text-sm font-bold border border-white/10 bg-white/5 text-muted hover:bg-accent/10 hover:border-accent/30 hover:text-accent-light transition-all duration-300"
                       >
                         {(t as any).common.knowMore}
                       </Link>

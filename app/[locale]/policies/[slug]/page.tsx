@@ -49,9 +49,10 @@ export default async function PolicyPage({ params }: { params: Promise<{ locale:
             </p>
           </div>
 
-          <div className="prose prose-invert prose-lg max-w-none text-muted mb-20 whitespace-pre-line">
-            {content}
-          </div>
+          <div 
+            className="prose prose-invert prose-lg max-w-none text-muted mb-20"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
         </div>
       </main>
 

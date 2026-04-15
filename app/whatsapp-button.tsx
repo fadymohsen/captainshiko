@@ -5,7 +5,7 @@ import { useLang } from "./lang-context";
 
 export function WhatsAppButton() {
   const { locale, dir } = useLang();
-  const phoneNumber = "201148854429";
+  const phoneNumber = "201553038830";
   
   const message = locale === "en" 
     ? "Hi Captain Shiko! I'm interested in your coaching programs."

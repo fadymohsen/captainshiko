@@ -5,7 +5,9 @@ import { Navbar } from "../../navbar";
 import { Footer } from "../../footer";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FadeUp, StaggerContainer, StaggerItem } from "../../animations";
+import { FadeUp, StaggerContainer, StaggerItem, MagneticButton } from "../../animations";
+import Link from "next/link";
+import { ChevronRight, ArrowRight } from "lucide-react";
 
 export function FaqClient({ faqs }: { faqs: any[] }) {
   const { locale, dir } = useLang();
@@ -21,6 +23,7 @@ export function FaqClient({ faqs }: { faqs: any[] }) {
 
       <main className="flex-grow pt-32 pb-20 relative">
         <div className="absolute top-[10%] right-[10%] w-[300px] h-[300px] rounded-full bg-accent/10 glow-pulse pointer-events-none" />
+        <div className="absolute bottom-[20%] left-[5%] w-[400px] h-[400px] rounded-full bg-accent/5 glow-pulse pointer-events-none" />
         
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           <FadeUp>
@@ -60,7 +63,7 @@ export function FaqClient({ faqs }: { faqs: any[] }) {
                       </div>
                     </button>
 
-                    <AnimatePresence>
+                    <AnimatePresence mode="wait">
                       {isOpen && (
                         <motion.div
                           initial={{ height: 0, opacity: 0 }}
@@ -81,6 +84,40 @@ export function FaqClient({ faqs }: { faqs: any[] }) {
               );
             })}
           </StaggerContainer>
+
+          {/* CTA Section */}
+          <FadeUp>
+            <div className="mt-20 p-8 sm:p-12 rounded-[2.5rem] bg-surface-light/50 border border-white/5 relative overflow-hidden text-center">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-[80px] -mr-32 -mt-32" />
+              <div className="relative z-10">
+                <h2 className="text-2xl sm:text-3xl font-black mb-4">
+                  {locale === "en" ? "Still have questions?" : "لسه عندك استفسار؟"}
+                </h2>
+                <p className="text-muted mb-10 max-w-xl mx-auto">
+                  {locale === "en" 
+                    ? "If you couldn't find what you're looking for, our team is ready to help you choose the right path." 
+                    : "لو لسه مش لقيت اللي بتدور عليه، فريقنا جاهز يساعدك تختار الطريق الصح ليك."}
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <MagneticButton>
+                    <Link
+                      href={`/${locale}/plans`}
+                      className="px-10 py-5 rounded-full bg-accent text-white font-black text-xs uppercase tracking-widest hover:bg-accent-light transition-all shadow-lg shadow-accent/20 flex items-center gap-2"
+                    >
+                      {locale === "en" ? "View Plans" : "عرض الباقات"}
+                      {dir === 'rtl' ? <ArrowRight className="w-4 h-4 rotate-180" /> : <ArrowRight className="w-4 h-4" />}
+                    </Link>
+                  </MagneticButton>
+                  <Link
+                    href={`https://wa.me/201553038830`}
+                    className="px-10 py-5 rounded-full border border-white/10 text-white font-black text-xs uppercase tracking-widest hover:bg-white/5 transition-all"
+                  >
+                    {locale === "en" ? "Contact Support" : "تواصل معنا"}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </FadeUp>
         </div>
       </main>
 

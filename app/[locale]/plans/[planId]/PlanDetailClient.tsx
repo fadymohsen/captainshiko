@@ -5,6 +5,7 @@ import { Navbar } from "../../../navbar";
 import { Footer } from "../../../footer";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useState } from "react";
 import {
   FadeUp,
   ScaleIn,
@@ -12,11 +13,24 @@ import {
   MagneticButton,
 } from "../../../animations";
 import { ImageWithSkeleton } from "../../../image-with-skeleton";
+import { X, CreditCard, Loader2, Smartphone, Receipt, CheckCircle2 } from "lucide-react";
 
 export function PlanDetailClient({ plan }: { plan: any }) {
-  const { locale, dir, region: detectedRegion } = useLang();
+  const { t, locale, dir, region } = useLang();
+  
+  // Checkout State
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [planType, setPlanType] = useState<"monthly" | "quarterly">("monthly");
+  const [paymentMethodId, setPaymentMethodId] = useState<number>(2); // Default to Card
+  const [loading, setLoading] = useState(false);
+  const [paymentResponse, setPaymentResponse] = useState<any>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    whatsapp: ""
+  });
 
-  const currentPricing = detectedRegion === "egypt" ? {
+  const currentPricing = region === "egypt" ? {
     monthly: plan.priceMonthlyEgp,
     quarterly: plan.priceQuarterlyEgp,
     currency: "EGP",
@@ -29,6 +43,51 @@ export function PlanDetailClient({ plan }: { plan: any }) {
   const name = locale === 'en' ? plan.nameEn : plan.nameAr;
   const brief = locale === 'en' ? plan.briefEn : plan.briefAr;
   const features = JSON.parse(locale === 'en' ? plan.featuresEn : plan.featuresAr);
+
+  const handleCheckout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      const res = await fetch("/api/create-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          planId: plan.id,
+          planType,
+          paymentMethodId,
+          clientName: formData.name,
+          email: formData.email,
+          whatsapp: formData.whatsapp,
+          region
+        })
+      });
+      
+      const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.error || "Payment failed");
+      }
+      
+      if (data.url && paymentMethodId === 2) {
+        window.location.href = data.url;
+        if (data.invoiceId) {
+          localStorage.setItem("lastPurchaseId", data.invoiceId.toString());
+        }
+        setPaymentResponse(data);
+        setLoading(false);
+      } else {
+        // For non-redirect methods (Fawry/Wallet success screen)
+        setPaymentResponse(data);
+        setLoading(false);
+      }
+    } catch (err: any) {
+      alert("Error Details: " + (err.message || "Unknown Error"));
+      setLoading(false);
+    }
+  };
+
+  const ct = (t as any).checkout;
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -114,7 +173,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                     <div className="absolute inset-x-0 -inset-y-4 bg-accent/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                     <div className="relative aspect-[9/16] max-w-[400px] mx-auto lg:mx-0 rounded-[2.5rem] overflow-hidden bg-surface-light border-4 border-white/5 shadow-2xl">
                       <ImageWithSkeleton
-                        src="/hero-coach.jpg" // Using this as a placeholder for the reel concept
+                        src="/hero-coach.jpg"
                         alt="Visual Guide"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                         aspectRatio="aspect-[9/16]"
@@ -149,7 +208,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
 
                       <AnimatePresence mode="wait">
                         <motion.div
-                          key={detectedRegion}
+                          key={region}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
@@ -187,20 +246,15 @@ export function PlanDetailClient({ plan }: { plan: any }) {
 
                       <div className="mt-12 space-y-4 relative z-10">
                         <MagneticButton>
-                          <a
-                            href={`https://wa.me/201148854429?text=${encodeURIComponent(
-                              locale === "en" 
-                                ? `Hi Captain Shiko! I want to join the ${name} (${detectedRegion === 'egypt' ? 'Local' : 'Global'}).`
-                                : `أهلاً كابتن شيكو! حابب أشترك في ${name} (${detectedRegion === 'egypt' ? 'داخل مصر' : 'خارج مصر'}).`
-                            )}`}
-                            target="_blank"
+                          <button
+                            onClick={() => setIsCheckoutOpen(true)}
                             className="w-full block text-center bg-white text-background font-black py-5 rounded-2xl text-xs uppercase tracking-[0.2em] hover:bg-accent hover:text-white transition-all shadow-xl active:scale-95"
                           >
                             {locale === "en" ? "Start Transformation" : "ابدأ التحول الآن"}
-                          </a>
+                          </button>
                         </MagneticButton>
                         <p className="text-[10px] text-muted text-center tracking-tight">
-                          * Secure checkout via WhatsApp. Custom onboarding follows.
+                          * Fast & secure checkout. Instant access after payment.
                         </p>
                       </div>
                     </div>
@@ -212,6 +266,173 @@ export function PlanDetailClient({ plan }: { plan: any }) {
           </div>
         </div>
       </main>
+
+      {/* Checkout Modal Replicated from PlansClient */}
+      <AnimatePresence>
+        {isCheckoutOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCheckoutOpen(false)}
+              className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-lg bg-surface-light border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-y-auto max-h-[90vh]"
+              dir={dir}
+            >
+              <button 
+                onClick={() => setIsCheckoutOpen(false)}
+                className="absolute top-6 right-6 p-2 rounded-full hover:bg-white/5 text-muted transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {!paymentResponse ? (
+                <>
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent">
+                      <CreditCard className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold">{ct.title}</h2>
+                      <p className="text-sm text-muted">
+                        {name} • <span className="text-xs text-accent uppercase font-black">{region}</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <form onSubmit={handleCheckout} className="space-y-6">
+                    <div className="grid grid-cols-2 gap-3 p-1 bg-background/50 rounded-2xl border border-white/5">
+                      <button
+                        type="button"
+                        onClick={() => setPlanType("monthly")}
+                        className={`py-3 rounded-xl text-sm font-bold transition-all ${planType === "monthly" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}
+                      >
+                        {ct.monthly}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPlanType("quarterly")}
+                        className={`py-3 rounded-xl text-sm font-bold transition-all ${planType === "quarterly" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}
+                      >
+                        {ct.quarterly}
+                      </button>
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-bold text-muted uppercase tracking-widest block mb-3 px-1">{ct.paymentMethod}</label>
+                      <div className="grid grid-cols-3 gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setPaymentMethodId(2)}
+                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 2 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
+                        >
+                          <CreditCard className="w-6 h-6 mb-2" />
+                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.card}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPaymentMethodId(3)}
+                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 3 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
+                        >
+                          <Receipt className="w-6 h-6 mb-2" />
+                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.fawry}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPaymentMethodId(4)}
+                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 4 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
+                        >
+                          <Smartphone className="w-6 h-6 mb-2" />
+                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.wallet}</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <input
+                        required
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        className="w-full bg-background border border-white/5 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 transition-colors text-sm"
+                        placeholder={ct.fullName}
+                      />
+                      <input
+                        required
+                        type="tel"
+                        value={formData.whatsapp}
+                        onChange={(e) => setFormData({...formData, whatsapp: e.target.value})}
+                        className="w-full bg-background border border-white/5 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 transition-colors text-sm"
+                        placeholder={ct.whatsapp}
+                      />
+                      <input
+                        required
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        className="w-full bg-background border border-white/5 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 transition-colors text-sm"
+                        placeholder={ct.email}
+                      />
+                    </div>
+
+                    <div className="pt-4 border-t border-white/5">
+                      <div className="flex justify-between items-center mb-6 px-1">
+                        <span className="text-muted">{ct.total}</span>
+                        <span className="text-2xl font-black">
+                          {region === "egypt" 
+                            ? (planType === "monthly" ? plan.priceMonthlyEgp : plan.priceQuarterlyEgp)
+                            : (planType === "monthly" ? plan.priceMonthlyUsd : plan.priceQuarterlyUsd)
+                          } {currentPricing.currency}
+                        </span>
+                      </div>
+
+                      <MagneticButton>
+                        <button
+                          disabled={loading}
+                          className="w-full py-5 rounded-full bg-white text-black font-black flex items-center justify-center gap-2 hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : ct.continue}
+                        </button>
+                      </MagneticButton>
+                    </div>
+                  </form>
+                </>
+              ) : (
+                <div className="text-center py-10">
+                  <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mx-auto mb-6 border border-green-500/20">
+                    <CheckCircle2 className="w-10 h-10" />
+                  </div>
+                  <h2 className="text-3xl font-black mb-4">{ct.orderCreated}</h2>
+                  <p className="text-muted mb-8 leading-relaxed">
+                    {paymentMethodId === 3 ? ct.fawryNote : ct.walletNote}
+                  </p>
+                  
+                  <div className="bg-background rounded-3xl p-8 mb-8 border border-white/5">
+                    <div className="text-sm text-muted uppercase tracking-widest mb-2">{ct.referenceCode}</div>
+                    <div className="text-5xl font-black text-accent tracking-tighter">
+                      {paymentResponse.paymentData?.fawryCode || paymentResponse.paymentData?.meezaReference || "REF-" + paymentResponse.invoiceId}
+                    </div>
+                  </div>
+
+                  <Link
+                    href={`/${locale}/payment/success?purchaseId=${paymentResponse.invoiceId}`}
+                    className="block w-full py-5 rounded-full bg-accent text-white font-black hover:bg-accent-light transition-all shadow-lg shadow-accent/20"
+                  >
+                    {ct.paidButton}
+                  </Link>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       <Footer />
     </div>
