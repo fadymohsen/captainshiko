@@ -149,9 +149,9 @@ export const translations = {
       ],
     },
     pricing: {
-      label: "Change Your Life",
+      label: "Invest In Yourself",
       title: "PLANS",
-      subtitle: "Invest In Yourself",
+      subtitle: "Change Your Life",
       popular: "BEST VALUE",
       cta: "Get Started",
       regionToggle: { egypt: "Egypt (EGP)", abroad: "Abroad (USD)" },
@@ -568,9 +568,9 @@ export const translations = {
       ],
     },
     pricing: {
-      label: "غيّر حياتك الآن",
+      label: "استثمر في نفسك",
       title: "الباقات",
-      subtitle: "استثمر في نفسك",
+      subtitle: "غيّر حياتك الآن",
       popular: "أعلى ترشيح",
       cta: "اشترك دلوقتي",
       regionToggle: { egypt: "من جوه مصر (ج.م)", abroad: "من بره مصر ($)" },
