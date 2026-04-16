@@ -5,11 +5,11 @@ import { ImageWithSkeleton } from "./image-with-skeleton";
 import { motion, AnimatePresence } from "framer-motion";
 
 const certificates = [
-  "/certficates/cert-1.jpeg",
-  "/certficates/cert-2.jpeg",
-  "/certficates/cert-3.jpeg",
-  "/certficates/cert-4.jpeg",
-  "/certficates/cert-5.jpeg",
+  "/certficates/1.jpeg",
+  "/certficates/2.jpeg",
+  "/certficates/3.jpeg",
+  "/certficates/4.jpeg",
+  "/certficates/5.jpeg",
   "/certficates/cert-6.jpeg",
 ];
 
