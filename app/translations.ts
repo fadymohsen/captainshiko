@@ -33,9 +33,9 @@ export const translations = {
           text: "We leave nothing to chance or guesswork. We rely on a precise data analysis protocol that includes body weight dynamics, strategic waist measurements, energy level fluctuations, and deep sleep quality. This data is our compass for accurate scientific decisions and immediate adjustments.",
         },
         item3: {
-          title: "Cultural Integration",
-          subtitle: "Realistic Flexibility",
-          text: "A successful plan is the one that lives with you in your reality. My program is designed to harmonize perfectly with the lifestyle in Egypt, Saudi Arabia, UAE, and Iraq. We use our local kitchen intelligently and set flexible strategies to deal with work pressures, travel, and family gatherings.",
+          title: "Universal Harmonize",
+          subtitle: "Realistic Global Flexibility",
+          text: "A successful plan is the one that lives with you in your reality, wherever you are. My program is designed for universal harmony, fitting perfectly with your unique lifestyle regardless of your location. We use local kitchens intelligently and set flexible strategies to deal with your specific work pressures, travel, and cultural gatherings.",
         },
       },
       method: {
@@ -160,71 +160,77 @@ export const translations = {
       perQuarter: "/3 mo",
       includes: "Includes customized nutrition plan + training program tailored to your body, goals & daily routine",
       egypt: {
-        basic: {
-          tier: "Basic Plan",
+        self: {
+          tier: "The Self-Starter",
           monthly: "1,500",
           quarterly: "3,000",
           currency: "EGP",
-          features: [
-            "Custom nutrition plan for your body & goals",
-            "Macro-calculated meals",
-            "Adapted to your daily routine",
-            "Messaging support",
-          ],
+          features: ["Custom program", "Monthly follow-up"],
         },
-        gold: {
-          tier: "Gold",
-          monthly: "2,500",
-          quarterly: "5,000",
+        nutrition: {
+          tier: "Fuel & Focus",
+          monthly: "2,000",
+          quarterly: "4,500",
           currency: "EGP",
-          features: [
-            "Customized training program",
-            "Personalized nutrition plan",
-            "Adapted to your body, goals & routine",
-            "Monthly plan updates",
-            "Messaging support",
-          ],
+          features: ["Nutrition only", "Weekly follow-up"],
+        },
+        exercise: {
+          tier: "Power & Performance",
+          monthly: "2,000",
+          quarterly: "4,500",
+          currency: "EGP",
+          features: ["Exercise only", "Weekly follow-up"],
+        },
+        transformation: {
+          tier: "Elite Transformation",
+          monthly: "3,000",
+          quarterly: "6,000",
+          currency: "EGP",
+          features: ["Nutr + Exec", "Weekly follow-up"],
         },
         vip: {
-          tier: "VIP",
-          monthly: "4,000",
-          quarterly: "7,000",
+          tier: "Elite VIP",
+          monthly: "7,000",
+          quarterly: "15,000",
           currency: "EGP",
-          features: [
-            "Everything in Gold",
-            "Monthly phone call with the coach",
-            "Priority support & faster responses",
-            "Advanced progress tracking",
-            "Customized adjustments anytime",
-          ],
+          features: ["Nutr + Exec", "Daily follow-up"],
         },
       },
       abroad: {
-        gold: {
-          tier: "Gold",
-          monthly: "150",
-          quarterly: "300",
+        self: {
+          tier: "The Self-Starter",
+          monthly: "75",
+          quarterly: "200",
           currency: "$",
-          features: [
-            "Customized training program",
-            "Personalized nutrition plan",
-            "Adapted to your body, goals & routine",
-            "Monthly plan updates",
-            "Messaging support",
-          ],
+          features: ["Custom program", "Monthly follow-up"],
+        },
+        nutrition: {
+          tier: "Fuel & Focus",
+          monthly: "100",
+          quarterly: "220",
+          currency: "$",
+          features: ["Nutrition only", "Weekly follow-up"],
+        },
+        exercise: {
+          tier: "Power & Performance",
+          monthly: "100",
+          quarterly: "220",
+          currency: "$",
+          features: ["Exercise only", "Weekly follow-up"],
+        },
+        transformation: {
+          tier: "Elite Transformation",
+          monthly: "150",
+          quarterly: "400",
+          currency: "$",
+          features: ["Nutr + Exec", "Weekly follow-up"],
         },
         vip: {
-          tier: "VIP",
-          monthly: "200",
-          quarterly: "350",
+          tier: "Elite VIP",
+          monthly: "500",
+          quarterly: "1,100",
           currency: "$",
-          features: [
-            "Everything in Gold",
-            "Monthly phone call with the coach",
-            "Priority support & faster responses",
-            "Advanced progress tracking",
-            "Customized adjustments anytime",
-          ],
+          features: ["Nutr + Exec", "Daily follow-up"],
         },
       },
     },
@@ -242,83 +248,84 @@ export const translations = {
     detailedPlans: {
       "self-starter": {
         name: "The Self-Starter",
-        brief: "If you have experience and need the right way to reach your goal",
+        brief: "Complete nutrition and exercise program for experienced individuals",
         monthly: "75",
         quarterly: "200",
         currency: "$",
         features: [
-          "Customized training program for the subscriber's goal (cut/bulk).",
+          "Customized training program for your specific goal.",
           "Calculated calorie and macro nutrition plan.",
           "Food alternatives list.",
-          "No weekly follow-up (follow-up once a month through WhatsApp)."
+          "Monthly follow-up via WhatsApp or Email."
         ],
         localPricing: { monthly: "1500", quarterly: "3000", currency: "EGP" },
         globalPricing: { monthly: "75", quarterly: "200", currency: "USD" }
       },
       "fuel-and-focus": {
         name: "Fuel & Focus",
-        brief: "Repair your relationship with food and make your body a burning machine",
+        brief: "Professional nutrition-only plan to master your metabolism",
         monthly: "100",
         quarterly: "220",
         currency: "$",
         features: [
-          "Scientific nutrition system: Far from deprivation, it depends on the foods you love but in the correct quantities.",
-          "Food alternatives tables: A flexible list that allows you to change your meals yourself without disrupting the system.",
-          "Calculation of precise needs: Knowing your calories according to your daily activity to ensure reaching the goal.",
-          "Nutritional education: You learn how to read nutrition labels and choose the best for you.",
-          "Weight and measurement tracking: Weekly review of body results and weekly follow-up on WhatsApp."
+          "Detailed nutrition-only plan customized for your body.",
+          "Weekly follow-up on WhatsApp with Coach Muhammad Roshdy.",
+          "Macro-calculated meals based on your daily activity.",
+          "Flexible food alternatives list.",
+          "Weekly weight and measurement tracking."
         ],
         localPricing: { monthly: "2000", quarterly: "4500", currency: "EGP" },
         globalPricing: { monthly: "100", quarterly: "220", currency: "USD" }
       },
       "power-and-performance": {
         name: "Power & Performance",
-        brief: "Train smart, not just hard",
+        brief: "Professional exercise-only program built for strength",
         monthly: "100",
         quarterly: "220",
         currency: "$",
         features: [
-          "Advanced training program: Dividing training sessions (Splits) ensuring the best muscle recovery.",
-          "Variety in exercises according to the goal.",
-          "Technique explanation videos: Detailed explanation for each exercise to ensure complete safety and avoid injuries.",
-          "Power development (Progressive Overload): A system to track the development of your weights and physical strength month after month.",
-          "Cardio and stretching system: A plan to raise cardiovascular fitness and improve body flexibility.",
-          "Performance evaluation: Reviewing your exercise videos to adjust your body posture and weekly follow-up on WhatsApp."
+          "Customized training program (Exercise only).",
+          "Weekly follow-up with Coach Muhammad Roshdy.",
+          "Technique evaluation via video review.",
+          "Advanced training splits for optimal recovery.",
+          "Progressive overload tracking system."
         ],
         localPricing: { monthly: "2000", quarterly: "4500", currency: "EGP" },
         globalPricing: { monthly: "100", quarterly: "220", currency: "USD" }
       },
       "elite-transformation": {
         name: "Elite Transformation",
-        brief: "The integrated choice for those seeking real and radical results",
+        brief: "Full nutrition and exercise program for major results",
         monthly: "150",
         quarterly: "400",
         currency: "$",
         features: [
-          "Personalized training plan: Designed for your goal (bulk, cut, or performance) and suitable for your training location (gym or home).",
-          "Flexible nutrition system: Calculated calories and macros (protein, carbs, fats) with varied meals to suit your routine.",
-          "Periodic updates: Plans updated weekly based on your body progress and commitment level.",
-          "Real-time monitoring: Direct communication via WhatsApp to answer any queries and correct exercise technique via video.",
-          "Supplements and vitamins file: Scientific recommendations for the supplements your body actually needs.",
-          "Occasions flexibility system: How to deal with outings or travel without ruining the diet."
+          "Combined nutrition and exercise program.",
+          "Weekly follow-up with Coach Muhammad Roshdy.",
+          "Custom training splits (Gym or Home).",
+          "Flexible macro-calculated meal plans.",
+          "Weekly plan updates based on progress.",
+          "Direct WhatsApp access for queries."
         ],
         localPricing: { monthly: "3000", quarterly: "6000", currency: "EGP" },
-        globalPricing: { monthly: "150", quarterly: "400", currency: "USD", note: "Includes one month free" }
+        globalPricing: { monthly: "150", quarterly: "400", currency: "USD" }
       },
       "elite-coaching": {
-        name: "Elite Coaching",
-        brief: "If you need very special care, constant communication and very fast results",
-        monthly: "400",
-        quarterly: "900",
+        name: "Elite VIP",
+        brief: "Daily 1-on-1 access and maximum care for fast results",
+        monthly: "500",
+        quarterly: "1100",
         currency: "$",
         features: [
-          "Direct communication (monthly Zoom call).",
-          "Daily or real-time adjustment of the nutrition plan according to your circumstances (travel, invitations).",
-          "Priority in response.",
-          "Limited number of slots."
+          "Full nutrition and exercise program.",
+          "Daily follow-up via WhatsApp.",
+          "Weekly call with Coach Muhammad Roshdy.",
+          "Real-time plan adjustments (travel, events).",
+          "Priority response and 1-on-1 coaching.",
+          "Limited enrollment for elite-level care."
         ],
-        localPricing: { monthly: "5000", quarterly: "12000", currency: "EGP" },
-        globalPricing: { monthly: "400", quarterly: "900", currency: "USD" }
+        localPricing: { monthly: "7000", quarterly: "15000", currency: "EGP" },
+        globalPricing: { monthly: "500", quarterly: "1100", currency: "USD" }
       }
     },
     transformationsPage: {
@@ -381,9 +388,9 @@ export const translations = {
           text: "نحن لا نترك شيئاً للصدفة أو للتخمين. نعتمد على بروتوكول دقيق لتحليل البيانات يشمل (ديناميكية وزن الجسم، قياسات الخصر الاستراتيجية، تذبذب مستويات الطاقة، وجوة النوم العميق). هذه البيانات هي بوصلتنا لاتخاذ قرارات علمية دقيقة.",
         },
         item3: {
-          title: "التكامل الثقافي",
-          subtitle: "المرونة الواقعية",
-          text: "الخطة الناجحة هي التي تعيش معك في واقعك. برنامجي مصمم ليتناغم تماماً مع نمط الحياة في (مصر، السعودية، الإمارات، والعراق). نستخدم مطبخنا المحلي بذكاء، ونضع استراتيجيات مرنة تتعامل مع ضغوط العمل، السفر، والعزومات العائلية.",
+          title: "التناغم العالمي (Universal Harmonize)",
+          subtitle: "المرونة الواقعية الشاملة",
+          text: "الخطة الناجحة هي التي تعيش معك في واقعك أينما كنت في العالم. برنامجي مصمم لتحقيق تناغم عالمي مذهل مع نمط حياتك الخاص، سواء كنت في الشرق الأوسط أو أي مكان آخر. نستخدم إمكانيات مطبخك المحلي بذكاء، ونضع استراتيجيات مرنة تتعامل مع ضغوط عملك، سفرك، وتجمعاتك العائلية المختلفة.",
         },
       },
       method: {
@@ -590,83 +597,84 @@ export const translations = {
     detailedPlans: {
       "self-starter": {
         name: "الباقة الأساسية (The Self-Starter)",
-        brief: "لو عندك خبرة ومحتاج الطريقة الصحيحة عشان تقدر توصل لهدفك",
+        brief: "برنامج تغذية وتمرين متكامل مصمم لمن لديهم خبرة سابقة",
         monthly: "75",
         quarterly: "200",
         currency: "$",
         features: [
-          "برنامج تدريبي مخصص لهدف المشترك (تنشيف/تضخيم).",
+          "برنامج تدريبي مخصص لهدفك (تنشيف/تضخيم).",
           "خطة نظام غذائي محسوبة السعرات والماكروز.",
           "قائمة بدائل للأطعمة.",
-          "بدون متابعة أسبوعية (المتابعة مرة واحدة في الشهر من خلال الواتس أب )."
+          "متابعة شهرية مرة واحدة من خلال الواتساب أو الإيميل."
         ],
         localPricing: { monthly: "1500", quarterly: "3000", currency: "جنيه" },
         globalPricing: { monthly: "75", quarterly: "200", currency: "$" }
       },
       "fuel-and-focus": {
         name: "باقة التغذية الذكية (Fuel & Focus)",
-        brief: "أصلح علاقتك بالأكل واجعل جسمك ماكينة حرق",
+        brief: "خطة تغذية احترافية فقط لإصلاح علاقتك بالأكل وحرق الدهون",
         monthly: "100",
         quarterly: "220",
         currency: "$",
         features: [
-          "نظام غذائي علمي: بعيداً عن الحرمان، يعتمد على الأكلات التي تحبها ولكن بالكميات الصحيحة.",
-          "جداول بدائل الأطعمة: قائمة مرنة تسمح لك بتغيير وجباتك بنفسك دون الإخلال بالنظام.",
-          "حساب الاحتياجات الدقيقة: معرفة سعراتك حسب نشاطك اليومي لضمان الوصول للهدف.",
-          "تثقيف غذائي: تتعلم كيف تقرأ الملصقات الغذائية وتختار الأفضل لك.",
-          "متابعة الوزن والقياسات: مراجعة أسبوعية لنتائج الجسم ومتابعة أسبوعية على الواتس آب."
+          "نظام غذائي علمي مخصص بالكامل لجسمك وهدفك.",
+          "متابعة أسبوعية على الواتساب مع كابتن محمد رشدي.",
+          "جداول بدائل الأطعمة لمرونة كاملة في اختيار وجباتك.",
+          "حساب السعرات والماكروز حسب نشاطك اليومي.",
+          "مراجعة أسبوعية لنتائج الجسم والقياسات."
         ],
         localPricing: { monthly: "2000", quarterly: "4500", currency: "جنيه" },
         globalPricing: { monthly: "100", quarterly: "220", currency: "$" }
       },
       "power-and-performance": {
         name: "باقة الأداء البدني (Power & Performance)",
-        brief: "اتمرن بذكاء، وليس بجهد فقط",
+        brief: "برنامج تدريبي مخصص فقط للأداء الرياضي والقوة",
         monthly: "100",
         quarterly: "220",
         currency: "$",
         features: [
-          "برنامج تدريبي متطور: تقسيم حصص التدريب (Splits) بما يضمن أفضل استشفاء عضلي.",
-          "تنوع فى التمارين حسب الهدف.",
-          "فيديوهات شرح التكنيك: شرح مفصل لكل تمرين لضمان الأمان التام وتجنب الإصابات.",
-          "تطوير القوة (Progressive Overload): سيستم لمتابعة تطور أوزانك وقوتك البدنية شهر بعد شهر.",
-          "نظام الكارديو والإطالات: خطة لرفع اللياقة القلبية وتحسين مرونة الجسم.",
-          "تقييم الأداء: مراجعة فيديوهاتك وأنت تتمرن لتعديل وضعية جسمك ومتابعة أسبوعية على الواتس آب."
+          "برنامج تدريبي متطور مخصص (تمارين فقط).",
+          "متابعة أسبوعية على الواتساب مع كابتن محمد رشدي.",
+          "مراجعة تكنيك التمارين بالفيديو لضمان الأمان.",
+          "نظام تطوير القوة (Progressive Overload) أسبوعياً.",
+          "خطة شاملة للكارديو والإطالات لتحسين اللياقة."
         ],
         localPricing: { monthly: "2000", quarterly: "4500", currency: "جنيه" },
         globalPricing: { monthly: "100", quarterly: "220", currency: "$" }
       },
       "elite-transformation": {
         name: "باقة التحول الشامل (Elite Transformation)",
-        brief: "الخيار المتكامل لمن يبحث عن نتائج حقيقية وجذرية (الأكثر مبيعاً)",
+        brief: "الخيار المتكامل تغذية وتمرين لنتائج حقيقية وجذرية",
         monthly: "150",
         quarterly: "400",
         currency: "$",
         features: [
-          "خطة تدريبية مخصصة: مصممة لهدفك (تضخيم، تنشيف، أو تحسين أداء) ومناسبة لمكان تمرينك (جيم أو بيت).",
-          "نظام غذائي مرن: محسوب السعرات والماكروز (بروتين، كارب، دهون) مع وجبات متنوعة تناسب روتينك.",
-          "تعديلات دورية: تحديث الخطط أسبوعياً بناءً على تطور جسمك ومدى التزامك.",
-          "متابعة لحظية: تواصل مباشر عبر الواتساب للإجابة على أي استفسارات وتصحيح تكنيك التمارين بالفيديو.",
-          "ملف المكملات والفيتامينات: توصيات علمية بأفضل المكملات التي يحتاجها جسمك فعلياً.",
-          "نظام مرونة المناسبات: كيف تتعامل مع الخروجات أو السفر بدون ما تخرب الدايت."
+          "برنامج تغذية وتمرين مكامل مخصص لجسمك.",
+          "متابعة أسبوعية مع كابتن محمد رشدي شخصياً.",
+          "تحديثات دورية للخطة بناءً على تقدمك أسبوعياً.",
+          "تواصل مباشر عبر الواتساب للرد على الاستفسارات.",
+          "ملف كامل للمكملات والفيتامينات المطلوبة.",
+          "نظام مرونة للتعامل مع السفر والعزومات."
         ],
         localPricing: { monthly: "3000", quarterly: "6000", currency: "جنيه" },
-        globalPricing: { monthly: "150", quarterly: "400", currency: "$", note: "تشمل شهر هدية" }
+        globalPricing: { monthly: "150", quarterly: "400", currency: "$" }
       },
       "elite-coaching": {
-        name: "باقة الـ VIP (Elite Coaching)",
-        brief: "لو محتاج رعاية خاصة جداً وتواصل دائم ونتائج سريعة جدا",
-        monthly: "400",
-        quarterly: "900",
+        name: "باقة الـ VIP (Elite VIP)",
+        brief: "متابعة يومية وتواصل دائم لأقصى درجات الاهتمام والنتائج",
+        monthly: "500",
+        quarterly: "1100",
         currency: "$",
         features: [
-          "تواصل مباشر (مكالمة زووم شهرياً).",
-          "تعديل يومي أو لحظي للنظام الغذائي حسب ظروفك (سفر، عزومات).",
-          "أولوية في الرد.",
-          "أماكن محدودة لضمان الجودة."
+          "برنامج شامل (تغذية وتمرين) مع رعاية خاصة جداً.",
+          "متابعة يومية لحظية عبر الواتساب.",
+          "مكالمة تليفون أسبوعية مع كابتن محمد رشدي.",
+          "تعديل فوري للنظام حسب ظروفك الطارئة (سفر/مناسبات).",
+          "أولوية قصوى في الرد والدعم الفني.",
+          "أماكن محدودة جداً لضمان جودة المتابعة."
         ],
-        localPricing: { monthly: "5000", quarterly: "12000", currency: "جنيه" },
-        globalPricing: { monthly: "400", quarterly: "900", currency: "$" }
+        localPricing: { monthly: "7000", quarterly: "15000", currency: "جنيه" },
+        globalPricing: { monthly: "500", quarterly: "1100", currency: "$" }
       }
     },
     transformationsPage: {

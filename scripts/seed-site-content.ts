@@ -52,6 +52,34 @@ async function main() {
       answerEn: "We use dedicated apps and WhatsApp to track weekly progress, review exercise technique via video, and answer your daily inquiries to ensure you stay on track.",
       order: 6,
     },
+    {
+      questionAr: "الكوتش محمد رشدى هو اللى بيتابع بنفسه ؟",
+      questionEn: "Does Coach Muhammad Roshdy follow up personally?",
+      answerAr: "الكوتش محمد رشدى هو اللي بيتابع بنفسه فى باقة الاليت وال transformation.",
+      answerEn: "Coach Muhammad Roshdy follows up personally in the Elite and Transformation plans.",
+      order: 7,
+    },
+    {
+      questionAr: "هو أنا لازم اوزن الاكل بتاعى ؟",
+      questionEn: "Do I have to weigh my food?",
+      answerAr: "مش شرط لو مش حابب بنستخدم حاليا نظام أسمة hand portions دة يساعدك تقدر تحدد كمية الاكل فى كل وجبة بدون ميزان وبيكون مفيد جدا خاصة لو انت من الناس اللي بتسافر كتير.",
+      answerEn: "Not necessarily. If you prefer, we use the 'hand portions' system which helps you determine food quantities per meal without a scale. This is especially useful for frequent travelers.",
+      order: 8,
+    },
+    {
+      questionAr: "ينفع اخس دهون إبنى عضلات فى نفس الوقت ؟",
+      questionEn: "Can I lose fat and build muscle at the same time?",
+      answerAr: "ينفع طبعا لو مشيت على نظام غذائي مخصص لجسمك ومحسوب السعرات وكمية البروتين اللي هتساعدك تبنى عضلات وكمية الكربوهيدرات والدهون اللي هيساعدوك تخس دهون ودى من اهم الخدمات اللي بنقدمها recomposition your body.",
+      answerEn: "Yes, absolutely! By following a diet tailored to your body with calculated calories and protein for muscle growth and specific macros for fat loss. This is one of our core services: Body Recomposition.",
+      order: 9,
+    },
+    {
+      questionAr: "هو الدايت والتمرين بيتعملو فعلا لكل واحد ولة نظام ثابت بيتوزع ؟",
+      questionEn: "Are the diet and exercise plans really custom or fixed?",
+      answerAr: "الدايت لازم يتعمل بشكل مخصص لجسمك وهدفك عشان نضمن انك تشوف نتايج سريعة ويكون مناسب ليوم وتقدر تلتزم بي وهكذا التمرين.",
+      answerEn: "Every diet and exercise plan is fully customized to your body, goals, and lifestyle to ensure fast results and sustainability.",
+      order: 10,
+    },
   ];
 
   for (const faq of faqData) {

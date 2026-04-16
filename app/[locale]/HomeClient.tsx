@@ -162,7 +162,7 @@ export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbT
           <SlideIn direction={dir === "rtl" ? "left" : "right"}>
             <div className="relative aspect-square rounded-[3rem] overflow-hidden group glow-border border border-white/5 shadow-2xl">
               <ImageWithSkeleton
-                src="/about hero section.png"
+                src="/coach-main.jpeg"
                 alt="Captain Shiko"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />

@@ -39,7 +39,20 @@ async function main() {
 
     await prisma.plan.upsert({
       where: { slug },
-      update: {}, // We don't overwrite if it already exists during seed, to preserve manual edits later
+      update: {
+        nameEn: en.name,
+        nameAr: ar.name,
+        briefEn: en.brief,
+        briefAr: ar.brief,
+        featuresEn: JSON.stringify(en.features),
+        featuresAr: JSON.stringify(ar.features),
+        priceMonthlyEgp: priceMonthlyEgp,
+        priceQuarterlyEgp: priceQuarterlyEgp,
+        priceMonthlyUsd: priceMonthlyUsd,
+        priceQuarterlyUsd: priceQuarterlyUsd,
+        order: order++,
+        isActive: true,
+      },
       create: {
         slug,
         nameEn: en.name,
