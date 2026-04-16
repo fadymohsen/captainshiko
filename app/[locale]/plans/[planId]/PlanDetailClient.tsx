@@ -17,6 +17,26 @@ import { X, CreditCard, Loader2, Smartphone, Receipt, CheckCircle2 } from "lucid
 
 export function PlanDetailClient({ plan }: { plan: any }) {
   const { t, locale, dir, region } = useLang();
+
+  const getVideoEmbedUrl = (url: string | null) => {
+    if (!url) return null;
+    
+    // YouTube Shorts
+    if (url.includes('youtube.com/shorts/') || url.includes('youtu.be/')) {
+      const id = url.split('shorts/')[1]?.split('?')[0] || url.split('/').pop()?.split('?')[0];
+      return `https://www.youtube.com/embed/${id}?autoplay=0&rel=0&modestbranding=1`;
+    }
+    
+    // Instagram Reels
+    if (url.includes('instagram.com/reel/') || url.includes('instagram.com/reels/')) {
+      const id = url.split('/reel/')[1]?.split('/')[0] || url.split('/reels/')[1]?.split('/')[0];
+      return `https://www.instagram.com/reel/${id}/embed`;
+    }
+
+    return null;
+  };
+
+  const videoEmbedUrl = getVideoEmbedUrl(plan.videoUrl);
   
   // Checkout State
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -129,6 +149,47 @@ export function PlanDetailClient({ plan }: { plan: any }) {
             </div>
           </section>
 
+          {/* Centered Reel Section */}
+          <section className="relative mb-24">
+            <FadeUp>
+              <div className="relative group max-w-[400px] mx-auto">
+                <div className="absolute inset-x-0 -inset-y-4 bg-accent/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="relative aspect-[9/16] rounded-[2.5rem] overflow-hidden bg-surface-light border-4 border-white/5 shadow-2xl">
+                  {videoEmbedUrl ? (
+                    <iframe
+                      src={videoEmbedUrl}
+                      className="w-full h-full"
+                      allow="accelerometer; border-none; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      title="Plan Video Guide"
+                    />
+                  ) : (
+                    <>
+                      <ImageWithSkeleton
+                        src="/hero-coach.jpg"
+                        alt="Visual Guide"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        aspectRatio="aspect-[9/16]"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/80 flex flex-col items-center justify-center p-10 text-center z-20">
+                        <motion.div 
+                          animate={{ scale: [1, 1.1, 1] }} 
+                          transition={{ repeat: Infinity, duration: 2 }}
+                          className="w-20 h-20 rounded-full bg-accent text-white flex items-center justify-center mb-6 cursor-pointer hover:bg-accent-light"
+                        >
+                          <svg className="w-10 h-10 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </motion.div>
+                        <h4 className="text-lg font-black uppercase tracking-[0.2em] mb-2">
+                          {locale === 'en' ? 'Video Guide Coming Soon' : 'دليل مرئي قريباً'}
+                        </h4>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </FadeUp>
+          </section>
+
           <div className="grid lg:grid-cols-12 gap-16 items-start">
             
             <div className="lg:col-span-7 space-y-20">
@@ -156,39 +217,6 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                         </div>
                       </StaggerItem>
                     ))}
-                  </div>
-                </FadeUp>
-              </section>
-
-              <section className="relative">
-                <FadeUp>
-                  <div className="flex items-center gap-4 mb-10">
-                    <h2 className="text-2xl font-black uppercase tracking-tight">
-                      {locale === "en" ? "Visual Guide" : "دليل مرئي"}
-                    </h2>
-                    <div className="h-px flex-grow bg-white/10" />
-                  </div>
-
-                  <div className="relative group">
-                    <div className="absolute inset-x-0 -inset-y-4 bg-accent/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                    <div className="relative aspect-[9/16] max-w-[400px] mx-auto lg:mx-0 rounded-[2.5rem] overflow-hidden bg-surface-light border-4 border-white/5 shadow-2xl">
-                      <ImageWithSkeleton
-                        src="/hero-coach.jpg"
-                        alt="Visual Guide"
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        aspectRatio="aspect-[9/16]"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/80 flex flex-col items-center justify-center p-10 text-center z-20">
-                        <motion.div 
-                          animate={{ scale: [1, 1.1, 1] }} 
-                          transition={{ repeat: Infinity, duration: 2 }}
-                          className="w-20 h-20 rounded-full bg-accent text-white flex items-center justify-center mb-6 cursor-pointer hover:bg-accent-light"
-                        >
-                          <svg className="w-10 h-10 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        </motion.div>
-                        <h4 className="text-lg font-black uppercase tracking-[0.2em] mb-2">Reel Concept</h4>
-                      </div>
-                    </div>
                   </div>
                 </FadeUp>
               </section>

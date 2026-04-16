@@ -28,6 +28,7 @@ model Plan {
   priceQuarterlyUsd String?
   featuresEn  String   // Stored as JSON string
   featuresAr  String   // Stored as JSON string
+  videoUrl    String?
   isActive    Boolean  @default(true)
   order       Int      @default(0)
   createdAt   DateTime @default(now())
