@@ -166,35 +166,61 @@ export const translations = {
           monthly: "1,500",
           quarterly: "3,000",
           currency: "EGP",
-          features: ["Custom program", "Monthly follow-up"],
+          features: [
+            "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+            "Custom program", 
+            "Monthly follow-up"
+          ],
         },
         nutrition: {
           tier: "Fuel & Focus",
           monthly: "2,000",
           quarterly: "4,500",
           currency: "EGP",
-          features: ["Nutrition only", "Weekly follow-up"],
+          features: [
+            "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+            "Nutrition only", 
+            "Weekly follow-up"
+          ],
         },
         exercise: {
           tier: "Power & Performance",
           monthly: "2,000",
           quarterly: "4,500",
           currency: "EGP",
-          features: ["Exercise only", "Weekly follow-up"],
+          features: [
+            "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+            "Exercise only", 
+            "Weekly follow-up"
+          ],
         },
         transformation: {
           tier: "Elite Transformation",
           monthly: "3,000",
           quarterly: "6,000",
           currency: "EGP",
-          features: ["Nutr + Exec", "Weekly follow-up"],
+          features: [
+            "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+            "Nutr + Exec", 
+            "Weekly follow-up"
+          ],
         },
         vip: {
           tier: "Elite VIP",
           monthly: "7,000",
           quarterly: "15,000",
           currency: "EGP",
-          features: ["Nutr + Exec", "Daily follow-up"],
+          features: [
+            "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+            "you’re getting full-access mentorship.",
+            "Every detail is finely tuned to ensure you reach your goal in the shortest time possible.",
+            "Bespoke Nutrition Mastery",
+            "Tailored Workout Architecture",
+            "Priority 1-on-1 Support",
+            "Weekly Data Analysis & Adjustments",
+            "Nutr + Exec", 
+            "Daily follow-up"
+          ],
         },
       },
       abroad: {
@@ -203,35 +229,61 @@ export const translations = {
           monthly: "75",
           quarterly: "200",
           currency: "$",
-          features: ["Custom program", "Monthly follow-up"],
+          features: [
+            "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+            "Custom program", 
+            "Monthly follow-up"
+          ],
         },
         nutrition: {
           tier: "Fuel & Focus",
           monthly: "100",
           quarterly: "220",
           currency: "$",
-          features: ["Nutrition only", "Weekly follow-up"],
+          features: [
+            "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+            "Nutrition only", 
+            "Weekly follow-up"
+          ],
         },
         exercise: {
           tier: "Power & Performance",
           monthly: "100",
           quarterly: "220",
           currency: "$",
-          features: ["Exercise only", "Weekly follow-up"],
+          features: [
+            "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+            "Exercise only", 
+            "Weekly follow-up"
+          ],
         },
         transformation: {
           tier: "Elite Transformation",
           monthly: "150",
           quarterly: "400",
           currency: "$",
-          features: ["Nutr + Exec", "Weekly follow-up"],
+          features: [
+            "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+            "Nutr + Exec", 
+            "Weekly follow-up"
+          ],
         },
         vip: {
           tier: "Elite VIP",
           monthly: "500",
           quarterly: "1,100",
           currency: "$",
-          features: ["Nutr + Exec", "Daily follow-up"],
+          features: [
+            "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+            "you’re getting full-access mentorship.",
+            "Every detail is finely tuned to ensure you reach your goal in the shortest time possible.",
+            "Bespoke Nutrition Mastery",
+            "Tailored Workout Architecture",
+            "Priority 1-on-1 Support",
+            "Weekly Data Analysis & Adjustments",
+            "Nutr + Exec", 
+            "Daily follow-up"
+          ],
         },
       },
     },
@@ -534,6 +586,7 @@ export const translations = {
           quarterly: "٣٬٠٠٠",
           currency: "ج.م",
           features: [
+            "بقدملك في الباقة دي برنامج تغذية وتدريب متكامل ومتفصل مخصوص عشان يوصلك لهدفك.",
             "نظام أكل متفصل على جسمك وهدفك",
             "وجبات محسوبة بالماكروز بالظبط",
             "مناسب لروتين يومك الحقيقي",
@@ -546,6 +599,7 @@ export const translations = {
           quarterly: "٥٬٠٠٠",
           currency: "ج.م",
           features: [
+            "بقدملك في الباقة دي برنامج تغذية وتدريب متكامل ومتفصل مخصوص عشان يوصلك لهدفك.",
             "جدول تمرين متفصل ليك",
             "نظام تغذية متفصل ليك",
             "مناسب لجسمك وهدفك وروتينك",
@@ -559,6 +613,13 @@ export const translations = {
           quarterly: "٧٬٠٠٠",
           currency: "ج.م",
           features: [
+            "بقدملك في الباقة دي برنامج تغذية وتدريب متكامل ومتفصل مخصوص عشان يوصلك لهدفك.",
+            "ستحصل على إرشاد وتوجيه كامل (Full-Access Mentorship)",
+            "كل تفصيلة مدروسة بعناية لضمان وصولك لهدفك في أقصر وقت ممكن",
+            "إتقان التغذية المخصصة (Bespoke Nutrition Mastery)",
+            "هندسة التمارين المصممة لك (Tailored Workout Architecture)",
+            "أولوية الدعم النوعي 1 لـ 1",
+            "تحليل البيانات والتعديلات الأسبوعية",
             "كل مميزات الباقة الدهبي",
             "مكالمة تليفون كل شهر مع المدرب",
             "دعم أولوية ورد في أسرع وقت",
@@ -574,6 +635,7 @@ export const translations = {
           quarterly: "٣٠٠",
           currency: "$",
           features: [
+            "بقدملك في الباقة دي برنامج تغذية وتدريب متكامل ومتفصل مخصوص عشان يوصلك لهدفك.",
             "برنامج تدريبي مخصص",
             "نظام غذائي مخصص",
             "مناسب لجسمك وهدفك وروتينك",
@@ -587,6 +649,13 @@ export const translations = {
           quarterly: "٣٥٠",
           currency: "$",
           features: [
+            "بقدملك في الباقة دي برنامج تغذية وتدريب متكامل ومتفصل مخصوص عشان يوصلك لهدفك.",
+            "ستحصل على إرشاد وتوجيه كامل (Full-Access Mentorship)",
+            "كل تفصيلة مدروسة بعناية لضمان وصولك لهدفك في أقصر وقت ممكن",
+            "إتقان التغذية المخصصة (Bespoke Nutrition Mastery)",
+            "هندسة التمارين المصممة لك (Tailored Workout Architecture)",
+            "أولوية الدعم النوعي 1 لـ 1",
+            "تحليل البيانات والتعديلات الأسبوعية",
             "كل مميزات الذهبي",
             "مكالمة تليفون شهرية مع المدرب",
             "دعم أولوية ورد أسرع",
