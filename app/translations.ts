@@ -149,8 +149,9 @@ export const translations = {
       ],
     },
     pricing: {
-      label: "Invest In Yourself",
+      label: "Change Your Life",
       title: "PLANS",
+      subtitle: "Invest In Yourself",
       popular: "BEST VALUE",
       cta: "Get Started",
       regionToggle: { egypt: "Egypt (EGP)", abroad: "Abroad (USD)" },
@@ -253,6 +254,7 @@ export const translations = {
         quarterly: "200",
         currency: "$",
         features: [
+          "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
           "Customized training program for your specific goal.",
           "Calculated calorie and macro nutrition plan.",
           "Food alternatives list.",
@@ -268,6 +270,7 @@ export const translations = {
         quarterly: "220",
         currency: "$",
         features: [
+          "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
           "Detailed nutrition-only plan customized for your body.",
           "Weekly follow-up on WhatsApp with Coach Muhammad Roshdy.",
           "Macro-calculated meals based on your daily activity.",
@@ -284,6 +287,7 @@ export const translations = {
         quarterly: "220",
         currency: "$",
         features: [
+          "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
           "Customized training program (Exercise only).",
           "Weekly follow-up with Coach Muhammad Roshdy.",
           "Technique evaluation via video review.",
@@ -300,6 +304,7 @@ export const translations = {
         quarterly: "400",
         currency: "$",
         features: [
+          "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
           "Combined nutrition and exercise program.",
           "Weekly follow-up with Coach Muhammad Roshdy.",
           "Custom training splits (Gym or Home).",
@@ -317,6 +322,13 @@ export const translations = {
         quarterly: "1100",
         currency: "$",
         features: [
+          "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+          "you’re getting full-access mentorship.",
+          "Every detail is finely tuned to ensure you reach your goal in the shortest time possible.",
+          "Bespoke Nutrition Mastery",
+          "Tailored Workout Architecture",
+          "Priority 1-on-1 Support",
+          "Weekly Data Analysis & Adjustments",
           "Full nutrition and exercise program.",
           "Daily follow-up via WhatsApp.",
           "Weekly call with Coach Muhammad Roshdy.",
@@ -504,8 +516,9 @@ export const translations = {
       ],
     },
     pricing: {
-      label: "استثمر في صحتك وفورمتك",
-      title: "عروضنا",
+      label: "غيّر حياتك الآن",
+      title: "الباقات",
+      subtitle: "استثمر في نفسك",
       popular: "أعلى ترشيح",
       cta: "اشترك دلوقتي",
       regionToggle: { egypt: "من جوه مصر (ج.م)", abroad: "من بره مصر ($)" },
@@ -602,6 +615,7 @@ export const translations = {
         quarterly: "200",
         currency: "$",
         features: [
+          "في هذه الباقة، أقدم لك برنامجاً متكاملاً للتغذية والتمرين مصمماً خصيصاً لأهدافك الفريدة.",
           "برنامج تدريبي مخصص لهدفك (تنشيف/تضخيم).",
           "خطة نظام غذائي محسوبة السعرات والماكروز.",
           "قائمة بدائل للأطعمة.",
@@ -617,6 +631,7 @@ export const translations = {
         quarterly: "220",
         currency: "$",
         features: [
+          "في هذه الباقة، أقدم لك برنامجاً متكاملاً للتغذية والتمرين مصمماً خصيصاً لأهدافك الفريدة.",
           "نظام غذائي علمي مخصص بالكامل لجسمك وهدفك.",
           "متابعة أسبوعية على الواتساب مع كابتن محمد رشدي.",
           "جداول بدائل الأطعمة لمرونة كاملة في اختيار وجباتك.",
@@ -633,6 +648,7 @@ export const translations = {
         quarterly: "220",
         currency: "$",
         features: [
+          "في هذه الباقة، أقدم لك برنامجاً متكاملاً للتغذية والتمرين مصمماً خصيصاً لأهدافك الفريدة.",
           "برنامج تدريبي متطور مخصص (تمارين فقط).",
           "متابعة أسبوعية على الواتساب مع كابتن محمد رشدي.",
           "مراجعة تكنيك التمارين بالفيديو لضمان الأمان.",
@@ -649,6 +665,7 @@ export const translations = {
         quarterly: "400",
         currency: "$",
         features: [
+          "في هذه الباقة، أقدم لك برنامجاً متكاملاً للتغذية والتمرين مصمماً خصيصاً لأهدافك الفريدة.",
           "برنامج تغذية وتمرين مكامل مخصص لجسمك.",
           "متابعة أسبوعية مع كابتن محمد رشدي شخصياً.",
           "تحديثات دورية للخطة بناءً على تقدمك أسبوعياً.",
@@ -666,6 +683,13 @@ export const translations = {
         quarterly: "1100",
         currency: "$",
         features: [
+          "في هذه الباقة، أقدم لك برنامجاً متكاملاً للتغذية والتمرين مصمماً خصيصاً لأهدافك الفريدة.",
+          "ستحصل على إرشاد وتوجيه كامل (Full-Access Mentorship).",
+          "كل تفصيلة مدروسة بعناية لضمان وصولك لهدفك في أقصر وقت ممكن.",
+          "إتقان التغذية المخصصة (Bespoke Nutrition Mastery).",
+          "هندسة التمارين المصممة لك (Tailored Workout Architecture).",
+          "أولوية الدعم النوعي 1 لـ 1.",
+          "تحليل البيانات والتعديلات الأسبوعية.",
           "برنامج شامل (تغذية وتمرين) مع رعاية خاصة جداً.",
           "متابعة يومية لحظية عبر الواتساب.",
           "مكالمة تليفون أسبوعية مع كابتن محمد رشدي.",

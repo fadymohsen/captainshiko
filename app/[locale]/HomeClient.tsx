@@ -234,10 +234,11 @@ export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbT
         <div className="absolute top-[30%] left-0 w-[350px] h-[350px] rounded-full bg-accent/8 glow-pulse pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-6">
           <FadeUp>
-            <div className="text-center mb-10">
-              <span className="text-sm text-accent-light font-bold tracking-wider uppercase">{p.label}</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">{p.title}</h2>
-              <p className="text-muted mt-4 max-w-xl mx-auto text-[1.05rem] leading-relaxed">{p.includes}</p>
+            <div className="text-center mb-12">
+              <span className="text-sm text-accent-light font-bold tracking-wider uppercase block mb-0.5">{p.label}</span>
+              <span className="text-sm text-accent-light font-bold tracking-wider uppercase block mb-4">{p.subtitle}</span>
+              <h2 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">{p.title}</h2>
+              <p className="text-muted mt-6 max-w-xl mx-auto text-[1.05rem] leading-relaxed font-medium">{p.includes}</p>
             </div>
           </FadeUp>
 
