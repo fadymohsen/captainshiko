@@ -22,7 +22,7 @@ export default async function LoginPage() {
         <LoginForm />
         
         <div className="mt-8 text-center border-t border-white/10 pt-6">
-          <p className="text-xs text-muted/60 tracking-wider">CAPTAIN SHIKO © {new Date().getFullYear()}</p>
+          <p className="text-xs text-muted/60 tracking-wider">COACH MOHAMED ROSHDY © {new Date().getFullYear()}</p>
         </div>
       </div>
     </div>

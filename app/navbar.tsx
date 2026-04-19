@@ -52,7 +52,7 @@ export function Navbar() {
               if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           >
-            Captain Shiko<span className="text-accent">.</span>
+            Coach Mohamed Roshdy<span className="text-accent">.</span>
           </Link>
 
           {/* Desktop Nav */}

@@ -16,11 +16,11 @@ export const translations = {
     },
     aboutPage: {
       hero: {
-        title: "Captain Shiko",
-        text: "I am Captain Shiko, an internationally certified sports coach with more than 10 years of experience in fitness and sports nutrition. Throughout my career, I have worked with various groups and levels, and my focus has always been not just on changing the scale numbers, but on improving people's quality of life by building healthy, sustainable habits.",
+        title: "Coach Mohamed Roshdy",
+        text: "I am Coach Mohamed Roshdy, an internationally certified sports coach with more than 10 years of experience in fitness and sports nutrition. Throughout my career, I have worked with various groups and levels, and my focus has always been not just on changing the scale numbers, but on improving people's quality of life by building healthy, sustainable habits.",
       },
       philosophy: {
-        title: "Why Captain Shiko?",
+        title: "Why Coach Mohamed Roshdy?",
         text: 'My work philosophy is simple in wording, but strict in execution: "What cannot be measured, cannot be improved." I am here to end the era of randomness and harsh systems that collapse as soon as the subscription ends. My excellence in "online" training is not in giving you a schedule, but in building a lifestyle system based on three strategic pillars:',
         item1: {
           title: "Cognitive Empowerment",
@@ -118,7 +118,7 @@ export const translations = {
     transformationsData: [
       { name: "Ahmed S.", age: 28, result: "The Standard - setting the bar for excellence.", img: "/transformations/focus-1.png", duration: "12 Weeks" },
       { name: "Moustafa K.", age: 34, result: "Core Recomposition - abdominal sculpting.", img: "/transformations/focus-2.jpeg", duration: "16 Weeks" },
-      { name: "Captain Shiko", age: 0, result: "Founder Transformation - lead by example.", img: "/transformations/focus-3.jpeg", duration: "Founder" },
+      { name: "Coach Mohamed Roshdy", age: 0, result: "Founder Transformation - lead by example.", img: "/transformations/focus-3.jpeg", duration: "Founder" },
       { name: "Omar J.", age: 25, result: "Posture Correction - peak performance focus.", img: "/transformations/focus-6.jpeg", duration: "14 Weeks" },
       { name: "Hany R.", age: 39, result: "Complete lifestyle overhaul and fat loss.", img: "/transformations/tran-2.jpeg", duration: "12 Weeks" },
       { name: "Ziad F.", age: 23, result: "Massive fat loss and muscle toning.", img: "/transformations/tran-1.jpeg", duration: "10 Weeks" },
@@ -143,7 +143,7 @@ export const translations = {
       label: "The Squad",
       title: "COACHES",
       members: [
-        { name: "Captain Shiko", role: "Head Coach & Founder" },
+        { name: "Coach Mohamed Roshdy", role: "Head Coach & Founder" },
         { name: "Strength Coach", role: "Resistance Training Specialist" },
         { name: "Nutrition Coach", role: "Diet & Supplementation" },
       ],
@@ -291,7 +291,7 @@ export const translations = {
       label: "Ready?",
       title1: "Stop Scrolling.",
       title2: "Start Training.",
-      desc: "Your next chapter starts with one decision. Follow Captain Shiko and let's build something legendary — together.",
+      desc: "Your next chapter starts with one decision. Follow Coach Mohamed Roshdy and let's build something legendary — together.",
       button: "Get In Touch",
     },
     footer: {
@@ -435,11 +435,11 @@ export const translations = {
     },
     aboutPage: {
       hero: {
-        title: "كابتن شيكو",
-        text: "الخبرة والاعتماد أنا كابتن شيكو، مدرب رياضي معتمد دولياً بخبرة تزيد عن 10 أعوام في مجال اللياقة البدنية والتغذية الرياضية. خلال مسيرتي، عملت مع مختلف الفئات والمستويات، وكان تركيزي دائماً ليس فقط على تغيير أرقام الميزان، بل على تحسين جودة حياة الأشخاص من خلال بناء عادات صحية مستدامة وقابلة للاستمرار.",
+        title: "كوتش محمد رشدي",
+        text: "الخبرة والاعتماد أنا كوتش محمد رشدي، مدرب رياضي معتمد دولياً بخبرة تزيد عن 10 أعوام في مجال اللياقة البدنية والتغذية الرياضية. خلال مسيرتي، عملت مع مختلف الفئات والمستويات، وكان تركيزي دائماً ليس فقط على تغيير أرقام الميزان، بل على تحسين جودة حياة الأشخاص من خلال بناء عادات صحية مستدامة وقابلة للاستمرار.",
       },
       philosophy: {
-        title: "لماذا كابتن شيكو ؟",
+        title: "لماذا كوتش محمد رشدي ؟",
         text: 'فلسفتي في العمل بسيطة في صياغتها، لكنها صارمة في تنفيذها: "ما لا يمكن قياسه، لا يمكن تحسينه". أنا هنا لأنهي عصر العشوائية والأنظمة القاسية التي تنهار بمجرد انتهاء مدة الاشتراك. تميزي في التدريب "أونلاين" ليس في إعطائك جدولاً، بل في بناء نظام حياة يرتكز على ثلاثة أعمدة استراتيجية:',
         item1: {
           title: "التمكين المعرفي",
@@ -537,7 +537,7 @@ export const translations = {
     transformationsData: [
       { name: "أحمد س.", age: 28, result: "المعيار - ده كان أول وأهم نموذج للالتزام والنتايج.", img: "/transformations/focus-1.png", duration: "١٢ أسبوع" },
       { name: "مصطفى ك.", age: 34, result: "نحت القوام - تغيير كامل لمنطقة البطن.", img: "/transformations/focus-2.jpeg", duration: "١٦ أسبوع" },
-      { name: "كابتن شيكو", age: 0, result: "تحول المدرب - أنا ببني نفسي قُدامك.", img: "/transformations/focus-3.jpeg", duration: "المدرب" },
+      { name: "كوتش محمد رشدي", age: 0, result: "تحول المدرب - أنا ببني نفسي قُدامك.", img: "/transformations/focus-3.jpeg", duration: "المدرب" },
       { name: "عمر ج.", age: 25, result: "تحسين القوام - ظبطنا وضعية الجسم والأداء البدني.", img: "/transformations/focus-6.jpeg", duration: "١٤ أسبوع" },
       { name: "هاني ر.", age: 39, result: "تغيير كامل في نظام الحياة وخسارة دهون من الآخر.", img: "/transformations/tran-2.jpeg", duration: "١٢ أسبوع" },
       { name: "زياد ف.", age: 23, result: "خسارة وزن كبيرة مع بناء عضلات صافية.", img: "/transformations/tran-1.jpeg", duration: "١٠ أسابيع" },
@@ -562,7 +562,7 @@ export const translations = {
       label: "فريقنا",
       title: "المدربين",
       members: [
-        { name: "كابتن شيكو", role: "الهيد كوتش والمؤسس" },
+        { name: "كوتش محمد رشدي", role: "الهيد كوتش والمؤسس" },
         { name: "مدرب أحمال", role: "متخصص تمارين المقاومة" },
         { name: "مدرب تغذية", role: "تغذية ومكملات" },
       ],
@@ -669,7 +669,7 @@ export const translations = {
       label: "جاهز؟",
       title1: "كفاية تقليب.",
       title2: "ابدأ اتمرن.",
-      desc: "فصلك الجديد بيبدأ بقرار واحد. تابع كابتن شيكو ونبني حاجة أسطورية — مع بعض.",
+      desc: "فصلك الجديد بيبدأ بقرار واحد. تابع كوتش محمد رشدي ونبني حاجة أسطورية — مع بعض.",
       button: "تواصل معانا",
     },
     footer: {

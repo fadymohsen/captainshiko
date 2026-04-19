@@ -11,7 +11,7 @@ export function Footer() {
     <footer className="border-t border-border py-10">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
         <Link href={`/${locale}/#top`} className="text-lg font-extrabold tracking-tight" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          Captain Shiko<span className="text-accent">.</span>
+          Coach Mohamed Roshdy<span className="text-accent">.</span>
         </Link>
         <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold uppercase tracking-widest text-muted">
           <Link href={`/${locale}/faq`} className="hover:text-foreground transition-colors">FAQ</Link>
@@ -36,7 +36,7 @@ export function Footer() {
       </div>
       <div className="max-w-7xl mx-auto px-6 mt-8 pt-8 border-t border-border">
         <p className="text-xs text-muted text-center">
-          &copy; {new Date().getFullYear()} Captain Shiko. {t.footer.rights}
+          &copy; {new Date().getFullYear()} Coach Mohamed Roshdy. {t.footer.rights}
         </p>
         <p className="text-xs text-muted text-center mt-2">
           Powered by{" "}

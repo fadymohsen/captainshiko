@@ -80,7 +80,7 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
     // Note: We use the customer's phone here, so no need to hardcode Roshdy's number
     const cleanPhone = phone.replace(/\D/g, "");
     const text = encodeURIComponent(
-      `Hello ${name}! I'm Captain Shiko. I received your subscription for the ${plan} plan. Let's start your transformation!`
+      `Hello ${name}! I'm Coach Mohamed Roshdy. I received your subscription for the ${plan} plan. Let's start your transformation!`
     );
     window.open(`https://wa.me/${cleanPhone}?text=${text}`, "_blank");
   };

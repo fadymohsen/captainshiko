@@ -16,9 +16,9 @@ async function main() {
     },
     {
       questionEn: "How exactly does the online coaching work?",
-      answerEn: "Once you purchase a plan, you will receive a comprehensive assessment form. Based on your answers, Captain Shiko will build a custom regimen using our dedicated app, and you'll log your progress weekly for continuous adjustment.",
+      answerEn: "Once you purchase a plan, you will receive a comprehensive assessment form. Based on your answers, Coach Mohamed Roshdy will build a custom regimen using our dedicated app, and you'll log your progress weekly for continuous adjustment.",
       questionAr: "التدريب الأونلاين بيشتغل إزاي بالظبط؟",
-      answerAr: "بمجرد الاشتراك، هتوصلك استمارة تقييم شاملة. كابتن شيكو هيصمم بناءً عليها برنامجك على التطبيق بتاعنا، وهتتابع معاه وتطوراتك أسبوعياً للتعديل المستمر.",
+      answerAr: "بمجرد الاشتراك، هتوصلك استمارة تقييم شاملة. كوتش محمد رشدي هيصمم بناءً عليها برنامجك على التطبيق بتاعنا، وهتتابع معاه وتطوراتك أسبوعياً للتعديل المستمر.",
       order: 2
     },
     {
@@ -42,8 +42,8 @@ async function main() {
       slug: "terms",
       titleEn: "Terms of Service",
       titleAr: "شروط الخدمة",
-      contentEn: "By purchasing any online coaching program from Captain Shiko, you agree that you are in good physical condition and have consulted with a physician before starting any exercise regimen. Results vary from individual to individual and depend heavily on adherence to the prescribed programs.",
-      contentAr: "بشرائك أي برنامج تدريب أونلاين من كابتن شيكو، تقر بأنك في حالة صحية جيدة وأنك استشرت طبيباً قبل البدء في أي نظام رياضي. النتائج تختلف من شخص لآخر وتعتمد بشكل كبير على الالتزام بالبرامج.",
+      contentEn: "By purchasing any online coaching program from Coach Mohamed Roshdy, you agree that you are in good physical condition and have consulted with a physician before starting any exercise regimen. Results vary from individual to individual and depend heavily on adherence to the prescribed programs.",
+      contentAr: "بشرائك أي برنامج تدريب أونلاين من كوتش محمد رشدي، تقر بأنك في حالة صحية جيدة وأنك استشرت طبيباً قبل البدء في أي نظام رياضي. النتائج تختلف من شخص لآخر وتعتمد بشكل كبير على الالتزام بالبرامج.",
     },
     {
       slug: "privacy",

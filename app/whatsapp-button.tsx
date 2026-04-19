@@ -8,8 +8,8 @@ export function WhatsAppButton() {
   const phoneNumber = "201553038830";
   
   const message = locale === "en" 
-    ? "Hi Captain Shiko! I'm interested in your coaching programs."
-    : "أهلاً كابتن شيكو! حابب أستفسر عن برامج التدريب والمتابعة.";
+    ? "Hi Coach Mohamed Roshdy! I'm interested in your coaching programs."
+    : "أهلاً كوتش محمد رشدي! حابب أستفسر عن برامج التدريب والمتابعة.";
 
   const pulseVariants: any = {
     animate: {

@@ -15,7 +15,7 @@ export default async function DashboardLayout({
       <aside className="w-64 border-r border-white/5 bg-background/50 backdrop-blur-xl flex flex-col p-6 hidden md:flex">
         <div className="mb-10">
           <h2 className="text-xl font-black">Admin<span className="text-accent">Panel</span></h2>
-          <p className="text-xs text-muted mt-1 uppercase tracking-widest pl-0.5">Welcome, Captain Shiko</p>
+          <p className="text-xs text-muted mt-1 uppercase tracking-widest pl-0.5">Welcome, Coach Mohamed Roshdy</p>
         </div>
         
         <nav className="flex flex-col gap-2 flex-grow">

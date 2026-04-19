@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Admin Panel - Captain Shiko',
+  title: 'Admin Panel - Coach Mohamed Roshdy',
   description: 'Secure admin panel',
   robots: 'noindex, nofollow', // Ensure admin is hidden from search engines
 };

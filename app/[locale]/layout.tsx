@@ -15,28 +15,28 @@ const locales: Locale[] = ["en", "ar"];
 const metadataByLocale: Record<Locale, Metadata> = {
   en: {
     metadataBase: "https://captainshiko.com",
-    title: "Captain Shiko | Elite Online Fitness Coaching",
+    title: "Coach Mohamed Roshdy | Elite Online Fitness Coaching",
     description:
-      "Transform your body with Captain Shiko — personalized training programs, nutrition plans, and 1-on-1 online coaching by Mohamed Roshdy.",
+      "Transform your body with Coach Mohamed Roshdy — personalized training programs, nutrition plans, and 1-on-1 online coaching.",
     openGraph: {
-      title: "Captain Shiko | Elite Online Fitness Coaching",
+      title: "Coach Mohamed Roshdy | Elite Online Fitness Coaching",
       description:
-        "Transform your body with Captain Shiko — personalized training, nutrition plans, and 1-on-1 coaching by Mohamed Roshdy.",
-      images: [{ url: "/og-image.jpg", width: 800, height: 1067, alt: "Captain Shiko - Mohamed Roshdy" }],
+        "Transform your body with Coach Mohamed Roshdy — personalized training, nutrition plans, and 1-on-1 coaching.",
+      images: [{ url: "/og-image.jpg", width: 800, height: 1067, alt: "Coach Mohamed Roshdy" }],
       locale: "en_US",
       type: "website",
     },
   },
   ar: {
     metadataBase: "https://captainshiko.com",
-    title: "كابتن شيكو | تدريب لياقة أونلاين",
+    title: "كوتش محمد رشدي | تدريب لياقة أونلاين",
     description:
-      "حوّل جسمك مع كابتن شيكو — برامج تدريب مخصصة، خطط تغذية، ومتابعة شخصية مع محمد رشدي.",
+      "حوّل جسمك مع كوتش محمد رشدي — برامج تدريب مخصصة، خطط تغذية، ومتابعة شخصية.",
     openGraph: {
-      title: "كابتن شيكو | تدريب لياقة أونلاين",
+      title: "كوتش محمد رشدي | تدريب لياقة أونلاين",
       description:
-        "حوّل جسمك مع كابتن شيكو — برامج تدريب مخصصة، خطط تغذية، ومتابعة شخصية مع محمد رشدي.",
-      images: [{ url: "/og-image.jpg", width: 800, height: 1067, alt: "كابتن شيكو - محمد رشدي" }],
+        "حوّل جسمك مع كوتش محمد رشدي — برامج تدريب مخصصة، خطط تغذية، ومتابعة شخصية.",
+      images: [{ url: "/og-image.jpg", width: 800, height: 1067, alt: "كوتش محمد رشدي" }],
       locale: "ar_EG",
       type: "website",
     },

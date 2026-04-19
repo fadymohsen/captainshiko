@@ -86,7 +86,7 @@ async function main() {
     await prisma.fAQ.create({ data: faq });
   }
 
-  // 2. Policies Data (Structured based on Enjaz Care examples but specific to Captain Shiko)
+  // 2. Policies Data (Structured based on Enjaz Care examples but specific to Coach Mohamed Roshdy)
   const policiesData = [
     {
       slug: "terms",
@@ -100,7 +100,7 @@ async function main() {
 <p>بدخولك إلى موقعنا الإلكتروني (captainshiko.com)، أو اشتراكك في أي من برامجنا، أو تواصلك معنا عبر أي قناة، فإنك تقر بأنك قرأت وفهمت ووافقت على الالتزام بشروط الخدمة هذه. إذا كنت لا توافق، يرجى الامتناع عن استخدام خدماتنا.</p>
 
 <h2>2. الخدمات المقدمة</h2>
-<p>يقدم "كابتن شيكو" خدمات تدريبية وتغذوية عبر الإنترنت تشمل:</p>
+<p>يقدم "كوتش محمد رشدي" خدمات تدريبية وتغذوية عبر الإنترنت تشمل:</p>
 <ul>
   <li>تصميم جداول التمارين المخصصة (للمنزل أو الجيم).</li>
   <li>تصميم خطط التغذية وحساب الماكروز.</li>
@@ -115,7 +115,7 @@ async function main() {
 <ul>
   <li>يتم تحديد الأسعار بناءً على نوع الباقة المختار (شهرية أو ربع سنوية) والمنطقة الجغرافية (مصر أو خارجها).</li>
   <li>جميع الأسعار نهائية وتُدفع مقدماً.</li>
-  <li>يحتفظ كابتن شيكو بالحق في تعديل الأسعار في أي وقت.</li>
+  <li>يحتفظ كوتش محمد رشدي بالحق في تعديل الأسعار في أي وقت.</li>
 </ul>
 
 <h2>5. مسؤوليات العميل</h2>
@@ -133,10 +133,10 @@ async function main() {
 <p>نظراً لطبيعة الخدمات الرقمية المخصصة، لا يمكن إلغاء الاشتراك المدفوع واسترداد المبالغ بمجرد بدء العمل على تصميم خطتك (3-5 أيام من اكتمال بياناتك).</p>
 
 <h2>8. تحديد المسؤولية</h2>
-<p>لا يتحمل "كابتن شيكو" أي مسؤولية عن الأضرار المباشرة أو غير المباشرة الناتجة عن سوء استخدام الأنظمة الغذائية أو التدريبية بخلاف ما هو منصوص عليه في الخطط المخصصة.</p>
+<p>لا يتحمل "كوتش محمد رشدي" أي مسؤولية عن الأضرار المباشرة أو غير المباشرة الناتجة عن سوء استخدام الأنظمة الغذائية أو التدريبية بخلاف ما هو منصوص عليه في الخطط المخصصة.</p>
 
 <h2>9. الملكية الفكرية</h2>
-<p>جميع الخطط والكتب الإلكترونية والفيديوهات هي ملكية خاصة لكابتن شيكو. يمنع منعاً باتاً نشرها أو تداولها تجارياً.</p>
+<p>جميع الخطط والكتب الإلكترونية والفيديوهات هي ملكية خاصة لكوتش محمد رشدي. يمنع منعاً باتاً نشرها أو تداولها تجارياً.</p>
 
 <h2>10. الخصوصية</h2>
 <p>يخضع استخدامك لخدماتنا لسياسة الخصوصية الخاصة بنا، والمدرجة في شروط الخدمة هذه بالإحالة.</p>
@@ -162,7 +162,7 @@ async function main() {
 <p>By accessing our website (captainshiko.com), subscribing to our programs, or contacting us through any channel, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Service. If you do not agree, please refrain from using our services.</p>
 
 <h2>2. Services Offered</h2>
-<p>Captain Shiko provides online coaching and nutritional services, including:</p>
+<p>Coach Mohamed Roshdy provides online coaching and nutritional services, including:</p>
 <ul>
   <li>Customized workout schedules (Home or Gym).</li>
   <li>Nutrition planning and macro calculation.</li>
@@ -177,7 +177,7 @@ async function main() {
 <ul>
   <li>Pricing is determined based on the selected package (Monthly or Quarterly) and geographic region.</li>
   <li>All prices are final and paid in advance.</li>
-  <li>Captain Shiko reserves the right to modify pricing at any time.</li>
+  <li>Coach Mohamed Roshdy reserves the right to modify pricing at any time.</li>
 </ul>
 
 <h2>5. Client Responsibilities</h2>
@@ -195,10 +195,10 @@ async function main() {
 <p>Due to the nature of customized digital services, paid subscriptions cannot be canceled or refunded once work on your plan design has commenced (3-5 days from data completion).</p>
 
 <h2>8. Limitation of Liability</h2>
-<p>Captain Shiko is not liable for direct or indirect damages resulting from the misuse of nutrition or training systems beyond what is specified in the customized plans.</p>
+<p>Coach Mohamed Roshdy is not liable for direct or indirect damages resulting from the misuse of nutrition or training systems beyond what is specified in the customized plans.</p>
 
 <h2>9. Intellectual Property</h2>
-<p>All plans, e-books, and videos are the exclusive property of Captain Shiko. Commercial distribution or public sharing is strictly prohibited.</p>
+<p>All plans, e-books, and videos are the exclusive property of Coach Mohamed Roshdy. Commercial distribution or public sharing is strictly prohibited.</p>
 
 <h2>10. Privacy</h2>
 <p>Your use of our services is governed by our Privacy Policy, incorporated here by reference.</p>
@@ -275,7 +275,7 @@ async function main() {
       contentAr: `
 <h1>سياسة الاسترداد</h1>
 <h2>1. نظرة عامة</h2>
-<p>في "كابتن شيكو"، رضا العميل هو أولويتنا. ومع ذلك، نظراً لأن برامجنا هي سلع رقمية مصممة خصيصاً لكل عميل، فإن هناك ضوابط صارمة للاسترداد.</p>
+<p>في "كوتش محمد رشدي"، رضا العميل هو أولويتنا. ومع ذلك، نظراً لأن برامجنا هي سلع رقمية مصممة خصيصاً لكل عميل، فإن هناك ضوابط صارمة للاسترداد.</p>
 
 <h2>2. حالات الاستحقاق</h2>
 <p>يحق لك استرداد كامل المبلغ في حالة وجود خطأ تقني أدى لخصم المبلغ مرتين، أو إذا لم يتم تسليم البرنامج خلال 7 أيام عمل من اكتمال بياناتك دون إخطار مسبق.</p>
@@ -289,7 +289,7 @@ async function main() {
       contentEn: `
 <h1>Refund Policy</h1>
 <h2>1. Overview</h2>
-<p>At Captain Shiko, customer satisfaction is our priority. However, as our programs are custom-designed digital goods, strict refund terms apply.</p>
+<p>At Coach Mohamed Roshdy, customer satisfaction is our priority. However, as our programs are custom-designed digital goods, strict refund terms apply.</p>
 
 <h2>2. Eligibility</h2>
 <p>You are entitled to a full refund if a technical error resulted in double billing, or if the program was not delivered within 7 business days of data completion without prior notice.</p>

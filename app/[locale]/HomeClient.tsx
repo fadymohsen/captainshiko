@@ -163,7 +163,7 @@ export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbT
             <div className="relative aspect-square rounded-[3rem] overflow-hidden group glow-border border border-white/5 shadow-2xl">
               <ImageWithSkeleton
                 src="/coach-main.jpeg"
-                alt="Captain Shiko"
+                alt="Coach Mohamed Roshdy"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
