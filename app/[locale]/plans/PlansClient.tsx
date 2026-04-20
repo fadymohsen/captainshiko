@@ -28,6 +28,10 @@ export function PlansClient({ plans }: { plans: any[] }) {
     email: "",
     whatsapp: ""
   });
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
+  const [couponError, setCouponError] = useState("");
+  const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +48,8 @@ export function PlansClient({ plans }: { plans: any[] }) {
           clientName: formData.name,
           email: formData.email,
           whatsapp: formData.whatsapp,
-          region
+          region,
+          couponCode: appliedCoupon ? couponCode : undefined
         })
       });
       
@@ -76,10 +81,53 @@ export function PlansClient({ plans }: { plans: any[] }) {
     }
   };
 
+  const handleApplyCoupon = async () => {
+    if (!couponCode) return;
+    setIsValidatingCoupon(true);
+    setCouponError("");
+    setAppliedCoupon(null);
+
+    try {
+      const res = await fetch("/api/validate-coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          code: couponCode, 
+          planId: selectedPlan.id,
+          email: formData.email,
+          whatsapp: formData.whatsapp
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+
+      setAppliedCoupon(data);
+    } catch (err: any) {
+      setCouponError(err.message);
+    } finally {
+      setIsValidatingCoupon(false);
+    }
+  };
+
+  const getDiscountedPrice = (price: string | null) => {
+    if (!price) return 0;
+    const base = parseFloat(price);
+    if (!appliedCoupon) return base;
+
+    if (appliedCoupon.type === 'PERCENTAGE') {
+      return base * (1 - appliedCoupon.value / 100);
+    }
+    return Math.max(0, base - appliedCoupon.value);
+  };
+
   const closeCheckout = () => {
     setSelectedPlan(null);
     setPaymentResponse(null);
     setLoading(false);
+    setCouponCode("");
+    setAppliedCoupon(null);
+    setCouponError("");
   };
 
   const ct = (t as any).checkout;
@@ -131,9 +179,25 @@ export function PlansClient({ plans }: { plans: any[] }) {
                           : (locale === "en" ? "Global Subscription" : "الاشتراك الدولي")}
                       </div>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-black">
-                          {region === "egypt" ? plan.priceMonthlyEgp : plan.priceMonthlyUsd}
-                        </span>
+                        {region === "egypt" ? (
+                          plan.salePriceMonthlyEgp ? (
+                            <>
+                              <span className="text-3xl font-black text-accent-light">{plan.salePriceMonthlyEgp}</span>
+                              <span className="text-sm font-bold text-muted line-through opacity-50">{plan.priceMonthlyEgp}</span>
+                            </>
+                          ) : (
+                            <span className="text-3xl font-black">{plan.priceMonthlyEgp}</span>
+                          )
+                        ) : (
+                          plan.salePriceMonthlyUsd ? (
+                            <>
+                              <span className="text-3xl font-black text-accent-light">{plan.salePriceMonthlyUsd}</span>
+                              <span className="text-sm font-bold text-muted line-through opacity-50">{plan.priceMonthlyUsd}</span>
+                            </>
+                          ) : (
+                            <span className="text-3xl font-black">{plan.priceMonthlyUsd}</span>
+                          )
+                        )}
                         <span className="text-sm text-muted font-bold uppercase tracking-tight">
                           {region === "egypt" ? "EGP" : "USD"} {locale === "en" ? "/Mo" : "شهرياً"}
                         </span>
@@ -279,15 +343,52 @@ export function PlansClient({ plans }: { plans: any[] }) {
                       />
                     </div>
 
+                    <div className="space-y-3">
+                      <label className="text-xs font-bold text-muted uppercase tracking-widest block px-1">
+                        {ct.promoCode}
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponCode}
+                          onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                          className="flex-1 bg-background border border-white/5 rounded-2xl px-5 py-3 focus:outline-none focus:border-accent/50 transition-colors text-sm uppercase tracking-widest font-black"
+                          placeholder="CODE"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleApplyCoupon}
+                          disabled={isValidatingCoupon || !couponCode}
+                          className="bg-white/10 hover:bg-white/20 text-white px-6 rounded-2xl text-xs font-black uppercase tracking-widest transition-all disabled:opacity-50"
+                        >
+                          {isValidatingCoupon ? <Loader2 className="w-4 h-4 animate-spin" /> : ct.apply}
+                        </button>
+                      </div>
+                      {couponError && <p className="text-[10px] text-red-500 px-2 font-bold uppercase">{couponError}</p>}
+                      {appliedCoupon && <p className="text-[10px] text-green-500 px-2 font-bold uppercase">✓ {ct.discountApplied}</p>}
+                    </div>
+
                     <div className="pt-4 border-t border-white/5">
                       <div className="flex justify-between items-center mb-6 px-1">
                         <span className="text-muted">{ct.total}</span>
-                        <span className="text-2xl font-black">
-                          {region === "egypt" 
-                            ? (planType === "monthly" ? selectedPlan.priceMonthlyEgp : selectedPlan.priceQuarterlyEgp)
-                            : (planType === "monthly" ? selectedPlan.priceMonthlyUsd : selectedPlan.priceQuarterlyUsd)
-                          } EGP
-                        </span>
+                        <div className="flex flex-col items-end">
+                           <span className={`text-2xl font-black ${appliedCoupon ? 'text-accent scale-110' : ''} transition-all`}>
+                             {getDiscountedPrice(
+                               region === "egypt" 
+                                ? (planType === "monthly" ? (selectedPlan.salePriceMonthlyEgp || selectedPlan.priceMonthlyEgp) : (selectedPlan.salePriceQuarterlyEgp || selectedPlan.priceQuarterlyEgp))
+                                : (planType === "monthly" ? (selectedPlan.salePriceMonthlyUsd || selectedPlan.priceMonthlyUsd) : (selectedPlan.salePriceQuarterlyUsd || selectedPlan.priceQuarterlyUsd))
+                             ).toFixed(0)} {region === "egypt" ? "EGP" : "USD"}
+                           </span>
+                           {appliedCoupon && (
+                             <span className="text-[10px] text-muted line-through">
+                               {parseFloat(
+                                 region === "egypt" 
+                                  ? (planType === "monthly" ? (selectedPlan.salePriceMonthlyEgp || selectedPlan.priceMonthlyEgp) : (selectedPlan.salePriceQuarterlyEgp || selectedPlan.priceQuarterlyEgp))
+                                  : (planType === "monthly" ? (selectedPlan.salePriceMonthlyUsd || selectedPlan.priceMonthlyUsd) : (selectedPlan.salePriceQuarterlyUsd || selectedPlan.priceQuarterlyUsd))
+                                || "0").toFixed(0)} {region === "egypt" ? "EGP" : "USD"}
+                             </span>
+                           )}
+                        </div>
                       </div>
 
                       <MagneticButton>

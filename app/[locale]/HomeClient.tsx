@@ -35,11 +35,14 @@ export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbT
       : { monthly: planData.priceMonthlyUsd, quarterly: planData.priceQuarterlyUsd, currency: "USD" };
       
     return {
+      id: planData.id,
       slug: planData.slug,
       name: locale === "en" ? planData.nameEn : planData.nameAr,
       brief: locale === "en" ? planData.briefEn : planData.briefAr,
       monthly: pricing.monthly,
+      monthlySale: region === "egypt" ? planData.salePriceMonthlyEgp : planData.salePriceMonthlyUsd,
       quarterly: pricing.quarterly,
+      quarterlySale: region === "egypt" ? planData.salePriceQuarterlyEgp : planData.salePriceQuarterlyUsd,
       currency: pricing.currency,
     };
   });
@@ -287,11 +290,31 @@ export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbT
                     className="rounded-[2rem] p-8 flex flex-col transition-all duration-300 glow-border relative bg-surface-light w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] min-w-[300px] max-w-[350px] border border-white/10 hover:border-accent/30 shadow-xl"
                   >
                     <h3 className="text-lg font-black mb-4 tracking-tight text-foreground">{plan.name}</h3>
-                    <div className="flex items-baseline gap-1.5 mb-1">
-                      <span className="text-4xl font-black text-foreground">{price}</span>
-                    </div>
-                    <div className="text-sm mb-6 text-muted font-bold">
-                      {plan.currency} {periodLabel}
+                    <div className="flex flex-col mb-1 min-h-[60px] justify-center">
+                      <div className="flex items-baseline gap-2">
+                        {duration === "monthly" ? (
+                          plan.monthlySale ? (
+                            <>
+                              <span className="text-4xl font-black text-accent-light">{plan.monthlySale}</span>
+                              <span className="text-lg font-bold text-muted line-through opacity-50">{plan.monthly}</span>
+                            </>
+                          ) : (
+                            <span className="text-4xl font-black text-foreground">{plan.monthly}</span>
+                          )
+                        ) : (
+                          plan.quarterlySale ? (
+                            <>
+                              <span className="text-4xl font-black text-accent-light">{plan.quarterlySale}</span>
+                              <span className="text-lg font-bold text-muted line-through opacity-50">{plan.quarterly}</span>
+                            </>
+                          ) : (
+                            <span className="text-4xl font-black text-foreground">{plan.quarterly}</span>
+                          )
+                        )}
+                      </div>
+                      <div className="text-sm text-muted font-bold uppercase tracking-tight">
+                        {plan.currency} {periodLabel}
+                      </div>
                     </div>
                     <div className="w-full h-px bg-white/5 mb-6" />
                     <p className="text-sm text-muted leading-relaxed mb-8 flex-1 italic">
