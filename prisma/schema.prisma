@@ -26,6 +26,10 @@ model Plan {
   priceQuarterlyEgp String?
   priceMonthlyUsd String?
   priceQuarterlyUsd String?
+  salePriceMonthlyEgp String?
+  salePriceQuarterlyEgp String?
+  salePriceMonthlyUsd String?
+  salePriceQuarterlyUsd String?
   featuresEn  String   // Stored as JSON string
   featuresAr  String   // Stored as JSON string
   videoUrl    String?
@@ -58,6 +62,22 @@ model Policy {
   updatedAt   DateTime @updatedAt
 }
 
+model Coupon {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  type          String   // 'FIXED' or 'PERCENTAGE'
+  value         Float
+  totalLimit    Int?
+  perUserLimit  Int?     @default(1)
+  usageCount    Int      @default(0)
+  isActive      Boolean  @default(true)
+  appliesToAll  Boolean  @default(true)
+  planIds       String[] // PostgreSQL support for string arrays
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  purchases     Purchase[]
+}
+
 model Purchase {
   id           String   @id @default(cuid())
   clientName   String
@@ -73,6 +93,9 @@ model Purchase {
   paymentMethod String?
   region       String?  // 'egypt' or 'global'
   notes        String?
+  couponId     String?
+  coupon       Coupon?  @relation(fields: [couponId], references: [id])
+  discountAmount Float   @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

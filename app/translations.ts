@@ -416,7 +416,11 @@ export const translations = {
       fawryNote: "Please use the following code to pay at any Fawry point:",
       walletNote: "Please complete the payment through your mobile wallet:",
       referenceCode: "Reference Code",
-      paidButton: "I Have Paid"
+      paidButton: "I Have Paid",
+      promoCode: "Promo Code",
+      apply: "Apply",
+      discountApplied: "✓ Discount Applied!",
+      invalidCoupon: "Invalid or expired coupon"
     }
   },
   ar: {
@@ -794,7 +798,11 @@ export const translations = {
       fawryNote: "يرجى استخدام الكود التالي للدفع من أي منفذ فوري:",
       walletNote: "يرجى إتمام عملية الدفع من خلال محفظتك الإلكترونية:",
       referenceCode: "كود الدفع / المرجع",
-      paidButton: "لقد أتممت الدفع"
+      paidButton: "لقد أتممت الدفع",
+      promoCode: "كود الخصم",
+      apply: "تطبيق",
+      discountApplied: "✓ تم تطبيق الخصم!",
+      invalidCoupon: "كود خصم غير صالح أو منتهي"
     }
   }
 };

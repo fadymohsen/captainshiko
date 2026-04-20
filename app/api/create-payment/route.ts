@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   console.log("POST /api/create-payment - Start");
   try {
     const body = await req.json();
-    const { planId, clientName, email, whatsapp, region, planType, paymentMethodId } = body;
+    const { planId, clientName, email, whatsapp, region, planType, paymentMethodId, couponCode } = body;
 
     if (!planId || !clientName || !whatsapp || !region || !paymentMethodId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -21,15 +21,46 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Plan not found" }, { status: 404 });
     }
 
-    // 2. Price Logic (Currently EGP as per user request)
-    const amountStr = planType === "quarterly" ? plan.priceQuarterlyEgp : plan.priceMonthlyEgp;
-    const amount = parseFloat(amountStr || "0");
+    // 2. Price Logic
+    let amountStr = planType === "quarterly" 
+      ? (region === "egypt" ? (plan.salePriceQuarterlyEgp || plan.priceQuarterlyEgp) : (plan.salePriceQuarterlyUsd || plan.priceQuarterlyUsd))
+      : (region === "egypt" ? (plan.salePriceMonthlyEgp || plan.priceMonthlyEgp) : (plan.salePriceMonthlyUsd || plan.priceMonthlyUsd));
+    
+    let amount = parseFloat(amountStr || "0");
+    let discountAmount = 0;
+    let couponId = null;
 
-    if (amount <= 0) {
+    // 3. Handle Coupon
+    if (couponCode) {
+      const coupon = await prisma.coupon.findUnique({
+        where: { code: couponCode.toUpperCase() },
+      });
+
+      if (coupon && coupon.isActive) {
+        let isValid = true;
+        
+        // Target check
+        if (!coupon.appliesToAll && !coupon.planIds.includes(planId)) isValid = false;
+        
+        // Total limit check
+        if (coupon.totalLimit && coupon.usageCount >= coupon.totalLimit) isValid = false;
+
+        if (isValid) {
+          discountAmount = coupon.type === 'PERCENTAGE' 
+            ? (amount * (coupon.value / 100))
+            : coupon.value;
+          
+          amount = Math.max(0, amount - discountAmount);
+          couponId = coupon.id;
+        }
+      }
+    }
+
+    if (amount <= 0 && !couponId) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
 
-    // 3. Create Pending Purchase
+    // 4. Create Pending Purchase
     const purchase = await prisma.purchase.create({
       data: {
         clientName,
@@ -37,11 +68,13 @@ export async function POST(req: Request) {
         whatsapp,
         planId: plan.id,
         amount,
-        currency: "EGP",
+        currency: region === "egypt" ? "EGP" : "USD",
         status: "PENDING",
         region,
         paymentMethod: paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : "Wallet",
-        notes: `Plan Type: ${planType || 'monthly'}`
+        notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''}`,
+        couponId,
+        discountAmount
       },
     });
 
@@ -83,6 +116,14 @@ export async function POST(req: Request) {
         invoiceKey: paymentData.invoice_key,
       },
     });
+
+    // 6. Increment coupon usage if applied
+    if (couponId) {
+      await prisma.coupon.update({
+        where: { id: couponId },
+        data: { usageCount: { increment: 1 } }
+      });
+    }
 
     return NextResponse.json({ 
       status: "success",

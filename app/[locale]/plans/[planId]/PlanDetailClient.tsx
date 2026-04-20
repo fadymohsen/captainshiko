@@ -49,14 +49,22 @@ export function PlanDetailClient({ plan }: { plan: any }) {
     email: "",
     whatsapp: ""
   });
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
+  const [couponError, setCouponError] = useState("");
+  const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
 
   const currentPricing = region === "egypt" ? {
     monthly: plan.priceMonthlyEgp,
+    monthlySale: plan.salePriceMonthlyEgp,
     quarterly: plan.priceQuarterlyEgp,
+    quarterlySale: plan.salePriceQuarterlyEgp,
     currency: "EGP",
   } : {
     monthly: plan.priceMonthlyUsd,
+    monthlySale: plan.salePriceMonthlyUsd,
     quarterly: plan.priceQuarterlyUsd,
+    quarterlySale: plan.salePriceQuarterlyUsd,
     currency: "USD",
   };
 
@@ -79,7 +87,8 @@ export function PlanDetailClient({ plan }: { plan: any }) {
           clientName: formData.name,
           email: formData.email,
           whatsapp: formData.whatsapp,
-          region
+          region,
+          couponCode: appliedCoupon ? couponCode : undefined
         })
       });
       
@@ -105,6 +114,46 @@ export function PlanDetailClient({ plan }: { plan: any }) {
       alert("Error Details: " + (err.message || "Unknown Error"));
       setLoading(false);
     }
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode) return;
+    setIsValidatingCoupon(true);
+    setCouponError("");
+    setAppliedCoupon(null);
+
+    try {
+      const res = await fetch("/api/validate-coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          code: couponCode, 
+          planId: plan.id,
+          email: formData.email,
+          whatsapp: formData.whatsapp
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+
+      setAppliedCoupon(data);
+    } catch (err: any) {
+      setCouponError(err.message);
+    } finally {
+      setIsValidatingCoupon(false);
+    }
+  };
+
+  const getDiscountedPrice = (price: string | null) => {
+    if (!price) return 0;
+    const base = parseFloat(price);
+    if (!appliedCoupon) return base;
+
+    if (appliedCoupon.type === 'PERCENTAGE') {
+      return base * (1 - appliedCoupon.value / 100);
+    }
+    return Math.max(0, base - appliedCoupon.value);
   };
 
   const ct = (t as any).checkout;
@@ -249,7 +298,14 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                                 {locale === "en" ? "Monthly" : "شهرياً"}
                               </span>
                               <div className="flex items-baseline gap-2">
-                                <span className="text-5xl font-black group-hover:text-foreground transition-colors">{currentPricing.monthly || 'N/A'}</span>
+                                {currentPricing.monthlySale ? (
+                                  <>
+                                    <span className="text-5xl font-black text-accent-light">{currentPricing.monthlySale}</span>
+                                    <span className="text-xl font-bold text-muted line-through opacity-50">{currentPricing.monthly}</span>
+                                  </>
+                                ) : (
+                                  <span className="text-5xl font-black group-hover:text-foreground transition-colors">{currentPricing.monthly || 'N/A'}</span>
+                                )}
                                 <span className="text-xl font-bold text-muted">{currentPricing.currency}</span>
                               </div>
                             </div>
@@ -264,7 +320,14 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                                 {locale === "en" ? "3 Months Bundle" : "باقة ٣ شهور"}
                               </span>
                               <div className="flex items-baseline gap-2">
-                                <span className="text-5xl font-black text-accent-light">{currentPricing.quarterly || 'N/A'}</span>
+                                {currentPricing.quarterlySale ? (
+                                  <>
+                                    <span className="text-5xl font-black text-accent-light">{currentPricing.quarterlySale}</span>
+                                    <span className="text-xl font-bold text-muted line-through opacity-50">{currentPricing.quarterly}</span>
+                                  </>
+                                ) : (
+                                  <span className="text-5xl font-black text-accent-light">{currentPricing.quarterly || 'N/A'}</span>
+                                )}
                                 <span className="text-xl font-bold text-muted">{currentPricing.currency}</span>
                               </div>
                             </div>
@@ -410,15 +473,52 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                       />
                     </div>
 
+                    <div className="space-y-3">
+                      <label className="text-xs font-bold text-muted uppercase tracking-widest block px-1">
+                        {locale === 'en' ? 'Promo Code' : 'كود الخصم'}
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponCode}
+                          onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                          className="flex-1 bg-background border border-white/5 rounded-2xl px-5 py-3 focus:outline-none focus:border-accent/50 transition-colors text-sm uppercase tracking-widest font-black"
+                          placeholder="CODE"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleApplyCoupon}
+                          disabled={isValidatingCoupon || !couponCode}
+                          className="bg-white/10 hover:bg-white/20 text-white px-6 rounded-2xl text-xs font-black uppercase tracking-widest transition-all disabled:opacity-50"
+                        >
+                          {isValidatingCoupon ? <Loader2 className="w-4 h-4 animate-spin" /> : ct.apply}
+                        </button>
+                      </div>
+                      {couponError && <p className="text-[10px] text-red-500 px-2 font-bold uppercase">{couponError}</p>}
+                      {appliedCoupon && <p className="text-[10px] text-green-500 px-2 font-bold uppercase">✓ {ct.discountApplied}</p>}
+                    </div>
+
                     <div className="pt-4 border-t border-white/5">
                       <div className="flex justify-between items-center mb-6 px-1">
                         <span className="text-muted">{ct.total}</span>
-                        <span className="text-2xl font-black">
-                          {region === "egypt" 
-                            ? (planType === "monthly" ? plan.priceMonthlyEgp : plan.priceQuarterlyEgp)
-                            : (planType === "monthly" ? plan.priceMonthlyUsd : plan.priceQuarterlyUsd)
-                          } {currentPricing.currency}
-                        </span>
+                        <div className="flex flex-col items-end">
+                           <span className={`text-2xl font-black ${appliedCoupon ? 'text-accent scale-110' : ''} transition-all`}>
+                             {getDiscountedPrice(
+                               planType === "monthly" 
+                                ? (currentPricing.monthlySale || currentPricing.monthly)
+                                : (currentPricing.quarterlySale || currentPricing.quarterly)
+                             ).toFixed(0)} {currentPricing.currency}
+                           </span>
+                           {appliedCoupon && (
+                             <span className="text-[10px] text-muted line-through">
+                               {parseFloat(
+                                 planType === "monthly" 
+                                  ? (currentPricing.monthlySale || currentPricing.monthly)
+                                  : (currentPricing.quarterlySale || currentPricing.quarterly)
+                                || "0").toFixed(0)} {currentPricing.currency}
+                             </span>
+                           )}
+                        </div>
                       </div>
 
                       <MagneticButton>

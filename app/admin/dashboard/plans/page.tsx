@@ -7,9 +7,14 @@ export default async function PlansPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="text-3xl font-black mb-2 tracking-tight">Services & Plans</h1>
-        <p className="text-muted text-sm font-medium">Manage pricing, details, and features of your coaching packages.</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-black mb-2 tracking-tight">Services & Plans</h1>
+          <p className="text-muted text-sm font-medium">Manage pricing, details, and features of your coaching packages.</p>
+        </div>
+        <a href="/admin/dashboard/plans/new" className="bg-accent text-white font-black uppercase tracking-widest px-6 py-3 rounded-xl hover:bg-accent-light transition-all shadow-lg text-sm">
+          Create New Plan
+        </a>
       </div>
 
       <div className="grid gap-6">
@@ -28,9 +33,15 @@ export default async function PlansPage() {
               <div className="flex flex-wrap gap-4 text-xs font-bold uppercase tracking-widest text-muted/80">
                 <div className="bg-background/50 px-3 py-1.5 rounded-lg border border-white/5">
                   <span className="text-foreground">EGP:</span> {plan.priceMonthlyEgp || 'N/A'}/mo | {plan.priceQuarterlyEgp || 'N/A'}/3mo
+                  {plan.salePriceMonthlyEgp || plan.salePriceQuarterlyEgp ? (
+                    <span className="text-accent ml-2">SALE ACTIVE</span>
+                  ) : null}
                 </div>
                 <div className="bg-background/50 px-3 py-1.5 rounded-lg border border-white/5">
                   <span className="text-foreground">USD:</span> {plan.priceMonthlyUsd || 'N/A'}/mo | {plan.priceQuarterlyUsd || 'N/A'}/3mo
+                  {plan.salePriceMonthlyUsd || plan.salePriceQuarterlyUsd ? (
+                    <span className="text-accent ml-2">SALE ACTIVE</span>
+                  ) : null}
                 </div>
               </div>
             </div>

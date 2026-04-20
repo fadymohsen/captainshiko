@@ -23,6 +23,7 @@ export default async function DashboardLayout({
           <a href="/admin/dashboard/plans" className="py-3 px-4 rounded-xl text-muted text-sm font-bold tracking-wider hover:bg-white/5 hover:text-foreground transition-colors">Services & Plans</a>
           <a href="/admin/dashboard/transformations" className="py-3 px-4 rounded-xl text-muted text-sm font-bold tracking-wider hover:bg-white/5 hover:text-foreground transition-colors">Transformations</a>
           <a href="/admin/dashboard/faqs" className="py-3 px-4 rounded-xl text-muted text-sm font-bold tracking-wider hover:bg-white/5 hover:text-foreground transition-colors">FAQs</a>
+          <a href="/admin/dashboard/coupons" className="py-3 px-4 rounded-xl text-muted text-sm font-bold tracking-wider hover:bg-white/5 hover:text-foreground transition-colors">Coupons</a>
           <a href="/admin/dashboard/policies" className="py-3 px-4 rounded-xl text-muted text-sm font-bold tracking-wider hover:bg-white/5 hover:text-foreground transition-colors">Policies</a>
           <a href="/admin/dashboard/purchases" className="py-3 px-4 rounded-xl text-muted text-sm font-bold tracking-wider hover:bg-white/5 hover:text-foreground transition-colors">Purchases</a>
         </nav>

@@ -1,24 +1,27 @@
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { FeaturesEditor } from "./FeaturesEditor";
+import { FeaturesEditor } from "../[id]/FeaturesEditor";
 
 const prisma = new PrismaClient();
 
-export async function updatePlanAction(id: string, formData: FormData) {
+export async function createPlanAction(formData: FormData) {
   'use server';
   
   try {
-    await prisma.plan.update({
-      where: { id },
+    const nameEn = formData.get('nameEn') as string;
+    const slug = nameEn.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+
+    await prisma.plan.create({
       data: {
-        nameEn: formData.get('nameEn') as string,
+        slug,
+        nameEn,
         nameAr: formData.get('nameAr') as string,
         briefEn: formData.get('briefEn') as string,
         briefAr: formData.get('briefAr') as string,
         videoUrl: formData.get('videoUrl') as string || null,
-        featuresEn: formData.get('featuresEn') as string,
-        featuresAr: formData.get('featuresAr') as string,
+        featuresEn: formData.get('featuresEn') as string || "[]",
+        featuresAr: formData.get('featuresAr') as string || "[]",
         priceMonthlyEgp: formData.get('priceMonthlyEgp') as string || null,
         priceQuarterlyEgp: formData.get('priceQuarterlyEgp') as string || null,
         priceMonthlyUsd: formData.get('priceMonthlyUsd') as string || null,
@@ -27,37 +30,26 @@ export async function updatePlanAction(id: string, formData: FormData) {
         salePriceQuarterlyEgp: formData.get('salePriceQuarterlyEgp') as string || null,
         salePriceMonthlyUsd: formData.get('salePriceMonthlyUsd') as string || null,
         salePriceQuarterlyUsd: formData.get('salePriceQuarterlyUsd') as string || null,
+        isActive: true,
       }
     });
 
     revalidatePath('/', 'layout');
+    revalidatePath('/admin/dashboard/plans');
   } catch (error) {
-    console.error("Failed to update plan:", error);
+    console.error("Failed to create plan:", error);
     throw error;
   }
   
   redirect('/admin/dashboard/plans');
 }
 
-export default async function EditPlanPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const plan = await prisma.plan.findUnique({
-    where: { id }
-  });
-
-  if (!plan) return <div>Plan not found</div>;
-
-  const updatePlanWithId = updatePlanAction.bind(null, id);
-
-  // Safely parse features
-  const featuresEn = JSON.parse(plan.featuresEn || "[]");
-  const featuresAr = JSON.parse(plan.featuresAr || "[]");
-
+export default async function NewPlanPage() {
   return (
     <div className="max-w-4xl pb-20">
-      <h1 className="text-3xl font-black mb-8 tracking-tight">Edit Service: {plan.nameEn}</h1>
+      <h1 className="text-3xl font-black mb-8 tracking-tight">Create New Service</h1>
       
-      <form action={updatePlanWithId} className="flex flex-col gap-8 bg-white/5 border border-white/10 p-8 rounded-3xl">
+      <form action={createPlanAction} className="flex flex-col gap-8 bg-white/5 border border-white/10 p-8 rounded-3xl">
 
         {/* Content Section */}
         <div className="grid md:grid-cols-2 gap-8 border-b border-white/10 pb-8">
@@ -65,15 +57,15 @@ export default async function EditPlanPage({ params }: { params: Promise<{ id: s
             <h3 className="uppercase tracking-widest text-accent text-xs font-bold">English Content</h3>
             <label className="flex flex-col gap-2">
               <span className="text-sm font-bold text-muted">Name</span>
-              <input type="text" name="nameEn" defaultValue={plan.nameEn} className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" required />
+              <input type="text" name="nameEn" className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" required />
             </label>
             <label className="flex flex-col gap-2">
               <span className="text-sm font-bold text-muted">Brief Description</span>
-              <textarea name="briefEn" defaultValue={plan.briefEn} className="bg-background/50 border border-white/10 p-3 rounded-xl min-h-[100px] focus:border-accent outline-none" required />
+              <textarea name="briefEn" className="bg-background/50 border border-white/10 p-3 rounded-xl min-h-[100px] focus:border-accent outline-none" required />
             </label>
             <div className="flex flex-col gap-3">
               <span className="text-sm font-bold text-muted">Benefits (Features)</span>
-              <FeaturesEditor initialFeatures={featuresEn} name="featuresEn" />
+              <FeaturesEditor initialFeatures={[]} name="featuresEn" />
             </div>
           </div>
           
@@ -81,15 +73,15 @@ export default async function EditPlanPage({ params }: { params: Promise<{ id: s
             <h3 className="uppercase tracking-widest text-accent text-xs font-bold">المحتوى العربي</h3>
             <label className="flex flex-col gap-2">
               <span className="text-sm font-bold text-muted">الاسم</span>
-              <input type="text" name="nameAr" defaultValue={plan.nameAr} className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" required />
+              <input type="text" name="nameAr" className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" required />
             </label>
             <label className="flex flex-col gap-2">
               <span className="text-sm font-bold text-muted">وصف مختصر</span>
-              <textarea name="briefAr" defaultValue={plan.briefAr} className="bg-background/50 border border-white/10 p-3 rounded-xl min-h-[100px] focus:border-accent outline-none" required />
+              <textarea name="briefAr" className="bg-background/50 border border-white/10 p-3 rounded-xl min-h-[100px] focus:border-accent outline-none" required />
             </label>
             <div className="flex flex-col gap-3">
               <span className="text-sm font-bold text-muted">المميزات (الفوائد)</span>
-              <FeaturesEditor initialFeatures={featuresAr} name="featuresAr" />
+              <FeaturesEditor initialFeatures={[]} name="featuresAr" />
             </div>
           </div>
         </div>
@@ -102,11 +94,9 @@ export default async function EditPlanPage({ params }: { params: Promise<{ id: s
             <input 
               type="url" 
               name="videoUrl" 
-              defaultValue={plan.videoUrl || ''} 
               placeholder="https://www.instagram.com/reel/XYZ/ or https://www.youtube.com/shorts/ABC"
               className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" 
             />
-            <p className="text-[10px] text-muted font-medium px-1 italic">* 9:16 portrait videos only. Autoplay will be disabled automatically.</p>
           </label>
         </div>
 
@@ -116,20 +106,20 @@ export default async function EditPlanPage({ params }: { params: Promise<{ id: s
             <h3 className="uppercase tracking-widest text-accent text-xs font-bold">Pricing for Egypt (EGP)</h3>
             <label className="flex flex-col gap-2">
               <span className="text-sm font-bold text-muted">Monthly Price</span>
-              <input type="text" name="priceMonthlyEgp" defaultValue={plan.priceMonthlyEgp || ''} className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" />
+              <input type="text" name="priceMonthlyEgp" className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" />
             </label>
             <label className="flex flex-col gap-2">
               <span className="text-sm font-bold text-muted">Quarterly Price</span>
-              <input type="text" name="priceQuarterlyEgp" defaultValue={plan.priceQuarterlyEgp || ''} className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" />
+              <input type="text" name="priceQuarterlyEgp" className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" />
             </label>
             <div className="grid grid-cols-2 gap-4">
               <label className="flex flex-col gap-2">
                 <span className="text-[11px] font-bold text-accent uppercase">Monthly Sale</span>
-                <input type="text" name="salePriceMonthlyEgp" defaultValue={plan.salePriceMonthlyEgp || ''} placeholder="Special Price" className="bg-accent/5 border border-accent/20 p-3 rounded-xl focus:border-accent outline-none" />
+                <input type="text" name="salePriceMonthlyEgp" placeholder="Special Price" className="bg-accent/5 border border-accent/20 p-3 rounded-xl focus:border-accent outline-none" />
               </label>
               <label className="flex flex-col gap-2">
                 <span className="text-[11px] font-bold text-accent uppercase">Quarterly Sale</span>
-                <input type="text" name="salePriceQuarterlyEgp" defaultValue={plan.salePriceQuarterlyEgp || ''} placeholder="Special Price" className="bg-accent/5 border border-accent/20 p-3 rounded-xl focus:border-accent outline-none" />
+                <input type="text" name="salePriceQuarterlyEgp" placeholder="Special Price" className="bg-accent/5 border border-accent/20 p-3 rounded-xl focus:border-accent outline-none" />
               </label>
             </div>
           </div>
@@ -138,20 +128,20 @@ export default async function EditPlanPage({ params }: { params: Promise<{ id: s
             <h3 className="uppercase tracking-widest text-accent text-xs font-bold">Global Pricing (USD)</h3>
             <label className="flex flex-col gap-2">
               <span className="text-sm font-bold text-muted">Monthly Price</span>
-              <input type="text" name="priceMonthlyUsd" defaultValue={plan.priceMonthlyUsd || ''} className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" />
+              <input type="text" name="priceMonthlyUsd" className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" />
             </label>
             <label className="flex flex-col gap-2">
               <span className="text-sm font-bold text-muted">Quarterly Price</span>
-              <input type="text" name="priceQuarterlyUsd" defaultValue={plan.priceQuarterlyUsd || ''} className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" />
+              <input type="text" name="priceQuarterlyUsd" className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none" />
             </label>
             <div className="grid grid-cols-2 gap-4">
               <label className="flex flex-col gap-2">
                 <span className="text-[11px] font-bold text-accent uppercase">Monthly Sale</span>
-                <input type="text" name="salePriceMonthlyUsd" defaultValue={plan.salePriceMonthlyUsd || ''} placeholder="Special Price" className="bg-accent/5 border border-accent/20 p-3 rounded-xl focus:border-accent outline-none" />
+                <input type="text" name="salePriceMonthlyUsd" placeholder="Special Price" className="bg-accent/5 border border-accent/20 p-3 rounded-xl focus:border-accent outline-none" />
               </label>
               <label className="flex flex-col gap-2">
                 <span className="text-[11px] font-bold text-accent uppercase">Quarterly Sale</span>
-                <input type="text" name="salePriceQuarterlyUsd" defaultValue={plan.salePriceQuarterlyUsd || ''} placeholder="Special Price" className="bg-accent/5 border border-accent/20 p-3 rounded-xl focus:border-accent outline-none" />
+                <input type="text" name="salePriceQuarterlyUsd" placeholder="Special Price" className="bg-accent/5 border border-accent/20 p-3 rounded-xl focus:border-accent outline-none" />
               </label>
             </div>
           </div>
@@ -159,7 +149,7 @@ export default async function EditPlanPage({ params }: { params: Promise<{ id: s
 
         <div className="pt-6 flex flex-col sm:flex-row gap-4">
           <button type="submit" className="bg-accent hover:bg-accent-light text-white font-black uppercase tracking-widest px-8 py-4 rounded-xl transition-all shadow-lg flex-1 md:flex-none">
-            Save Changes
+            Create Plan
           </button>
           <a href="/admin/dashboard/plans" className="border border-white/10 text-white font-bold uppercase tracking-widest px-8 py-4 rounded-xl hover:bg-white/5 transition-all text-center flex-1 md:flex-none">
             Cancel
