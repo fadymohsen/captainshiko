@@ -364,16 +364,28 @@ export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbT
                       <br />
                       <span className="gradient-text">{t.cta.title2}</span>
                     </h2>
-                    <p className="text-muted max-w-md leading-relaxed">{t.cta.desc}</p>
+                    <p className="text-muted max-w-md leading-relaxed mb-8">{t.cta.desc}</p>
+                    <div className="flex justify-center sm:justify-start">
+                      <MagneticButton>
+                        <Link
+                          href={`/${locale}/plans`}
+                          className="bg-accent text-white font-black px-10 py-5 rounded-full text-sm uppercase tracking-widest hover:bg-accent-light transition-all shadow-xl inline-block"
+                        >
+                          {(t as any).nav.seeAllPlans}
+                        </Link>
+                      </MagneticButton>
+                    </div>
                   </FadeUp>
                 </div>
                 <FadeUp delay={0.2}>
-                  <div className="flex items-center gap-5">
-                    {socialLinks.map((link) => (
-                      <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-accent-light hover:scale-125 transition-all duration-300" aria-label={link.label}>
-                        {link.icon}
-                      </a>
-                    ))}
+                  <div className="flex flex-col items-center lg:items-end gap-6">
+                    <div className="flex items-center gap-5">
+                      {socialLinks.map((link) => (
+                        <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-accent-light hover:scale-125 transition-all duration-300" aria-label={link.label}>
+                          {link.icon}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </FadeUp>
               </div>
