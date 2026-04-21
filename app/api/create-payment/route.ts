@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   console.log("POST /api/create-payment - Start");
   try {
     const body = await req.json();
-    const { planId, clientName, email, whatsapp, region, planType, paymentMethodId, couponCode } = body;
+    const { planId, clientName, email, whatsapp, region, planType, paymentMethodId, couponCode, locale } = body;
 
     if (!planId || !clientName || !whatsapp || !region || !paymentMethodId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
