@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://captainshiko.com"),
+  metadataBase: new URL("https://coachmohamedroshdy.com"),
   title: "Coach Mohamed Roshdy | Elite Online Fitness Coaching",
   description:
     "Transform your body with Coach Mohamed Roshdy — personalized training programs, nutrition plans, and 1-on-1 online coaching.",
