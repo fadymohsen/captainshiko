@@ -21,18 +21,40 @@ function SuccessContent() {
     if (pid) setPurchaseId(pid);
 
     // Verify payment and trigger emails
+    // Fawaterak can take 10-30s to confirm payment, so we retry multiple times
     if (pid || invoiceId) {
-      // Try immediately, then retry after 5s in case payment is still processing
-      const verify = () =>
-        fetch("/api/verify-payment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ purchaseId: pid || undefined, invoiceId: invoiceId || undefined }),
-        }).catch(() => {});
+      let cancelled = false;
 
-      verify();
-      const timer = setTimeout(verify, 5000);
-      return () => clearTimeout(timer);
+      const verify = async () => {
+        try {
+          const res = await fetch("/api/verify-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ purchaseId: pid || undefined, invoiceId: invoiceId || undefined }),
+          });
+          const data = await res.json();
+          // Stop retrying once verified or already completed
+          if (data.verified || data.alreadyCompleted) return true;
+        } catch {}
+        return false;
+      };
+
+      const retryDelays = [0, 3000, 8000, 15000, 25000, 40000];
+      const timers: NodeJS.Timeout[] = [];
+
+      for (const delay of retryDelays) {
+        const timer = setTimeout(async () => {
+          if (cancelled) return;
+          const done = await verify();
+          if (done) cancelled = true;
+        }, delay);
+        timers.push(timer);
+      }
+
+      return () => {
+        cancelled = true;
+        timers.forEach(clearTimeout);
+      };
     }
   }, [searchParams]);
 
