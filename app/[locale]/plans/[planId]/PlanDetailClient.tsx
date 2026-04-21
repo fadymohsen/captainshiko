@@ -13,7 +13,7 @@ import {
   MagneticButton,
 } from "../../../animations";
 import { ImageWithSkeleton } from "../../../image-with-skeleton";
-import { X, CreditCard, Loader2, Apple, Receipt, CheckCircle2 } from "lucide-react";
+import { X, CreditCard, Loader2, Receipt, CheckCircle2 } from "lucide-react";
 
 export function PlanDetailClient({ plan }: { plan: any }) {
   const { t, locale, dir, region } = useLang();
@@ -431,11 +431,8 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                           onClick={() => setPaymentMethodId(2)}
                           className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 2 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
                         >
-                          <div className="flex items-center gap-2 mb-2">
-                            <CreditCard className="w-5 h-5" />
-                            <Apple className="w-5 h-5" />
-                          </div>
-                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.cardApplePay}</span>
+                          <CreditCard className="w-6 h-6 mb-2" />
+                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.card}</span>
                         </button>
                         <button
                           type="button"
