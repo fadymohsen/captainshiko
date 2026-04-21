@@ -107,7 +107,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
         localStorage.setItem("lastPurchaseId", data.purchaseId);
       }
 
-      if (data.url && (paymentMethodId === 2 || paymentMethodId === 11)) {
+      if (data.url && paymentMethodId === 2) {
         // Card / Apple Pay: redirect to Fawaterak payment page
         window.location.href = data.url;
         setPaymentResponse(data);
@@ -381,7 +381,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg bg-surface-light border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-y-auto max-h-[90vh]"
+              className="relative w-full max-w-lg bg-surface-light border border-white/10 rounded-3xl p-4 sm:p-8 shadow-2xl overflow-y-auto max-h-[75vh] sm:max-h-[90vh]"
               dir={dir}
             >
               <button 
@@ -405,7 +405,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                     </div>
                   </div>
 
-                  <form onSubmit={handleCheckout} className="space-y-6">
+                  <form onSubmit={handleCheckout} className="space-y-4 sm:space-y-6">
                     <div className="grid grid-cols-2 gap-3 p-1 bg-background/50 rounded-2xl border border-white/5">
                       <button
                         type="button"
@@ -425,14 +425,17 @@ export function PlanDetailClient({ plan }: { plan: any }) {
 
                     <div>
                       <label className="text-xs font-bold text-muted uppercase tracking-widest block mb-3 px-1">{ct.paymentMethod}</label>
-                      <div className="grid grid-cols-3 gap-3">
+                      <div className="grid grid-cols-2 gap-3">
                         <button
                           type="button"
                           onClick={() => setPaymentMethodId(2)}
                           className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 2 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
                         >
-                          <CreditCard className="w-6 h-6 mb-2" />
-                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.card}</span>
+                          <div className="flex items-center gap-2 mb-2">
+                            <CreditCard className="w-5 h-5" />
+                            <Apple className="w-5 h-5" />
+                          </div>
+                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.cardApplePay}</span>
                         </button>
                         <button
                           type="button"
@@ -441,14 +444,6 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                         >
                           <Receipt className="w-6 h-6 mb-2" />
                           <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.fawry}</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setPaymentMethodId(11)}
-                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 11 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
-                        >
-                          <Apple className="w-6 h-6 mb-2" />
-                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.applePay}</span>
                         </button>
                       </div>
                     </div>

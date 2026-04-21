@@ -71,7 +71,7 @@ export async function POST(req: Request) {
         currency: region === "egypt" ? "EGP" : "USD",
         status: "PENDING",
         region,
-        paymentMethod: paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : paymentMethodId === 11 ? "Apple Pay" : "Other",
+        paymentMethod: paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : "Other",
         notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''}`,
         couponId,
         discountAmount
