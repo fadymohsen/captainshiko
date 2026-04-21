@@ -51,11 +51,16 @@ export async function POST(req: Request) {
       const emailData = {
         clientName: updatedPurchase.clientName,
         email: updatedPurchase.email || "",
+        whatsapp: updatedPurchase.whatsapp,
         planName: updatedPurchase.plan.nameEn,
         amount: updatedPurchase.amount,
         currency: updatedPurchase.currency,
         paymentMethod: updatedPurchase.paymentMethod,
         invoiceId: updatedPurchase.invoiceId,
+        region: updatedPurchase.region,
+        notes: updatedPurchase.notes,
+        discountAmount: updatedPurchase.discountAmount,
+        couponCode: updatedPurchase.notes?.match(/Coupon: (\S+)/)?.[1] || null,
       };
 
       // Send emails in parallel, don't block the webhook response

@@ -16,54 +16,63 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "";
 interface PurchaseEmailData {
   clientName: string;
   email: string;
+  whatsapp: string | null;
   planName: string;
   amount: number;
   currency: string;
   paymentMethod: string | null;
   invoiceId: string | null;
+  region: string | null;
+  notes: string | null;
+  discountAmount: number;
+  couponCode: string | null;
 }
+
+const WHATSAPP_NUMBER = "201553038830";
 
 export async function sendClientEmail(data: PurchaseEmailData) {
   if (!data.email) return;
 
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Coach! I just subscribed and I'm ready to start!")}`;
+
   await transporter.sendMail({
-    from: `"Captain Shiko" <${FROM_EMAIL}>`,
+    from: `"Coach Mohamed Roshdy" <${FROM_EMAIL}>`,
     to: data.email,
-    subject: "Payment Confirmed — Captain Shiko",
+    subject: "Welcome to the Team! Let's Start Your Journey",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; direction: ltr;">
-        <div style="background: linear-gradient(135deg, #f97316, #ea580c); padding: 30px; text-align: center; border-radius: 12px 12px 0 0;">
-          <h1 style="color: white; margin: 0; font-size: 24px;">Payment Successful!</h1>
+        <div style="background: linear-gradient(135deg, #8b1a1a, #b91c1c); padding: 40px 30px; text-align: center; border-radius: 12px 12px 0 0;">
+          <h1 style="color: white; margin: 0; font-size: 26px; font-weight: 800;">Welcome, ${data.clientName}!</h1>
         </div>
-        <div style="background: #ffffff; padding: 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
-          <p style="font-size: 16px; color: #374151;">Hi <strong>${data.clientName}</strong>,</p>
-          <p style="font-size: 15px; color: #4b5563;">
-            Thank you for your purchase! Your subscription has been confirmed.
+        <div style="background: #ffffff; padding: 35px 30px; border: 1px solid #e5e7eb; border-top: none;">
+          <p style="font-size: 17px; color: #111827; line-height: 1.7; margin-bottom: 10px;">
+            <strong>Coach Mohamed Roshdy</strong> is happy to start working with you!
           </p>
-          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-            <tr style="border-bottom: 1px solid #e5e7eb;">
-              <td style="padding: 10px 0; color: #6b7280;">Plan</td>
-              <td style="padding: 10px 0; text-align: right; font-weight: 600; color: #111827;">${data.planName}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #e5e7eb;">
-              <td style="padding: 10px 0; color: #6b7280;">Amount</td>
-              <td style="padding: 10px 0; text-align: right; font-weight: 600; color: #111827;">${data.amount} ${data.currency}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #e5e7eb;">
-              <td style="padding: 10px 0; color: #6b7280;">Payment Method</td>
-              <td style="padding: 10px 0; text-align: right; color: #111827;">${data.paymentMethod || "N/A"}</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px 0; color: #6b7280;">Invoice #</td>
-              <td style="padding: 10px 0; text-align: right; color: #111827;">${data.invoiceId || "N/A"}</td>
-            </tr>
-          </table>
-          <p style="font-size: 14px; color: #6b7280;">
-            If you have any questions, feel free to reach out to us on WhatsApp.
+          <p style="font-size: 16px; color: #374151; line-height: 1.7; margin-bottom: 25px;">
+            Let's change our lives and mindset.
           </p>
-          <p style="font-size: 14px; color: #6b7280; margin-top: 20px;">
-            Best regards,<br><strong>Captain Shiko Team</strong>
+
+          <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; margin-bottom: 25px;">
+            <p style="margin: 0 0 5px; color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Your Plan</p>
+            <p style="margin: 0; color: #111827; font-size: 20px; font-weight: 800;">${data.planName}</p>
+          </div>
+
+          <p style="font-size: 16px; color: #374151; line-height: 1.7; margin-bottom: 30px;">
+            Text us on WhatsApp to start our journey together!
           </p>
+
+          <div style="text-align: center; margin-bottom: 30px;">
+            <a href="${whatsappUrl}" target="_blank" style="display: inline-block; background: #25D366; color: white; font-size: 16px; font-weight: 700; padding: 14px 40px; border-radius: 10px; text-decoration: none;">
+              Start on WhatsApp
+            </a>
+          </div>
+
+          <p style="font-size: 14px; color: #9ca3af; text-align: center; margin: 0;">
+            Coach Mohamed Roshdy — Captain Shiko
+          </p>
+        </div>
+        <div style="background: #111827; padding: 15px; text-align: center; border-radius: 0 0 12px 12px;">
+          <p style="margin: 0; color: #6b7280; font-size: 12px;">captainshiko.com</p>
         </div>
       </div>
     `,
@@ -74,7 +83,7 @@ export async function sendAdminEmail(data: PurchaseEmailData) {
   if (!ADMIN_EMAIL) return;
 
   await transporter.sendMail({
-    from: `"Captain Shiko" <${FROM_EMAIL}>`,
+    from: `"Captain Shiko System" <${FROM_EMAIL}>`,
     to: ADMIN_EMAIL,
     subject: `New Purchase — ${data.clientName} — ${data.planName}`,
     html: `
@@ -85,29 +94,47 @@ export async function sendAdminEmail(data: PurchaseEmailData) {
         <div style="background: #ffffff; padding: 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
           <table style="width: 100%; border-collapse: collapse;">
             <tr style="border-bottom: 1px solid #e5e7eb;">
-              <td style="padding: 10px 0; color: #6b7280;">Client Name</td>
-              <td style="padding: 10px 0; text-align: right; font-weight: 600;">${data.clientName}</td>
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Client Name</td>
+              <td style="padding: 12px 0; text-align: right; font-weight: 700; font-size: 14px;">${data.clientName}</td>
             </tr>
             <tr style="border-bottom: 1px solid #e5e7eb;">
-              <td style="padding: 10px 0; color: #6b7280;">Email</td>
-              <td style="padding: 10px 0; text-align: right;">${data.email || "N/A"}</td>
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Email</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.email || "N/A"}</td>
             </tr>
             <tr style="border-bottom: 1px solid #e5e7eb;">
-              <td style="padding: 10px 0; color: #6b7280;">Plan</td>
-              <td style="padding: 10px 0; text-align: right; font-weight: 600;">${data.planName}</td>
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">WhatsApp</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.whatsapp || "N/A"}</td>
             </tr>
             <tr style="border-bottom: 1px solid #e5e7eb;">
-              <td style="padding: 10px 0; color: #6b7280;">Amount</td>
-              <td style="padding: 10px 0; text-align: right; font-weight: 600; color: #16a34a;">${data.amount} ${data.currency}</td>
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Plan</td>
+              <td style="padding: 12px 0; text-align: right; font-weight: 700; font-size: 14px;">${data.planName}</td>
             </tr>
             <tr style="border-bottom: 1px solid #e5e7eb;">
-              <td style="padding: 10px 0; color: #6b7280;">Payment Method</td>
-              <td style="padding: 10px 0; text-align: right;">${data.paymentMethod || "N/A"}</td>
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Amount Paid</td>
+              <td style="padding: 12px 0; text-align: right; font-weight: 700; font-size: 14px; color: #16a34a;">${data.amount} ${data.currency}</td>
             </tr>
+            ${data.discountAmount > 0 ? `
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Discount</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px; color: #f97316;">-${data.discountAmount} ${data.currency}${data.couponCode ? ` (${data.couponCode})` : ""}</td>
+            </tr>` : ""}
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Payment Method</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.paymentMethod || "N/A"}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Region</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.region || "N/A"}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Invoice #</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.invoiceId || "N/A"}</td>
+            </tr>
+            ${data.notes ? `
             <tr>
-              <td style="padding: 10px 0; color: #6b7280;">Invoice #</td>
-              <td style="padding: 10px 0; text-align: right;">${data.invoiceId || "N/A"}</td>
-            </tr>
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Notes</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.notes}</td>
+            </tr>` : ""}
           </table>
         </div>
       </div>
