@@ -61,11 +61,18 @@ export function PlansClient({ plans }: { plans: any[] }) {
         throw new Error(data.error || "Payment failed");
       }
       
-      if (data.url && paymentMethodId === 2) {
+      if (data.invoiceId) {
+        localStorage.setItem("lastInvoiceId", data.invoiceId.toString());
+      }
+      if (data.purchaseId) {
+        localStorage.setItem("lastPurchaseId", data.purchaseId);
+      }
+
+      if (paymentMethodId === 2 && data.url) {
+        // Card: redirect to Fawaterak payment page
         window.location.href = data.url;
-        if (data.invoiceId) {
-          localStorage.setItem("lastPurchaseId", data.invoiceId.toString());
-        }
+      } else {
+        // Fawry / Wallet: show reference code modal
         setPaymentResponse(data);
         setLoading(false);
       }
