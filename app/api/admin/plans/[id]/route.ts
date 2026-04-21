@@ -8,18 +8,8 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    // Check if plan has purchases
-    const purchaseCount = await prisma.purchase.count({
-      where: { planId: id },
-    });
-
-    if (purchaseCount > 0) {
-      return NextResponse.json(
-        { error: `Cannot delete — this plan has ${purchaseCount} purchase(s). Deactivate it instead.` },
-        { status: 400 }
-      );
-    }
-
+    // Delete associated purchases first, then the plan
+    await prisma.purchase.deleteMany({ where: { planId: id } });
     await prisma.plan.delete({ where: { id } });
 
     return NextResponse.json({ success: true });
