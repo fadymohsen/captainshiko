@@ -67,12 +67,9 @@ export async function sendClientEmail(data: PurchaseEmailData) {
             </a>
           </div>
 
-          <p style="font-size: 14px; color: #9ca3af; text-align: center; margin: 0;">
-            Coach Mohamed Roshdy — Captain Shiko
-          </p>
         </div>
         <div style="background: #111827; padding: 15px; text-align: center; border-radius: 0 0 12px 12px;">
-          <p style="margin: 0; color: #6b7280; font-size: 12px;">captainshiko.com</p>
+          <p style="margin: 0; color: #6b7280; font-size: 12px;">coachmohamedroshdy.com</p>
         </div>
       </div>
     `,
