@@ -88,6 +88,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
           email: formData.email,
           whatsapp: formData.whatsapp,
           region,
+          locale,
           couponCode: appliedCoupon ? couponCode : undefined
         })
       });

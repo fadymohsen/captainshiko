@@ -82,7 +82,7 @@ export async function POST(req: Request) {
     const names = clientName.trim().split(" ");
     const firstName = names[0] || "Client";
     const lastName = names.slice(1).join(" ") || "User";
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://captainshiko.vercel.app';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
 
     const paymentData = await fawaterakClient.initPayment({
       payment_method_id: paymentMethodId,
@@ -103,9 +103,9 @@ export async function POST(req: Request) {
         },
       ],
       redirectionUrls: {
-        successUrl: `${baseUrl}/payment/success?pid=${purchase.id}`,
-        failUrl: `${baseUrl}/payment/fail`,
-        pendingUrl: `${baseUrl}/payment/pending`
+        successUrl: `${baseUrl}/${locale || 'en'}/payment/success?pid=${purchase.id}`,
+        failUrl: `${baseUrl}/${locale || 'en'}/payment/fail`,
+        pendingUrl: `${baseUrl}/${locale || 'en'}/payment/pending`
       },
     });
 

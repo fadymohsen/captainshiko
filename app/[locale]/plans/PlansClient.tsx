@@ -49,6 +49,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
           email: formData.email,
           whatsapp: formData.whatsapp,
           region,
+          locale,
           couponCode: appliedCoupon ? couponCode : undefined
         })
       });
