@@ -110,7 +110,7 @@ export default async function OGImage() {
               display: "flex",
             }}
           >
-            captainshiko.com
+            coachmohamedroshdy.com
           </div>
         </div>
       </div>
