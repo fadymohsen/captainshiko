@@ -15,18 +15,24 @@ function SuccessContent() {
   const [purchaseId, setPurchaseId] = useState<string | null>(null);
 
   useEffect(() => {
-    const pid = searchParams.get("pid") || searchParams.get("purchaseId") || localStorage.getItem("lastPurchaseId");
-    const invoiceId = searchParams.get("invoice_id") || searchParams.get("invoiceId") || localStorage.getItem("lastInvoiceId");
+    const pid = searchParams.get("pid") || localStorage.getItem("lastPurchaseId");
+    const invoiceId = searchParams.get("invoice_id") || localStorage.getItem("lastInvoiceId");
 
     if (pid) setPurchaseId(pid);
 
     // Verify payment and trigger emails
     if (pid || invoiceId) {
-      fetch("/api/verify-payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ purchaseId: pid, invoiceId }),
-      }).catch(() => {});
+      // Try immediately, then retry after 5s in case payment is still processing
+      const verify = () =>
+        fetch("/api/verify-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ purchaseId: pid || undefined, invoiceId: invoiceId || undefined }),
+        }).catch(() => {});
+
+      verify();
+      const timer = setTimeout(verify, 5000);
+      return () => clearTimeout(timer);
     }
   }, [searchParams]);
 

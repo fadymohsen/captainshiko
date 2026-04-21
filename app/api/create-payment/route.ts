@@ -126,11 +126,12 @@ export async function POST(req: Request) {
       });
     }
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       status: "success",
-      url: paymentData.url || paymentData.payment_data?.redirectTo, 
+      url: paymentData.url || paymentData.payment_data?.redirectTo,
       paymentData: paymentData.payment_data,
-      invoiceId: paymentData.invoice_id
+      invoiceId: paymentData.invoice_id,
+      purchaseId: purchase.id
     });
 
   } catch (error: any) {

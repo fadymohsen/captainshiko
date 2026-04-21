@@ -98,11 +98,15 @@ export function PlanDetailClient({ plan }: { plan: any }) {
         throw new Error(data.error || "Payment failed");
       }
       
+      // Save IDs before navigating away
+      if (data.invoiceId) {
+        localStorage.setItem("lastInvoiceId", data.invoiceId.toString());
+      }
+      if (data.purchaseId) {
+        localStorage.setItem("lastPurchaseId", data.purchaseId);
+      }
+
       if (data.url && paymentMethodId === 2) {
-        if (data.invoiceId) {
-          localStorage.setItem("lastPurchaseId", data.invoiceId.toString());
-          localStorage.setItem("lastInvoiceId", data.invoiceId.toString());
-        }
         window.location.href = data.url;
         setPaymentResponse(data);
         setLoading(false);
