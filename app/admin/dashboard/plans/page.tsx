@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import DeletePlanButton from "./DeletePlanButton";
 
 export default async function PlansPage() {
   const plans = await prisma.plan.findMany({
@@ -46,10 +47,12 @@ export default async function PlansPage() {
               </div>
             </div>
 
-            {/* Edit Button */}
-            <a href={`/admin/dashboard/plans/${plan.id}`} className="bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-xl transition-colors">
-              Edit Plan
-            </a>
+            <div className="flex gap-3">
+              <a href={`/admin/dashboard/plans/${plan.id}`} className="bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded-xl transition-colors">
+                Edit Plan
+              </a>
+              <DeletePlanButton planId={plan.id} />
+            </div>
           </div>
         ))}
       </div>
