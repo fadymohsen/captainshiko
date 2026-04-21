@@ -185,7 +185,7 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
     <>
       {/* Toast */}
       {toast && (
-        <div className="fixed top-6 right-6 z-[300] min-w-[320px]">
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[300] min-w-[320px]">
           <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
         </div>
       )}
