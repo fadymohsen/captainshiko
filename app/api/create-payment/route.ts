@@ -87,7 +87,7 @@ export async function POST(req: Request) {
       payment_method_id: paymentMethodId,
       vendor_id: process.env.FAWATERAK_VENDOR_KEY?.includes('.') ? process.env.FAWATERAK_VENDOR_KEY.split('.').pop() : process.env.FAWATERAK_VENDOR_KEY,
       cartTotal: amount,
-      currency: "EGP",
+      currency: region === "egypt" ? "EGP" : "USD",
       customer: {
         first_name: firstName,
         last_name: lastName,
