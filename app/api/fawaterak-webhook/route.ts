@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { fawaterakClient } from "@/lib/fawaterak";
-import { sendClientEmail, sendAdminEmail } from "@/lib/email";
+import { handlePaymentVerification } from "@/lib/payment-utils";
 
 async function parseBody(req: Request): Promise<Record<string, any>> {
   const contentType = req.headers.get("content-type") || "";
@@ -31,73 +31,6 @@ async function parseBody(req: Request): Promise<Record<string, any>> {
   }
 }
 
-async function handlePaymentVerification(invoiceId: string) {
-  // Verify with Fawaterak API
-  const remoteInvoice = await fawaterakClient.getInvoiceData(invoiceId);
-
-  const isPaid =
-    remoteInvoice.payment_status === "paid" ||
-    (remoteInvoice as any).invoice_status === "paid" ||
-    (remoteInvoice as any).paid === 1 ||
-    (remoteInvoice as any).status === "paid";
-
-  console.log(`Webhook Verification for Invoice ${invoiceId}: isPaid=${isPaid}`, JSON.stringify(remoteInvoice));
-
-  // Find local purchase
-  const purchase = await prisma.purchase.findUnique({
-    where: { invoiceId: invoiceId.toString() },
-  });
-
-  if (!purchase) {
-    console.error(`Purchase not found for invoiceId: ${invoiceId}`);
-    return { success: false, error: "Purchase not found" };
-  }
-
-  // Skip if already completed
-  if (purchase.status === "COMPLETED") {
-    return { success: true, alreadyCompleted: true };
-  }
-
-  // Update status
-  const updatedPurchase = await prisma.purchase.update({
-    where: { id: purchase.id },
-    data: {
-      status: isPaid ? "COMPLETED" : "FAILED",
-      paymentMethod: remoteInvoice.payment_method || purchase.paymentMethod,
-    },
-    include: { plan: true },
-  });
-
-  // Send emails on successful payment
-  if (isPaid) {
-    const emailData = {
-      clientName: updatedPurchase.clientName,
-      email: updatedPurchase.email || "",
-      whatsapp: updatedPurchase.whatsapp,
-      planName: updatedPurchase.plan.nameEn,
-      amount: updatedPurchase.amount,
-      currency: updatedPurchase.currency,
-      paymentMethod: updatedPurchase.paymentMethod,
-      invoiceId: updatedPurchase.invoiceId,
-      region: updatedPurchase.region,
-      notes: updatedPurchase.notes,
-      discountAmount: updatedPurchase.discountAmount,
-      couponCode: updatedPurchase.notes?.match(/Coupon: (\S+)/)?.[1] || null,
-    };
-
-    try {
-      await Promise.all([
-        sendClientEmail(emailData),
-        sendAdminEmail(emailData),
-      ]);
-      console.log("Emails sent successfully for invoice:", invoiceId);
-    } catch (err) {
-      console.error("Email send error:", err);
-    }
-  }
-
-  return { success: true, verified: isPaid };
-}
 
 // Handle POST (webhook from Fawaterak)
 export async function POST(req: Request) {

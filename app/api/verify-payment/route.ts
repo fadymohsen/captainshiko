@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { fawaterakClient } from "@/lib/fawaterak";
-import { sendClientEmail, sendAdminEmail } from "@/lib/email";
+import { handlePaymentVerification } from "@/lib/payment-utils";
 
 export async function POST(req: Request) {
   try {
@@ -28,54 +28,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No invoice linked" }, { status: 400 });
     }
 
-    // Verify with Fawaterak
-    const remoteInvoice = await fawaterakClient.getInvoiceData(purchase.invoiceId);
-
-    const isPaid =
-      remoteInvoice.payment_status === "paid" ||
-      (remoteInvoice as any).invoice_status === "paid" ||
-      (remoteInvoice as any).paid === 1;
-
-    if (!isPaid) {
-      return NextResponse.json({ success: false, paid: false });
-    }
-
-    // Update purchase status
-    const updatedPurchase = await prisma.purchase.update({
-      where: { id: purchase.id },
-      data: {
-        status: "COMPLETED",
-        paymentMethod: remoteInvoice.payment_method || purchase.paymentMethod,
-      },
-      include: { plan: true },
-    });
-
-    // Send emails
-    const emailData = {
-      clientName: updatedPurchase.clientName,
-      email: updatedPurchase.email || "",
-      whatsapp: updatedPurchase.whatsapp,
-      planName: updatedPurchase.plan.nameEn,
-      amount: updatedPurchase.amount,
-      currency: updatedPurchase.currency,
-      paymentMethod: updatedPurchase.paymentMethod,
-      invoiceId: updatedPurchase.invoiceId,
-      region: updatedPurchase.region,
-      notes: updatedPurchase.notes,
-      discountAmount: updatedPurchase.discountAmount,
-      couponCode: updatedPurchase.notes?.match(/Coupon: (\S+)/)?.[1] || null,
-    };
-
-    try {
-      await Promise.all([
-        sendClientEmail(emailData),
-        sendAdminEmail(emailData),
-      ]);
-    } catch (err) {
-      console.error("Email send error (verify-payment):", err);
-    }
-
-    return NextResponse.json({ success: true, verified: true });
+    const result = await handlePaymentVerification(purchase.invoiceId);
+    return NextResponse.json(result);
   } catch (error: any) {
     console.error("Verify payment error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
