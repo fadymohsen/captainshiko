@@ -82,7 +82,17 @@ export async function POST(req: Request) {
     const names = clientName.trim().split(" ");
     const firstName = names[0] || "Client";
     const lastName = names.slice(1).join(" ") || "User";
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+    
+    // Robust URL helper
+    let baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || 'https://www.coachmohamedroshdy.com').replace(/\/$/, "");
+    if (!baseUrl.startsWith("http")) baseUrl = `https://${baseUrl}`;
+
+    const currentLocale = locale || 'en';
+    const successUrl = `${baseUrl}/${currentLocale}/payment/success?pid=${purchase.id}`;
+    const failUrl = `${baseUrl}/${currentLocale}/payment/fail`;
+    const pendingUrl = `${baseUrl}/${currentLocale}/payment/pending`;
+
+    console.log("DEBUG - Fawaterak Redirects:", { successUrl, failUrl, pendingUrl });
 
     const paymentData = await fawaterakClient.initPayment({
       payment_method_id: paymentMethodId,
@@ -103,9 +113,9 @@ export async function POST(req: Request) {
         },
       ],
       redirectionUrls: {
-        successUrl: `${baseUrl}/${locale || 'en'}/payment/success?pid=${purchase.id}`,
-        failUrl: `${baseUrl}/${locale || 'en'}/payment/fail`,
-        pendingUrl: `${baseUrl}/${locale || 'en'}/payment/pending`
+        successUrl,
+        failUrl,
+        pendingUrl
       },
     });
 
