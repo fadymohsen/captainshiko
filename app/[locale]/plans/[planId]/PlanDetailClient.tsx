@@ -99,10 +99,11 @@ export function PlanDetailClient({ plan }: { plan: any }) {
       }
       
       if (data.url && paymentMethodId === 2) {
-        window.location.href = data.url;
         if (data.invoiceId) {
           localStorage.setItem("lastPurchaseId", data.invoiceId.toString());
+          localStorage.setItem("lastInvoiceId", data.invoiceId.toString());
         }
+        window.location.href = data.url;
         setPaymentResponse(data);
         setLoading(false);
       } else {

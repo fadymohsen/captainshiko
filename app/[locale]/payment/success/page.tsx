@@ -16,10 +16,19 @@ function SuccessContent() {
 
   useEffect(() => {
     const fromUrl = searchParams.get("purchaseId");
-    if (fromUrl) {
-      setPurchaseId(fromUrl);
-    } else {
-      setPurchaseId(localStorage.getItem("lastPurchaseId"));
+    const id = fromUrl || localStorage.getItem("lastPurchaseId");
+    if (id) {
+      setPurchaseId(id);
+    }
+
+    // Verify payment and trigger emails
+    const invoiceId = searchParams.get("invoice_id") || searchParams.get("invoiceId") || localStorage.getItem("lastInvoiceId");
+    if (invoiceId) {
+      fetch("/api/verify-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ invoiceId }),
+      }).catch(() => {});
     }
   }, [searchParams]);
 

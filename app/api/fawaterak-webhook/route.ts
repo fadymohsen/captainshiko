@@ -63,11 +63,16 @@ export async function POST(req: Request) {
         couponCode: updatedPurchase.notes?.match(/Coupon: (\S+)/)?.[1] || null,
       };
 
-      // Send emails in parallel, don't block the webhook response
-      Promise.all([
-        sendClientEmail(emailData),
-        sendAdminEmail(emailData),
-      ]).catch((err) => console.error("Email send error:", err));
+      // Await emails before responding — Vercel kills the function after response
+      try {
+        await Promise.all([
+          sendClientEmail(emailData),
+          sendAdminEmail(emailData),
+        ]);
+        console.log("Emails sent successfully for invoice:", invoice_id);
+      } catch (err) {
+        console.error("Email send error:", err);
+      }
     }
 
     return NextResponse.json({ success: true, verified: isPaid });
