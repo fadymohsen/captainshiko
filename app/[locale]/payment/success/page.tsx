@@ -15,19 +15,17 @@ function SuccessContent() {
   const [purchaseId, setPurchaseId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fromUrl = searchParams.get("purchaseId");
-    const id = fromUrl || localStorage.getItem("lastPurchaseId");
-    if (id) {
-      setPurchaseId(id);
-    }
+    const pid = searchParams.get("pid") || searchParams.get("purchaseId") || localStorage.getItem("lastPurchaseId");
+    const invoiceId = searchParams.get("invoice_id") || searchParams.get("invoiceId") || localStorage.getItem("lastInvoiceId");
+
+    if (pid) setPurchaseId(pid);
 
     // Verify payment and trigger emails
-    const invoiceId = searchParams.get("invoice_id") || searchParams.get("invoiceId") || localStorage.getItem("lastInvoiceId");
-    if (invoiceId) {
+    if (pid || invoiceId) {
       fetch("/api/verify-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ invoiceId }),
+        body: JSON.stringify({ purchaseId: pid, invoiceId }),
       }).catch(() => {});
     }
   }, [searchParams]);

@@ -5,16 +5,15 @@ import { sendClientEmail, sendAdminEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
-    const { invoiceId } = await req.json();
+    const { invoiceId, purchaseId } = await req.json();
 
-    if (!invoiceId) {
-      return NextResponse.json({ error: "Missing invoiceId" }, { status: 400 });
+    if (!invoiceId && !purchaseId) {
+      return NextResponse.json({ error: "Missing invoiceId or purchaseId" }, { status: 400 });
     }
 
-    const purchase = await prisma.purchase.findUnique({
-      where: { invoiceId: invoiceId.toString() },
-      include: { plan: true },
-    });
+    const purchase = purchaseId
+      ? await prisma.purchase.findUnique({ where: { id: purchaseId }, include: { plan: true } })
+      : await prisma.purchase.findUnique({ where: { invoiceId: invoiceId.toString() }, include: { plan: true } });
 
     if (!purchase) {
       return NextResponse.json({ error: "Purchase not found" }, { status: 404 });
@@ -25,8 +24,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, alreadyCompleted: true });
     }
 
+    if (!purchase.invoiceId) {
+      return NextResponse.json({ error: "No invoice linked" }, { status: 400 });
+    }
+
     // Verify with Fawaterak
-    const remoteInvoice = await fawaterakClient.getInvoiceData(invoiceId);
+    const remoteInvoice = await fawaterakClient.getInvoiceData(purchase.invoiceId);
 
     const isPaid =
       remoteInvoice.payment_status === "paid" ||
