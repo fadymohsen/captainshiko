@@ -13,7 +13,7 @@ import {
   MagneticButton,
 } from "../../../animations";
 import { ImageWithSkeleton } from "../../../image-with-skeleton";
-import { X, CreditCard, Loader2, Smartphone, Receipt, CheckCircle2 } from "lucide-react";
+import { X, CreditCard, Loader2, Apple, Receipt, CheckCircle2 } from "lucide-react";
 
 export function PlanDetailClient({ plan }: { plan: any }) {
   const { t, locale, dir, region } = useLang();
@@ -107,12 +107,13 @@ export function PlanDetailClient({ plan }: { plan: any }) {
         localStorage.setItem("lastPurchaseId", data.purchaseId);
       }
 
-      if (data.url && paymentMethodId === 2) {
+      if (data.url && (paymentMethodId === 2 || paymentMethodId === 11)) {
+        // Card / Apple Pay: redirect to Fawaterak payment page
         window.location.href = data.url;
         setPaymentResponse(data);
         setLoading(false);
       } else {
-        // For non-redirect methods (Fawry/Wallet success screen)
+        // Fawry: show reference code modal
         setPaymentResponse(data);
         setLoading(false);
       }
@@ -443,11 +444,11 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                         </button>
                         <button
                           type="button"
-                          onClick={() => setPaymentMethodId(4)}
-                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 4 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
+                          onClick={() => setPaymentMethodId(11)}
+                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 11 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
                         >
-                          <Smartphone className="w-6 h-6 mb-2" />
-                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.wallet}</span>
+                          <Apple className="w-6 h-6 mb-2" />
+                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.applePay}</span>
                         </button>
                       </div>
                     </div>
@@ -545,7 +546,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                   </div>
                   <h2 className="text-3xl font-black mb-4">{ct.orderCreated}</h2>
                   <p className="text-muted mb-8 leading-relaxed">
-                    {paymentMethodId === 3 ? ct.fawryNote : ct.walletNote}
+                    {ct.fawryNote}
                   </p>
                   
                   <div className="bg-background rounded-3xl p-8 mb-8 border border-white/5">
