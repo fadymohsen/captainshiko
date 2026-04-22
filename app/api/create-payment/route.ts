@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { fawaterakClient } from "@/lib/fawaterak";
-import { sendPendingEmail } from "@/lib/email";
+import { sendPendingEmail, sendAdminEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   console.log("POST /api/create-payment - Start");
@@ -137,19 +137,15 @@ export async function POST(req: Request) {
       });
     }
 
-    // 7. Send pending email to client
-    if (email) {
-      try {
-        await sendPendingEmail({
-          clientName,
-          email,
-          planName: plan.nameEn,
-          amount,
-          currency: region === "egypt" ? "EGP" : "USD",
-        });
-      } catch (emailErr) {
-        console.error("Pending email error (non-fatal):", emailErr);
-      }
+    // 7. Send pending email to client + admin notification
+    const paymentMethodLabel = paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : "Other";
+    try {
+      await Promise.all([
+        email ? sendPendingEmail({ clientName, email, planName: plan.nameEn, amount, currency: region === "egypt" ? "EGP" : "USD" }) : Promise.resolve(),
+        sendAdminEmail({ clientName, email: email || "", whatsapp, planName: plan.nameEn, amount, currency: region === "egypt" ? "EGP" : "USD", paymentMethod: paymentMethodLabel, invoiceId: paymentData.invoice_id?.toString() || null, region, notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''}`, discountAmount, couponCode: couponCode || null }),
+      ]);
+    } catch (emailErr) {
+      console.error("Email error (non-fatal):", emailErr);
     }
 
     return NextResponse.json({

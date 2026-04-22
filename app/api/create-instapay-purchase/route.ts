@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { sendPendingEmail } from "@/lib/email";
+import { sendPendingEmail, sendAdminEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -79,19 +79,14 @@ export async function POST(req: Request) {
       });
     }
 
-    // Send pending email to client
-    if (email) {
-      try {
-        await sendPendingEmail({
-          clientName,
-          email,
-          planName: plan.nameEn,
-          amount,
-          currency: region === "egypt" ? "EGP" : "USD",
-        });
-      } catch (emailErr) {
-        console.error("Pending email error (non-fatal):", emailErr);
-      }
+    // Send pending email to client + admin notification
+    try {
+      await Promise.all([
+        email ? sendPendingEmail({ clientName, email, planName: plan.nameEn, amount, currency: region === "egypt" ? "EGP" : "USD" }) : Promise.resolve(),
+        sendAdminEmail({ clientName, email: email || "", whatsapp, planName: plan.nameEn, amount, currency: region === "egypt" ? "EGP" : "USD", paymentMethod: "InstaPay", invoiceId: null, region, notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''} | InstaPay`, discountAmount, couponCode: couponCode || null }),
+      ]);
+    } catch (emailErr) {
+      console.error("Email error (non-fatal):", emailErr);
     }
 
     return NextResponse.json({
