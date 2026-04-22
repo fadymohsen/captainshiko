@@ -36,9 +36,35 @@ export function PlansClient({ plans }: { plans: any[] }) {
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // InstaPay: redirect directly to InstaPay link
+    // InstaPay: save purchase then redirect
     if (paymentMethodId === "instapay") {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/create-instapay-purchase", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            planId: selectedPlan.id,
+            planType,
+            clientName: formData.name,
+            email: formData.email,
+            whatsapp: formData.whatsapp,
+            region,
+            couponCode: appliedCoupon ? couponCode : undefined,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to create order");
+        if (data.purchaseId) {
+          localStorage.setItem("lastPurchaseId", data.purchaseId);
+        }
+      } catch (err: any) {
+        alert("Error: " + (err.message || "Unknown Error"));
+        setLoading(false);
+        return;
+      }
       window.open("https://ipn.eg/S/mohamed.hussein4920/instapay/3f1Dxi", "_blank");
+      setLoading(false);
       return;
     }
 
