@@ -145,13 +145,16 @@ export async function sendAdminEmail(data: PurchaseEmailData) {
   await transporter.sendMail({
     from: `"Captain Shiko System" <${FROM_EMAIL}>`,
     to: ADMIN_EMAIL,
-    subject: `New Purchase — ${data.clientName} — ${data.planName}`,
+    subject: `⏳ PENDING — ${data.clientName} — ${data.planName}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: #111827; padding: 20px; text-align: center; border-radius: 12px 12px 0 0;">
-          <h1 style="color: #f97316; margin: 0; font-size: 20px;">New Subscription Payment</h1>
+          <h1 style="color: #f97316; margin: 0; font-size: 20px;">New Subscription — PENDING</h1>
         </div>
         <div style="background: #ffffff; padding: 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
+          <div style="background: #fffbeb; border: 1px solid #fbbf24; border-radius: 8px; padding: 12px; text-align: center; margin-bottom: 20px;">
+            <span style="color: #b45309; font-size: 16px; font-weight: 800; letter-spacing: 2px;">⏳ PENDING CONFIRMATION</span>
+          </div>
           <table style="width: 100%; border-collapse: collapse;">
             <tr style="border-bottom: 1px solid #e5e7eb;">
               <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Client Name</td>
