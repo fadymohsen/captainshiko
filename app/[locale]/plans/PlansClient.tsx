@@ -12,14 +12,14 @@ import {
   MagneticButton,
 } from "../../animations";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, CreditCard, Loader2, Receipt, CheckCircle2 } from "lucide-react";
+import { X, CreditCard, Loader2, Receipt, CheckCircle2, Smartphone } from "lucide-react";
 
 export function PlansClient({ plans }: { plans: any[] }) {
   const { t, locale, dir, region } = useLang();
   
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [planType, setPlanType] = useState<"monthly" | "quarterly">("monthly");
-  const [paymentMethodId, setPaymentMethodId] = useState<number>(2); // Default to Card
+  const [paymentMethodId, setPaymentMethodId] = useState<number | "instapay">(2); // Default to Card
   const [loading, setLoading] = useState(false);
   const [paymentResponse, setPaymentResponse] = useState<any>(null);
   
@@ -35,8 +35,15 @@ export function PlansClient({ plans }: { plans: any[] }) {
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // InstaPay: redirect directly to InstaPay link
+    if (paymentMethodId === "instapay") {
+      window.open("https://ipn.eg/S/mohamed.hussein4920/instapay/3f1Dxi", "_blank");
+      return;
+    }
+
     setLoading(true);
-    
+
     try {
       const res = await fetch("/api/create-payment", {
         method: "POST",
@@ -53,14 +60,14 @@ export function PlansClient({ plans }: { plans: any[] }) {
           couponCode: appliedCoupon ? couponCode : undefined
         })
       });
-      
+
       const data = await res.json();
-      
+
       if (!res.ok) {
         alert("DEBUG - SERVER RAW RESPONSE: " + JSON.stringify(data));
         throw new Error(data.error || "Payment failed");
       }
-      
+
       if (data.invoiceId) {
         localStorage.setItem("lastInvoiceId", data.invoiceId.toString());
       }
@@ -83,7 +90,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
       if (err.message) msg = err.message;
       else if (typeof err === 'string') msg = err;
       else msg = JSON.stringify(err);
-      
+
       alert("Error Details: " + msg);
       setLoading(false);
     }
@@ -296,7 +303,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
 
                     <div>
                       <label className="text-xs font-bold text-muted uppercase tracking-widest block mb-3 px-1">{ct.paymentMethod}</label>
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-3 gap-3">
                         <button
                           type="button"
                           onClick={() => setPaymentMethodId(2)}
@@ -312,6 +319,14 @@ export function PlansClient({ plans }: { plans: any[] }) {
                         >
                           <Receipt className="w-6 h-6 mb-2" />
                           <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.fawry}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPaymentMethodId("instapay")}
+                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === "instapay" ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
+                        >
+                          <Smartphone className="w-6 h-6 mb-2" />
+                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.instapay}</span>
                         </button>
                       </div>
                     </div>
