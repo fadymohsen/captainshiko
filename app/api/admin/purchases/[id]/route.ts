@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { fawaterakClient } from "@/lib/fawaterak";
-import { sendClientEmail, sendAdminEmail } from "@/lib/email";
+import { sendClientEmail, sendAdminConfirmedEmail } from "@/lib/email";
 
 // PATCH: Update order status (e.g., Mark as Paid)
 export async function PATCH(
@@ -37,7 +37,7 @@ export async function PATCH(
       try {
         await Promise.all([
           sendClientEmail(emailData),
-          sendAdminEmail(emailData),
+          sendAdminConfirmedEmail(emailData),
         ]);
       } catch (emailErr) {
         console.error("Email send error (status still updated):", emailErr);

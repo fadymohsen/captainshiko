@@ -204,3 +204,69 @@ export async function sendAdminEmail(data: PurchaseEmailData) {
     `,
   });
 }
+
+export async function sendAdminConfirmedEmail(data: PurchaseEmailData) {
+  if (!ADMIN_EMAIL) return;
+
+  await transporter.sendMail({
+    from: `"Captain Shiko System" <${FROM_EMAIL}>`,
+    to: ADMIN_EMAIL,
+    subject: `✅ CONFIRMED — ${data.clientName} — ${data.planName}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background: #065f46; padding: 20px; text-align: center; border-radius: 12px 12px 0 0;">
+          <h1 style="color: #ffffff; margin: 0; font-size: 20px;">Payment Confirmed ✅</h1>
+        </div>
+        <div style="background: #ffffff; padding: 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
+          <div style="background: #ecfdf5; border: 1px solid #34d399; border-radius: 8px; padding: 12px; text-align: center; margin-bottom: 20px;">
+            <span style="color: #065f46; font-size: 16px; font-weight: 800; letter-spacing: 2px;">✅ COMPLETED</span>
+          </div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Client Name</td>
+              <td style="padding: 12px 0; text-align: right; font-weight: 700; font-size: 14px;">${data.clientName}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Email</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.email || "N/A"}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">WhatsApp</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.whatsapp || "N/A"}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Plan</td>
+              <td style="padding: 12px 0; text-align: right; font-weight: 700; font-size: 14px;">${data.planName}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Amount Paid</td>
+              <td style="padding: 12px 0; text-align: right; font-weight: 700; font-size: 14px; color: #16a34a;">${data.amount} ${data.currency}</td>
+            </tr>
+            ${data.discountAmount > 0 ? `
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Discount</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px; color: #f97316;">-${data.discountAmount} ${data.currency}${data.couponCode ? ` (${data.couponCode})` : ""}</td>
+            </tr>` : ""}
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Payment Method</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.paymentMethod || "N/A"}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Region</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.region || "N/A"}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Invoice #</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.invoiceId || "N/A"}</td>
+            </tr>
+            ${data.notes ? `
+            <tr>
+              <td style="padding: 12px 0; color: #6b7280; font-size: 14px;">Notes</td>
+              <td style="padding: 12px 0; text-align: right; font-size: 14px;">${data.notes}</td>
+            </tr>` : ""}
+          </table>
+        </div>
+      </div>
+    `,
+  });
+}
