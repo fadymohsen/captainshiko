@@ -292,6 +292,16 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
                         <div className="text-xs font-black mt-1">
                           {purchase.amount} {purchase.currency}
                         </div>
+                        {purchase.receiptUrl && (
+                          <a
+                            href={purchase.receiptUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[10px] text-accent-light font-bold mt-1 hover:underline"
+                          >
+                            📎 Receipt
+                          </a>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 rounded-full text-[10px] font-black tracking-tighter uppercase ${

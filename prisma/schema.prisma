@@ -96,6 +96,7 @@ model Purchase {
   couponId     String?
   coupon       Coupon?  @relation(fields: [couponId], references: [id])
   discountAmount Float   @default(0)
+  receiptUrl   String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

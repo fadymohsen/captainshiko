@@ -13,7 +13,7 @@ import {
   MagneticButton,
 } from "../../../animations";
 import { ImageWithSkeleton } from "../../../image-with-skeleton";
-import { X, CreditCard, Loader2, Receipt, CheckCircle2, Smartphone } from "lucide-react";
+import { X, CreditCard, Loader2, Receipt, CheckCircle2, Smartphone, Upload, ImageIcon } from "lucide-react";
 
 export function PlanDetailClient({ plan }: { plan: any }) {
   const { t, locale, dir, region } = useLang();
@@ -54,6 +54,31 @@ export function PlanDetailClient({ plan }: { plan: any }) {
   const [couponError, setCouponError] = useState("");
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
 
+  // InstaPay receipt upload state
+  const [instapayStep, setInstapayStep] = useState<"idle" | "upload" | "done">("idle");
+  const [instapaypurchaseId, setInstapayPurchaseId] = useState<string | null>(null);
+  const [receiptFile, setReceiptFile] = useState<File | null>(null);
+  const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
+  const [uploadingReceipt, setUploadingReceipt] = useState(false);
+
+  const handleReceiptUpload = async () => {
+    if (!receiptFile || !instapaypurchaseId) return;
+    setUploadingReceipt(true);
+    try {
+      const fd = new FormData();
+      fd.append("purchaseId", instapaypurchaseId);
+      fd.append("receipt", receiptFile);
+      const res = await fetch("/api/upload-receipt", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+      setInstapayStep("done");
+    } catch (err: any) {
+      alert("Error: " + (err.message || "Upload failed"));
+    } finally {
+      setUploadingReceipt(false);
+    }
+  };
+
   const currentPricing = region === "egypt" ? {
     monthly: plan.priceMonthlyEgp,
     monthlySale: plan.salePriceMonthlyEgp,
@@ -75,7 +100,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // InstaPay: save purchase then redirect
+    // InstaPay: save purchase then show receipt upload
     if (paymentMethodId === "instapay") {
       setLoading(true);
       try {
@@ -94,6 +119,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to create order");
+        setInstapayPurchaseId(data.purchaseId);
         if (data.purchaseId) {
           localStorage.setItem("lastPurchaseId", data.purchaseId);
         }
@@ -103,6 +129,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
         return;
       }
       window.open("https://ipn.eg/S/mohamed.hussein4920/instapay/3f1Dxi", "_blank");
+      setInstapayStep("upload");
       setLoading(false);
       return;
     }
@@ -424,7 +451,70 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                 <X className="w-5 h-5" />
               </button>
 
-              {!paymentResponse ? (
+              {instapayStep === "upload" ? (
+                <div className="py-6">
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent">
+                      <Upload className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold">{ct.instapayTitle}</h2>
+                      <p className="text-sm text-muted">{name}</p>
+                    </div>
+                  </div>
+
+                  <p className="text-muted text-sm leading-relaxed mb-6">{ct.instapayNote}</p>
+
+                  <label className="block cursor-pointer mb-6">
+                    <div className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${receiptFile ? 'border-accent bg-accent/5' : 'border-white/10 hover:border-white/20'}`}>
+                      {receiptPreview ? (
+                        <img src={receiptPreview} alt="Receipt" className="max-h-48 mx-auto rounded-xl mb-3" />
+                      ) : (
+                        <ImageIcon className="w-12 h-12 mx-auto mb-3 text-muted" />
+                      )}
+                      <p className="text-sm font-bold text-muted">
+                        {receiptFile ? receiptFile.name : ct.uploadReceipt}
+                      </p>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setReceiptFile(file);
+                          const reader = new FileReader();
+                          reader.onload = (ev) => setReceiptPreview(ev.target?.result as string);
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                    />
+                  </label>
+
+                  <button
+                    onClick={handleReceiptUpload}
+                    disabled={!receiptFile || uploadingReceipt}
+                    className="w-full py-5 rounded-full bg-white text-black font-black flex items-center justify-center gap-2 hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {uploadingReceipt ? <Loader2 className="w-5 h-5 animate-spin" /> : ct.submitReceipt}
+                  </button>
+                </div>
+              ) : instapayStep === "done" ? (
+                <div className="text-center py-10">
+                  <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mx-auto mb-6 border border-green-500/20">
+                    <CheckCircle2 className="w-10 h-10" />
+                  </div>
+                  <h2 className="text-3xl font-black mb-4">{ct.receiptUploaded}</h2>
+                  <p className="text-muted mb-8 leading-relaxed">{ct.receiptUploadedNote}</p>
+                  <button
+                    onClick={() => { setIsCheckoutOpen(false); setInstapayStep("idle"); setReceiptFile(null); setReceiptPreview(null); }}
+                    className="block w-full py-5 rounded-full bg-accent text-white font-black hover:bg-accent-light transition-all shadow-lg shadow-accent/20"
+                  >
+                    {ct.backToPlans}
+                  </button>
+                </div>
+              ) : !paymentResponse ? (
                 <>
                   <div className="flex items-center gap-4 mb-8">
                     <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent">
