@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { put } from "@vercel/blob";
-import { sendPendingEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -15,7 +14,6 @@ export async function POST(req: Request) {
 
     const purchase = await prisma.purchase.findUnique({
       where: { id: purchaseId },
-      include: { plan: true, coupon: true },
     });
 
     if (!purchase) {
@@ -32,21 +30,6 @@ export async function POST(req: Request) {
       where: { id: purchaseId },
       data: { receiptUrl: blob.url },
     });
-
-    // Send pending email to client
-    if (purchase.email) {
-      try {
-        await sendPendingEmail({
-          clientName: purchase.clientName,
-          email: purchase.email,
-          planName: purchase.plan?.nameEn || "Plan",
-          amount: purchase.amount,
-          currency: purchase.currency,
-        });
-      } catch (emailErr) {
-        console.error("Pending email error (non-fatal):", emailErr);
-      }
-    }
 
     return NextResponse.json({ status: "success", receiptUrl: blob.url });
   } catch (error: any) {

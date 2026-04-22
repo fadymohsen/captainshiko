@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { sendPendingEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -76,6 +77,21 @@ export async function POST(req: Request) {
         where: { id: couponId },
         data: { usageCount: { increment: 1 } },
       });
+    }
+
+    // Send pending email to client
+    if (email) {
+      try {
+        await sendPendingEmail({
+          clientName,
+          email,
+          planName: plan.nameEn,
+          amount,
+          currency: region === "egypt" ? "EGP" : "USD",
+        });
+      } catch (emailErr) {
+        console.error("Pending email error (non-fatal):", emailErr);
+      }
     }
 
     return NextResponse.json({

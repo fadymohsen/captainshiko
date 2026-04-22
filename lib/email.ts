@@ -87,7 +87,7 @@ interface PendingEmailData {
 export async function sendPendingEmail(data: PendingEmailData) {
   if (!data.email) return;
 
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Coach! I just paid via InstaPay and uploaded my receipt.")}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Coach! I just subscribed and I'm waiting for confirmation.")}`;
 
   await transporter.sendMail({
     from: `"Coach Mohamed Roshdy" <${FROM_EMAIL}>`,
@@ -117,10 +117,6 @@ export async function sendPendingEmail(data: PendingEmailData) {
               <tr>
                 <td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Amount</td>
                 <td style="padding: 8px 0; text-align: right; font-weight: 700; font-size: 14px; color: #16a34a;">${data.amount} ${data.currency}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; color: #6b7280; font-size: 14px;">Payment</td>
-                <td style="padding: 8px 0; text-align: right; font-weight: 700; font-size: 14px;">InstaPay</td>
               </tr>
             </table>
           </div>
