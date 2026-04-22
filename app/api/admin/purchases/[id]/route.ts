@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { fawaterakClient } from "@/lib/fawaterak";
+import { sendClientEmail, sendAdminEmail } from "@/lib/email";
 
 // PATCH: Update order status (e.g., Mark as Paid)
 export async function PATCH(
@@ -13,7 +14,36 @@ export async function PATCH(
     const updated = await prisma.purchase.update({
       where: { id },
       data: { status },
+      include: { plan: true, coupon: true },
     });
+
+    // Send emails when marking as COMPLETED
+    if (status === "COMPLETED" && updated.email) {
+      const emailData = {
+        clientName: updated.clientName,
+        email: updated.email,
+        whatsapp: updated.whatsapp,
+        planName: updated.plan?.nameEn || "Plan",
+        amount: updated.amount,
+        currency: updated.currency,
+        paymentMethod: updated.paymentMethod,
+        invoiceId: updated.invoiceId,
+        region: updated.region,
+        notes: updated.notes,
+        discountAmount: updated.discountAmount,
+        couponCode: updated.coupon?.code || null,
+      };
+
+      try {
+        await Promise.all([
+          sendClientEmail(emailData),
+          sendAdminEmail(emailData),
+        ]);
+      } catch (emailErr) {
+        console.error("Email send error (status still updated):", emailErr);
+      }
+    }
+
     return NextResponse.json(updated);
   } catch (error) {
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
