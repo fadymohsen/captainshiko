@@ -15,8 +15,8 @@ function SuccessContent() {
   const [purchaseId, setPurchaseId] = useState<string | null>(null);
 
   useEffect(() => {
-    const pid = searchParams.get("pid") || localStorage.getItem("lastPurchaseId");
-    const invoiceId = searchParams.get("invoice_id") || localStorage.getItem("lastInvoiceId");
+    const pid = searchParams.get("purchaseId") || searchParams.get("pid") || localStorage.getItem("lastPurchaseId");
+    const invoiceId = searchParams.get("invoice_id") || searchParams.get("invoiceId") || localStorage.getItem("lastInvoiceId");
 
     if (pid) setPurchaseId(pid);
 

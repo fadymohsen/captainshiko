@@ -89,11 +89,11 @@ export async function POST(req: Request) {
     if (!baseUrl.startsWith("http")) baseUrl = `https://${baseUrl}`;
 
     const currentLocale = locale || 'en';
-    const successUrl = `${baseUrl}/${currentLocale}/payment/success?pid=${purchase.id}`;
-    const failUrl = `${baseUrl}/${currentLocale}/payment/fail`;
-    const pendingUrl = `${baseUrl}/${currentLocale}/payment/pending`;
+    const successUrl = `${baseUrl}/payment/success?purchaseId=${purchase.id}`;
+    const failUrl = `${baseUrl}/${currentLocale}/plans`;
+    const pendingUrl = `${baseUrl}/${currentLocale}/plans`;
 
-    console.log("DEBUG - Fawaterak Redirects:", { successUrl, failUrl, pendingUrl });
+    console.log("DEBUG - Fawaterak Redirects (Rollback Mode):", { successUrl, failUrl, pendingUrl });
 
     const paymentData = await fawaterakClient.initPayment({
       payment_method_id: paymentMethodId,
