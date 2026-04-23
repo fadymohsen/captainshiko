@@ -659,12 +659,12 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                           onChange={(e) => setConsentChecked(e.target.checked)}
                           className="mt-1 w-4 h-4 rounded border-white/20 bg-background accent-accent shrink-0"
                         />
-                        <span className="text-[11px] text-muted leading-relaxed group-hover:text-foreground transition-colors">
+                        <span className="text-xs text-muted leading-relaxed group-hover:text-foreground transition-colors">
                           {ct.consentCheckbox}
                         </span>
                       </label>
 
-                      <p className="text-[10px] text-muted/70 mb-5 px-1 leading-relaxed">
+                      <p className="text-xs text-muted/70 mb-5 px-1 leading-relaxed">
                         {ct.redirectNotice}
                       </p>
 
