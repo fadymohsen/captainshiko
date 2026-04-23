@@ -33,66 +33,50 @@ export function PlansClient({ plans }: { plans: any[] }) {
   const [couponError, setCouponError] = useState("");
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
 
-  // InstaPay receipt upload state
-  const [instapayStep, setInstapayStep] = useState<"idle" | "upload" | "done">("idle");
+  // InstaPay Flow state
+  const [instapayStep, setInstapayStep] = useState<"idle" | "instructions" | "done">("idle");
   const [instapaypurchaseId, setInstapayPurchaseId] = useState<string | null>(null);
-  const [receiptFile, setReceiptFile] = useState<File | null>(null);
-  const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
-  const [uploadingReceipt, setUploadingReceipt] = useState(false);
   const [consentChecked, setConsentChecked] = useState(false);
 
-  const handleReceiptUpload = async () => {
-    if (!receiptFile || !instapaypurchaseId) return;
-    setUploadingReceipt(true);
+  const handleInstapayConfirm = async () => {
+    setLoading(true);
     try {
-      const fd = new FormData();
-      fd.append("purchaseId", instapaypurchaseId);
-      fd.append("receipt", receiptFile);
-      const res = await fetch("/api/upload-receipt", { method: "POST", body: fd });
+      const res = await fetch("/api/create-instapay-purchase", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          planId: selectedPlan.id,
+          planType,
+          clientName: formData.name,
+          email: formData.email,
+          whatsapp: formData.whatsapp,
+          region,
+          couponCode: appliedCoupon ? couponCode : undefined,
+        }),
+      });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Upload failed");
+      if (!res.ok) throw new Error(data.error || "Failed to create order");
+      
+      setInstapayPurchaseId(data.purchaseId);
+      if (data.purchaseId) {
+        localStorage.setItem("lastPurchaseId", data.purchaseId);
+      }
+      
+      window.open("https://ipn.eg/S/mohamed.hussein4920/instapay/3f1Dxi", "_blank");
       setInstapayStep("done");
     } catch (err: any) {
-      alert("Error: " + (err.message || "Upload failed"));
+      alert("Error: " + (err.message || "Unknown Error"));
     } finally {
-      setUploadingReceipt(false);
+      setLoading(false);
     }
   };
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // InstaPay: save purchase then show receipt upload
+    // InstaPay: show instructions popup
     if (paymentMethodId === "instapay") {
-      setLoading(true);
-      try {
-        const res = await fetch("/api/create-instapay-purchase", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            planId: selectedPlan.id,
-            planType,
-            clientName: formData.name,
-            email: formData.email,
-            whatsapp: formData.whatsapp,
-            region,
-            couponCode: appliedCoupon ? couponCode : undefined,
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Failed to create order");
-        setInstapayPurchaseId(data.purchaseId);
-        if (data.purchaseId) {
-          localStorage.setItem("lastPurchaseId", data.purchaseId);
-        }
-      } catch (err: any) {
-        alert("Error: " + (err.message || "Unknown Error"));
-        setLoading(false);
-        return;
-      }
-      window.open("https://ipn.eg/S/mohamed.hussein4920/instapay/3f1Dxi", "_blank");
-      setInstapayStep("upload");
-      setLoading(false);
+      setInstapayStep("instructions");
       return;
     }
 
@@ -328,11 +312,11 @@ export function PlansClient({ plans }: { plans: any[] }) {
                 <X className="w-5 h-5" />
               </button>
 
-              {instapayStep === "upload" ? (
+              {instapayStep === "instructions" ? (
                 <div className="py-6">
                   <div className="flex items-center gap-4 mb-8">
                     <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent">
-                      <Upload className="w-6 h-6" />
+                      <Smartphone className="w-6 h-6" />
                     </div>
                     <div>
                       <h2 className="text-2xl font-bold">{ct.instapayTitle}</h2>
@@ -342,41 +326,17 @@ export function PlansClient({ plans }: { plans: any[] }) {
                     </div>
                   </div>
 
-                  <p className="text-muted text-sm leading-relaxed mb-6">{ct.instapayNote}</p>
-
-                  <label className="block cursor-pointer mb-6">
-                    <div className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${receiptFile ? 'border-accent bg-accent/5' : 'border-white/10 hover:border-white/20'}`}>
-                      {receiptPreview ? (
-                        <img src={receiptPreview} alt="Receipt" className="max-h-48 mx-auto rounded-xl mb-3" />
-                      ) : (
-                        <ImageIcon className="w-12 h-12 mx-auto mb-3 text-muted" />
-                      )}
-                      <p className="text-sm font-bold text-muted">
-                        {receiptFile ? receiptFile.name : ct.uploadReceipt}
-                      </p>
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          setReceiptFile(file);
-                          const reader = new FileReader();
-                          reader.onload = (ev) => setReceiptPreview(ev.target?.result as string);
-                          reader.readAsDataURL(file);
-                        }
-                      }}
-                    />
-                  </label>
+                  <div className="bg-background/50 rounded-2xl p-6 border border-white/5 mb-8">
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-accent mb-4">{locale === 'en' ? 'Instructions' : 'التعليمات'}</h3>
+                    <p className="text-muted text-sm leading-relaxed whitespace-pre-line">{ct.instapayInstructions}</p>
+                  </div>
 
                   <button
-                    onClick={handleReceiptUpload}
-                    disabled={!receiptFile || uploadingReceipt}
+                    onClick={handleInstapayConfirm}
+                    disabled={loading}
                     className="w-full py-5 rounded-full bg-white text-black font-black flex items-center justify-center gap-2 hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {uploadingReceipt ? <Loader2 className="w-5 h-5 animate-spin" /> : ct.submitReceipt}
+                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : ct.instapayConfirm}
                   </button>
                 </div>
               ) : instapayStep === "done" ? (
@@ -384,14 +344,32 @@ export function PlansClient({ plans }: { plans: any[] }) {
                   <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mx-auto mb-6 border border-green-500/20">
                     <CheckCircle2 className="w-10 h-10" />
                   </div>
-                  <h2 className="text-3xl font-black mb-4">{ct.receiptUploaded}</h2>
-                  <p className="text-muted mb-8 leading-relaxed">{ct.receiptUploadedNote}</p>
-                  <button
-                    onClick={closeCheckout}
-                    className="block w-full py-5 rounded-full bg-accent text-white font-black hover:bg-accent-light transition-all shadow-lg shadow-accent/20"
-                  >
-                    {ct.backToPlans}
-                  </button>
+                  <h2 className="text-3xl font-black mb-4">{ct.instapayDoneTitle}</h2>
+                  <p className="text-muted mb-8 leading-relaxed">{ct.instapayDoneNote}</p>
+                  
+                  <div className="space-y-3">
+                    <a
+                      href={`https://wa.me/201553038830?text=${encodeURIComponent(
+                        locale === "en" 
+                          ? `Hi Coach Mohamed! I've just paid via InstaPay for the ${selectedPlan.nameEn} plan. Here is my receipt. (Purchase ID: ${instapaypurchaseId || 'N/A'})`
+                          : `أهلاً كوتش محمد! لسه دافع عن طريق إنستاباي لباقة ${selectedPlan.nameAr}. ده إيصال الدفع. (رقم العملية: ${instapaypurchaseId || 'N/A'})`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-3 w-full py-5 rounded-full bg-[#25D366] text-white font-black hover:bg-[#20ba5a] transition-all shadow-lg shadow-green-500/20"
+                    >
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                      </svg>
+                      {ct.sendToWhatsapp}
+                    </a>
+                    <button
+                      onClick={closeCheckout}
+                      className="block w-full py-4 text-sm font-bold text-muted hover:text-white transition-all"
+                    >
+                      {ct.backToPlans}
+                    </button>
+                  </div>
                 </div>
               ) : !paymentResponse ? (
                 <>
