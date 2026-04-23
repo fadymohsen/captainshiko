@@ -184,8 +184,6 @@ export function PlansClient({ plans }: { plans: any[] }) {
     setConsentChecked(false);
     setInstapayStep("idle");
     setInstapayPurchaseId(null);
-    setReceiptFile(null);
-    setReceiptPreview(null);
   };
 
   const ct = (t as any).checkout;
