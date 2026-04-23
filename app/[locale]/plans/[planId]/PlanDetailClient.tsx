@@ -60,6 +60,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
   const [uploadingReceipt, setUploadingReceipt] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
 
   const handleReceiptUpload = async () => {
     if (!receiptFile || !instapaypurchaseId) return;
@@ -634,7 +635,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                         <div className="flex flex-col items-end">
                            <span className={`text-2xl font-black ${appliedCoupon ? 'text-accent scale-110' : ''} transition-all`}>
                              {getDiscountedPrice(
-                               planType === "monthly" 
+                               planType === "monthly"
                                 ? (currentPricing.monthlySale || currentPricing.monthly)
                                 : (currentPricing.quarterlySale || currentPricing.quarterly)
                              ).toFixed(0)} {currentPricing.currency}
@@ -642,7 +643,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                            {appliedCoupon && (
                              <span className="text-[10px] text-muted line-through">
                                {parseFloat(
-                                 planType === "monthly" 
+                                 planType === "monthly"
                                   ? (currentPricing.monthlySale || currentPricing.monthly)
                                   : (currentPricing.quarterlySale || currentPricing.quarterly)
                                 || "0").toFixed(0)} {currentPricing.currency}
@@ -651,9 +652,25 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                         </div>
                       </div>
 
+                      <label className="flex items-start gap-3 mb-4 cursor-pointer group px-1">
+                        <input
+                          type="checkbox"
+                          checked={consentChecked}
+                          onChange={(e) => setConsentChecked(e.target.checked)}
+                          className="mt-1 w-4 h-4 rounded border-white/20 bg-background accent-accent shrink-0"
+                        />
+                        <span className="text-[11px] text-muted leading-relaxed group-hover:text-foreground transition-colors">
+                          {ct.consentCheckbox}
+                        </span>
+                      </label>
+
+                      <p className="text-[10px] text-muted/70 mb-5 px-1 leading-relaxed">
+                        {ct.redirectNotice}
+                      </p>
+
                       <MagneticButton>
                         <button
-                          disabled={loading}
+                          disabled={loading || !consentChecked}
                           className="w-full py-5 rounded-full bg-white text-black font-black flex items-center justify-center gap-2 hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : ct.continue}

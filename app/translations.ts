@@ -427,7 +427,9 @@ export const translations = {
       promoCode: "Promo Code",
       apply: "Apply",
       discountApplied: "✓ Discount Applied!",
-      invalidCoupon: "Invalid or expired coupon"
+      invalidCoupon: "Invalid or expired coupon",
+      consentCheckbox: "I understand that this information is collected solely to follow up with me after the payment process to begin my journey.",
+      redirectNotice: "You will be redirected to a secure, authorized payment page to complete your transaction."
     }
   },
   ar: {
@@ -816,7 +818,9 @@ export const translations = {
       promoCode: "كود الخصم",
       apply: "تطبيق",
       discountApplied: "✓ تم تطبيق الخصم!",
-      invalidCoupon: "كود خصم غير صالح أو منتهي"
+      invalidCoupon: "كود خصم غير صالح أو منتهي",
+      consentCheckbox: "أوافق على أن هذه البيانات تُجمع فقط للتواصل معي بعد عملية الدفع لبدء رحلتي.",
+      redirectNotice: "سيتم تحويلك إلى صفحة دفع آمنة ومعتمدة لإتمام العملية."
     }
   }
 };
