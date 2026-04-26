@@ -431,6 +431,17 @@ export const translations = {
       invalidCoupon: "Invalid or expired coupon",
       consentCheckbox: "I understand that this information is collected solely to follow up with me after the payment process to begin my journey.",
       redirectNotice: "You will be redirected to a secure, authorized payment page to complete your transaction."
+    },
+    reviews: {
+      title: "Client Reviews",
+      noReviews: "No reviews yet. Be the first to review!",
+      addReview: "Write a Review",
+      name: "Your Name",
+      rating: "Rating",
+      comment: "Your Feedback",
+      submit: "Submit Review",
+      success: "Thank you for your feedback!",
+      error: "Failed to submit review. Please try again.",
     }
   },
   ar: {
@@ -823,6 +834,17 @@ export const translations = {
       invalidCoupon: "كود خصم غير صالح أو منتهي",
       consentCheckbox: "أوافق على أن هذه البيانات تُجمع فقط للتواصل معي بعد عملية الدفع لبدء رحلتي.",
       redirectNotice: "سيتم تحويلك إلى صفحة دفع آمنة ومعتمدة لإتمام العملية."
+    },
+    reviews: {
+      title: "آراء الأبطال",
+      noReviews: "مفيش تقييمات لسه. كن أول من يكتب تقييمه!",
+      addReview: "اكتب تقييمك",
+      name: "اسمك",
+      rating: "التقييم",
+      comment: "رأيك في البرنامج",
+      submit: "إرسال التقييم",
+      success: "شكراً على رأيك!",
+      error: "حصل مشكلة في إرسال التقييم. حاول تاني.",
     }
   }
 };

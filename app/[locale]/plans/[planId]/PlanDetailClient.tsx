@@ -13,7 +13,7 @@ import {
   MagneticButton,
 } from "../../../animations";
 import { ImageWithSkeleton } from "../../../image-with-skeleton";
-import { X, CreditCard, Loader2, Receipt, CheckCircle2, Smartphone, Upload, ImageIcon } from "lucide-react";
+import { X, CreditCard, Loader2, Receipt, CheckCircle2, Smartphone, Upload, ImageIcon, Star } from "lucide-react";
 
 export function PlanDetailClient({ plan }: { plan: any }) {
   const { t, locale, dir, region } = useLang();
@@ -58,6 +58,51 @@ export function PlanDetailClient({ plan }: { plan: any }) {
   const [instapayStep, setInstapayStep] = useState<"idle" | "instructions" | "done">("idle");
   const [instapaypurchaseId, setInstapayPurchaseId] = useState<string | null>(null);
   const [consentChecked, setConsentChecked] = useState(false);
+
+  // Reviews State
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [loadingReviews, setLoadingReviews] = useState(true);
+  const [reviewFormData, setReviewFormData] = useState({ clientName: "", rating: 5, comment: "" });
+  const [submittingReview, setSubmittingReview] = useState(false);
+
+  const fetchReviews = async () => {
+    try {
+      const res = await fetch(`/api/reviews?planId=${plan.id}`);
+      const data = await res.json();
+      if (res.ok) setReviews(data);
+    } catch (err) {
+      console.error("Fetch reviews error:", err);
+    } finally {
+      setLoadingReviews(false);
+    }
+  };
+
+  useState(() => {
+    fetchReviews();
+  });
+
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmittingReview(true);
+    try {
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...reviewFormData, planId: plan.id }),
+      });
+      if (res.ok) {
+        setReviewFormData({ clientName: "", rating: 5, comment: "" });
+        fetchReviews();
+        alert((t as any).reviews.success);
+      } else {
+        alert((t as any).reviews.error);
+      }
+    } catch (err) {
+      alert((t as any).reviews.error);
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
 
   const handleInstapayConfirm = async () => {
     setLoading(true);
@@ -318,6 +363,92 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                         </div>
                       </StaggerItem>
                     ))}
+                  </div>
+                </FadeUp>
+              </section>
+
+              {/* Reviews Section */}
+              <section className="pt-10 border-t border-white/5">
+                <FadeUp>
+                  <div className="flex items-center gap-4 mb-10">
+                    <h2 className="text-2xl font-black uppercase tracking-tight">
+                      {(t as any).reviews.title}
+                    </h2>
+                    <div className="h-px flex-grow bg-white/10" />
+                  </div>
+
+                  {/* Review Form */}
+                  <div className="bg-surface-light/30 border border-white/5 rounded-3xl p-8 mb-12">
+                    <h3 className="text-lg font-bold mb-6">{(t as any).reviews.addReview}</h3>
+                    <form onSubmit={handleSubmitReview} className="space-y-4">
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <input
+                          required
+                          type="text"
+                          placeholder={(t as any).reviews.name}
+                          value={reviewFormData.clientName}
+                          onChange={(e) => setReviewFormData({...reviewFormData, clientName: e.target.value})}
+                          className="w-full bg-background/50 border border-white/10 rounded-xl px-5 py-3 focus:outline-none focus:border-accent/50 transition-all"
+                        />
+                        <div className="flex items-center gap-3 bg-background/50 border border-white/10 rounded-xl px-5 py-3">
+                          <span className="text-sm text-muted">{(t as any).reviews.rating}:</span>
+                          <div className="flex gap-1">
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <button
+                                key={s}
+                                type="button"
+                                onClick={() => setReviewFormData({...reviewFormData, rating: s})}
+                                className={`transition-colors ${s <= reviewFormData.rating ? 'text-yellow-500' : 'text-white/10'}`}
+                              >
+                                <Star className="w-5 h-5 fill-current" />
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <textarea
+                        required
+                        placeholder={(t as any).reviews.comment}
+                        value={reviewFormData.comment}
+                        onChange={(e) => setReviewFormData({...reviewFormData, comment: e.target.value})}
+                        className="w-full bg-background/50 border border-white/10 rounded-xl px-5 py-3 h-32 focus:outline-none focus:border-accent/50 transition-all resize-none"
+                      />
+                      <button
+                        type="submit"
+                        disabled={submittingReview}
+                        className="bg-accent text-white font-bold py-3 px-8 rounded-xl hover:bg-accent-light transition-all disabled:opacity-50"
+                      >
+                        {submittingReview ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (t as any).reviews.submit}
+                      </button>
+                    </form>
+                  </div>
+
+                  {/* Reviews List */}
+                  <div className="space-y-6">
+                    {loadingReviews ? (
+                      <div className="flex justify-center py-10"><Loader2 className="w-8 h-8 animate-spin text-accent" /></div>
+                    ) : reviews.length === 0 ? (
+                      <p className="text-muted text-center italic py-10">{(t as any).reviews.noReviews}</p>
+                    ) : (
+                      reviews.map((r) => (
+                        <div key={r.id} className="p-6 rounded-2xl bg-surface-light/20 border border-white/5">
+                          <div className="flex justify-between items-start mb-4">
+                            <div>
+                              <h4 className="font-bold text-lg">{r.clientName}</h4>
+                              <div className="flex gap-0.5 mt-1">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star key={i} className={`w-3.5 h-3.5 ${i < r.rating ? 'text-yellow-500 fill-current' : 'text-white/10'}`} />
+                                ))}
+                              </div>
+                            </div>
+                            <span className="text-[10px] text-muted uppercase font-bold tracking-widest">
+                              {new Date(r.createdAt).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US')}
+                            </span>
+                          </div>
+                          <p className="text-muted leading-relaxed italic">"{r.comment}"</p>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </FadeUp>
               </section>

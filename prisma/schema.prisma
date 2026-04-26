@@ -38,6 +38,7 @@ model Plan {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   purchases   Purchase[]
+  reviews     Review[]
 }
 
 model FAQ {
@@ -112,6 +113,18 @@ model Transformation {
   durationAr  String?
   imagePath   String
   order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  clientName  String
+  rating      Int
+  comment     String
+  planId      String
+  plan        Plan     @relation(fields: [planId], references: [id])
+  isApproved  Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
