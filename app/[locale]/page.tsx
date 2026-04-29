@@ -14,9 +14,8 @@ export default async function HomePage() {
       take: 4
     }),
     prisma.review.findMany({
-      where: { isApproved: true, showOnHome: true },
+      where: { isApproved: true },
       orderBy: { createdAt: "desc" },
-      take: 10
     }),
     prisma.setting.findUnique({
       where: { key: "showReviewsPage" }
@@ -24,12 +23,13 @@ export default async function HomePage() {
   ]);
 
   const showReviewsPage = setting?.value === "true";
+  const homeReviews = reviews.filter((r: any) => r.showOnHome).slice(0, 10);
 
   return (
     <HomeClient 
       dbPlans={plans} 
       dbTransformations={transformations} 
-      dbReviews={reviews} 
+      dbReviews={homeReviews} 
       showReviewsPage={showReviewsPage} 
     />
   );
