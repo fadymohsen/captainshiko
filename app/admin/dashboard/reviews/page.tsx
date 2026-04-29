@@ -66,6 +66,22 @@ export default function AdminReviewsPage() {
       setDeletingId(null);
     }
   };
+  const toggleShowOnHome = async (id: string, currentVal: boolean) => {
+    try {
+      const res = await fetch(`/api/admin/reviews/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ showOnHome: !currentVal }),
+      });
+      if (res.ok) {
+        setReviews(reviews.map(r => r.id === id ? { ...r, showOnHome: !currentVal } : r));
+      } else {
+        alert("Failed to update review visibility");
+      }
+    } catch (err) {
+      alert("Error updating review visibility");
+    }
+  };
 
   if (loading) {
     return (
@@ -120,6 +136,7 @@ export default function AdminReviewsPage() {
                     <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Rating</th>
                     <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Comment</th>
                     <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Date</th>
+                    <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Home</th>
                     <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-muted text-right">Action</th>
                   </tr>
                 </thead>
@@ -148,6 +165,17 @@ export default function AdminReviewsPage() {
                         <span className="text-[10px] font-bold text-muted uppercase whitespace-nowrap">
                           {new Date(review.createdAt).toLocaleDateString()}
                         </span>
+                      </td>
+                      <td className="px-8 py-6">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input 
+                            type="checkbox" 
+                            className="sr-only peer" 
+                            checked={review.showOnHome || false}
+                            onChange={() => toggleShowOnHome(review.id, review.showOnHome || false)}
+                          />
+                          <div className="w-9 h-5 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-accent"></div>
+                        </label>
                       </td>
                       <td className="px-8 py-6 text-right">
                         <button

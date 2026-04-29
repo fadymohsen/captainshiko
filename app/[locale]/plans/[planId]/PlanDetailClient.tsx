@@ -464,6 +464,52 @@ export function PlanDetailClient({ plan }: { plan: any }) {
 
               <div className="grid md:grid-cols-2 gap-12 items-stretch">
                 
+                {/* Review Form */}
+                <div className="bg-surface-light/30 border border-white/5 rounded-[2rem] p-10 shadow-2xl">
+                  <h3 className="text-2xl font-black mb-8 text-foreground">{(t as any).reviews.addReview}</h3>
+                  <form onSubmit={handleSubmitReview} className="space-y-6">
+                    <div>
+                      <input
+                        required
+                        type="text"
+                        placeholder={(t as any).reviews.name}
+                        value={reviewFormData.clientName}
+                        onChange={(e) => setReviewFormData({...reviewFormData, clientName: e.target.value})}
+                        className="w-full bg-background/50 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-accent/50 transition-all text-base font-medium"
+                      />
+                    </div>
+                    <div className="flex items-center gap-4 bg-background/50 border border-white/10 rounded-2xl px-6 py-4">
+                      <span className="text-sm text-muted font-bold uppercase tracking-widest">{(t as any).reviews.rating}:</span>
+                      <div className="flex gap-2">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            onClick={() => setReviewFormData({...reviewFormData, rating: s})}
+                            className={`transition-all hover:scale-125 ${s <= reviewFormData.rating ? 'text-yellow-500' : 'text-white/10'}`}
+                          >
+                            <Star className="w-7 h-7 fill-current" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <textarea
+                      required
+                      placeholder={(t as any).reviews.comment}
+                      value={reviewFormData.comment}
+                      onChange={(e) => setReviewFormData({...reviewFormData, comment: e.target.value})}
+                      className="w-full bg-background/50 border border-white/10 rounded-2xl px-6 py-4 h-40 focus:outline-none focus:border-accent/50 transition-all resize-none text-base font-medium"
+                    />
+                    <button
+                      type="submit"
+                      disabled={submittingReview}
+                      className="w-full bg-accent text-white font-black py-5 rounded-2xl hover:bg-accent-light transition-all disabled:opacity-50 text-base uppercase tracking-[0.2em] shadow-lg shadow-accent/20 active:scale-[0.98]"
+                    >
+                      {submittingReview ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : (t as any).reviews.submit}
+                    </button>
+                  </form>
+                </div>
+
                 {/* Reviews Carousel */}
                 <div className="bg-surface-light/20 border border-white/5 rounded-[2rem] p-10 flex flex-col justify-between relative shadow-2xl">
                   {loadingReviews ? (
@@ -523,52 +569,6 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                       )}
                     </>
                   )}
-                </div>
-
-                {/* Review Form */}
-                <div className="bg-surface-light/30 border border-white/5 rounded-[2rem] p-10 shadow-2xl">
-                  <h3 className="text-2xl font-black mb-8 text-foreground">{(t as any).reviews.addReview}</h3>
-                  <form onSubmit={handleSubmitReview} className="space-y-6">
-                    <div>
-                      <input
-                        required
-                        type="text"
-                        placeholder={(t as any).reviews.name}
-                        value={reviewFormData.clientName}
-                        onChange={(e) => setReviewFormData({...reviewFormData, clientName: e.target.value})}
-                        className="w-full bg-background/50 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-accent/50 transition-all text-base font-medium"
-                      />
-                    </div>
-                    <div className="flex items-center gap-4 bg-background/50 border border-white/10 rounded-2xl px-6 py-4">
-                      <span className="text-sm text-muted font-bold uppercase tracking-widest">{(t as any).reviews.rating}:</span>
-                      <div className="flex gap-2">
-                        {[1, 2, 3, 4, 5].map((s) => (
-                          <button
-                            key={s}
-                            type="button"
-                            onClick={() => setReviewFormData({...reviewFormData, rating: s})}
-                            className={`transition-all hover:scale-125 ${s <= reviewFormData.rating ? 'text-yellow-500' : 'text-white/10'}`}
-                          >
-                            <Star className="w-7 h-7 fill-current" />
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    <textarea
-                      required
-                      placeholder={(t as any).reviews.comment}
-                      value={reviewFormData.comment}
-                      onChange={(e) => setReviewFormData({...reviewFormData, comment: e.target.value})}
-                      className="w-full bg-background/50 border border-white/10 rounded-2xl px-6 py-4 h-40 focus:outline-none focus:border-accent/50 transition-all resize-none text-base font-medium"
-                    />
-                    <button
-                      type="submit"
-                      disabled={submittingReview}
-                      className="w-full bg-accent text-white font-black py-5 rounded-2xl hover:bg-accent-light transition-all disabled:opacity-50 text-base uppercase tracking-[0.2em] shadow-lg shadow-accent/20 active:scale-[0.98]"
-                    >
-                      {submittingReview ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : (t as any).reviews.submit}
-                    </button>
-                  </form>
                 </div>
 
               </div>
