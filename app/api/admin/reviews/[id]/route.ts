@@ -27,13 +27,14 @@ export async function PATCH(
     const { id } = await params;
     const body = await req.json();
 
-    const updated = await prisma.review.update({
-      where: { id },
-      data: {
-        isApproved: body.isApproved !== undefined ? body.isApproved : undefined,
-        showOnHome: body.showOnHome !== undefined ? body.showOnHome : undefined,
-      },
-    });
+    if (body.showOnHome !== undefined) {
+      await prisma.$executeRaw`UPDATE "Review" SET "showOnHome" = ${body.showOnHome} WHERE "id" = ${id}`;
+    }
+    if (body.isApproved !== undefined) {
+      await prisma.$executeRaw`UPDATE "Review" SET "isApproved" = ${body.isApproved} WHERE "id" = ${id}`;
+    }
+
+    const updated = await prisma.review.findUnique({ where: { id } });
 
     return NextResponse.json(updated);
   } catch (error) {
