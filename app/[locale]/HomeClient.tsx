@@ -19,6 +19,7 @@ import {
   MagneticButton,
 } from "../animations";
 import { ImageWithSkeleton } from "../image-with-skeleton";
+import { CertificateCarousel } from "../certificates-carousel";
 import { Star } from "lucide-react";
 
 type Duration = "monthly" | "quarterly";
@@ -182,6 +183,35 @@ export function HomeClient({
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
           </SlideIn>
+        </div>
+      </section>
+
+      {/* ===== CERTIFICATES — TRUST BADGE ===== */}
+      <section className="py-28 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-accent/[0.03] via-accent/[0.07] to-accent/[0.03] pointer-events-none" />
+        <div className="relative max-w-7xl mx-auto px-6">
+          <FadeUp>
+            <div className="text-center mb-12">
+              <span className="inline-flex items-center gap-2 text-accent-light text-xs font-bold tracking-[0.2em] uppercase border border-accent/20 px-4 py-1.5 rounded-full mb-4">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                {locale === "en" ? "Verified Excellence" : "تميّز معتمد"}
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold">
+                {locale === "en" ? "Certificates & Accreditations" : "الشهادات والاعتمادات"}
+              </h2>
+              <p className="text-muted mt-4 max-w-lg mx-auto">
+                {locale === "en"
+                  ? "Internationally recognized certifications backing every program we design."
+                  : "شهادات معتمدة دولياً وراء كل برنامج بنصممه."}
+              </p>
+            </div>
+
+            <div className="p-4 sm:p-10 rounded-[3rem] bg-surface-light/50 border border-accent/10 shadow-2xl backdrop-blur-sm max-w-5xl mx-auto">
+              <CertificateCarousel />
+            </div>
+          </FadeUp>
         </div>
       </section>
 
