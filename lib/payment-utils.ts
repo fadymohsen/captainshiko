@@ -1,6 +1,6 @@
 import prisma from "./prisma";
 import { fawaterakClient } from "./fawaterak";
-import { sendClientEmail, sendAdminEmail } from "./email";
+import { sendClientEmail, sendAdminConfirmedEmail } from "./email";
 
 /**
  * Common logic for verifying a payment with Fawaterak, updating the database,
@@ -78,7 +78,7 @@ export async function handlePaymentVerification(invoiceId: string) {
       // Send parallel, but await them here for reliability in cron/webhook context
       await Promise.all([
         sendClientEmail(emailData),
-        sendAdminEmail(emailData),
+        sendAdminConfirmedEmail(emailData),
       ]);
       console.log("[PaymentSync] Emails sent successfully for invoice:", invoiceId);
     } catch (err) {

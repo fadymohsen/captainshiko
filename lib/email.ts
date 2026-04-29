@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const FROM_EMAIL = process.env.SMTP_FROM || process.env.SMTP_USER || "";
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "coachmohamedroshdy@gmail.com";
 
 interface PurchaseEmailData {
   clientName: string;
