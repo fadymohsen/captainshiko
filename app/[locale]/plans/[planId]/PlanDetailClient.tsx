@@ -64,6 +64,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
   const [loadingReviews, setLoadingReviews] = useState(true);
   const [reviewFormData, setReviewFormData] = useState({ clientName: "", rating: 5, comment: "" });
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [activeReviewIdx, setActiveReviewIdx] = useState(0);
 
   const fetchReviews = async () => {
     try {
@@ -375,21 +376,83 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                     <div className="h-px flex-grow bg-white/10" />
                   </div>
 
-                  {/* Review Form */}
-                  <div className="bg-surface-light/30 border border-white/5 rounded-3xl p-8 mb-12">
-                    <h3 className="text-lg font-bold mb-6">{(t as any).reviews.addReview}</h3>
-                    <form onSubmit={handleSubmitReview} className="space-y-4">
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        <input
-                          required
-                          type="text"
-                          placeholder={(t as any).reviews.name}
-                          value={reviewFormData.clientName}
-                          onChange={(e) => setReviewFormData({...reviewFormData, clientName: e.target.value})}
-                          className="w-full bg-background/50 border border-white/10 rounded-xl px-5 py-3 focus:outline-none focus:border-accent/50 transition-all"
-                        />
+                  <div className="grid md:grid-cols-2 gap-8 items-start">
+                    
+                    {/* Reviews Carousel */}
+                    <div className="bg-surface-light/20 border border-white/5 rounded-3xl p-8 min-h-[320px] flex flex-col justify-between relative">
+                      {loadingReviews ? (
+                        <div className="flex items-center justify-center flex-grow">
+                          <Loader2 className="w-8 h-8 animate-spin text-accent" />
+                        </div>
+                      ) : reviews.length === 0 ? (
+                        <div className="flex items-center justify-center flex-grow">
+                          <p className="text-muted italic">{(t as any).reviews.noReviews}</p>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex-grow">
+                            <div className="flex justify-between items-start mb-6">
+                              <div>
+                                <h4 className="font-bold text-xl text-accent-light">{reviews[activeReviewIdx].clientName}</h4>
+                                <div className="flex gap-0.5 mt-2">
+                                  {[...Array(5)].map((_, i) => (
+                                    <Star key={i} className={`w-4 h-4 ${i < reviews[activeReviewIdx].rating ? 'text-yellow-500 fill-current' : 'text-white/10'}`} />
+                                  ))}
+                                </div>
+                              </div>
+                              <span className="text-[10px] text-muted uppercase font-bold tracking-widest">
+                                {new Date(reviews[activeReviewIdx].createdAt).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US')}
+                              </span>
+                            </div>
+                            <p className="text-muted text-lg leading-relaxed font-medium italic mt-4">
+                              "{reviews[activeReviewIdx].comment}"
+                            </p>
+                          </div>
+
+                          {/* Carousel Controls */}
+                          {reviews.length > 1 && (
+                            <div className="flex gap-3 mt-8">
+                              <button
+                                onClick={() => setActiveReviewIdx((prev) => (prev === 0 ? reviews.length - 1 : prev - 1))}
+                                className="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all text-muted hover:text-white"
+                              >
+                                <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                </svg>
+                              </button>
+                              <button
+                                onClick={() => setActiveReviewIdx((prev) => (prev === reviews.length - 1 ? 0 : prev + 1))}
+                                className="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all text-muted hover:text-white"
+                              >
+                                <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                              </button>
+                              <div className="flex items-center ml-auto text-xs text-muted font-bold">
+                                {activeReviewIdx + 1} / {reviews.length}
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+
+                    {/* Review Form */}
+                    <div className="bg-surface-light/30 border border-white/5 rounded-3xl p-8">
+                      <h3 className="text-lg font-bold mb-6">{(t as any).reviews.addReview}</h3>
+                      <form onSubmit={handleSubmitReview} className="space-y-4">
+                        <div>
+                          <input
+                            required
+                            type="text"
+                            placeholder={(t as any).reviews.name}
+                            value={reviewFormData.clientName}
+                            onChange={(e) => setReviewFormData({...reviewFormData, clientName: e.target.value})}
+                            className="w-full bg-background/50 border border-white/10 rounded-xl px-5 py-3 focus:outline-none focus:border-accent/50 transition-all text-sm"
+                          />
+                        </div>
                         <div className="flex items-center gap-3 bg-background/50 border border-white/10 rounded-xl px-5 py-3">
-                          <span className="text-sm text-muted">{(t as any).reviews.rating}:</span>
+                          <span className="text-xs text-muted uppercase tracking-wider">{(t as any).reviews.rating}:</span>
                           <div className="flex gap-1">
                             {[1, 2, 3, 4, 5].map((s) => (
                               <button
@@ -403,50 +466,23 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                             ))}
                           </div>
                         </div>
-                      </div>
-                      <textarea
-                        required
-                        placeholder={(t as any).reviews.comment}
-                        value={reviewFormData.comment}
-                        onChange={(e) => setReviewFormData({...reviewFormData, comment: e.target.value})}
-                        className="w-full bg-background/50 border border-white/10 rounded-xl px-5 py-3 h-32 focus:outline-none focus:border-accent/50 transition-all resize-none"
-                      />
-                      <button
-                        type="submit"
-                        disabled={submittingReview}
-                        className="bg-accent text-white font-bold py-3 px-8 rounded-xl hover:bg-accent-light transition-all disabled:opacity-50"
-                      >
-                        {submittingReview ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (t as any).reviews.submit}
-                      </button>
-                    </form>
-                  </div>
+                        <textarea
+                          required
+                          placeholder={(t as any).reviews.comment}
+                          value={reviewFormData.comment}
+                          onChange={(e) => setReviewFormData({...reviewFormData, comment: e.target.value})}
+                          className="w-full bg-background/50 border border-white/10 rounded-xl px-5 py-3 h-32 focus:outline-none focus:border-accent/50 transition-all resize-none text-sm"
+                        />
+                        <button
+                          type="submit"
+                          disabled={submittingReview}
+                          className="w-full bg-accent text-white font-bold py-4 rounded-xl hover:bg-accent-light transition-all disabled:opacity-50 text-sm uppercase tracking-widest font-black"
+                        >
+                          {submittingReview ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (t as any).reviews.submit}
+                        </button>
+                      </form>
+                    </div>
 
-                  {/* Reviews List */}
-                  <div className="space-y-6">
-                    {loadingReviews ? (
-                      <div className="flex justify-center py-10"><Loader2 className="w-8 h-8 animate-spin text-accent" /></div>
-                    ) : reviews.length === 0 ? (
-                      <p className="text-muted text-center italic py-10">{(t as any).reviews.noReviews}</p>
-                    ) : (
-                      reviews.map((r) => (
-                        <div key={r.id} className="p-6 rounded-2xl bg-surface-light/20 border border-white/5">
-                          <div className="flex justify-between items-start mb-4">
-                            <div>
-                              <h4 className="font-bold text-lg">{r.clientName}</h4>
-                              <div className="flex gap-0.5 mt-1">
-                                {[...Array(5)].map((_, i) => (
-                                  <Star key={i} className={`w-3.5 h-3.5 ${i < r.rating ? 'text-yellow-500 fill-current' : 'text-white/10'}`} />
-                                ))}
-                              </div>
-                            </div>
-                            <span className="text-[10px] text-muted uppercase font-bold tracking-widest">
-                              {new Date(r.createdAt).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US')}
-                            </span>
-                          </div>
-                          <p className="text-muted leading-relaxed italic">"{r.comment}"</p>
-                        </div>
-                      ))
-                    )}
                   </div>
                 </FadeUp>
               </section>

@@ -8,6 +8,8 @@ export default function AdminReviewsPage() {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  const [showPublicReviews, setShowPublicReviews] = useState(false);
+
   const fetchReviews = async () => {
     try {
       const res = await fetch("/api/admin/reviews");
@@ -20,8 +22,32 @@ export default function AdminReviewsPage() {
     }
   };
 
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch("/api/settings?key=showReviewsPage");
+      const data = await res.json();
+      if (res.ok) setShowPublicReviews(data.value === "true");
+    } catch (err) {
+      console.error("Fetch settings error:", err);
+    }
+  };
+
+  const togglePublicReviews = async (checked: boolean) => {
+    setShowPublicReviews(checked);
+    try {
+      await fetch("/api/admin/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: "showReviewsPage", value: checked }),
+      });
+    } catch (err) {
+      console.error("Error updating setting:", err);
+    }
+  };
+
   useEffect(() => {
     fetchReviews();
+    fetchSettings();
   }, []);
 
   const handleDelete = async (id: string) => {
@@ -56,6 +82,21 @@ export default function AdminReviewsPage() {
         <div>
           <h1 className="text-4xl font-black mb-2">Client <span className="text-accent">Reviews</span></h1>
           <p className="text-muted font-medium">Manage and moderate all plan reviews</p>
+        </div>
+        <div className="flex items-center gap-3 bg-surface-light border border-white/5 px-6 py-4 rounded-2xl">
+          <span className="text-sm font-bold text-muted">Public Reviews Page:</span>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input 
+              type="checkbox" 
+              className="sr-only peer" 
+              checked={showPublicReviews}
+              onChange={(e) => togglePublicReviews(e.target.checked)}
+            />
+            <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"></div>
+          </label>
+          <span className="text-xs font-bold uppercase tracking-widest text-accent">
+            {showPublicReviews ? "Visible" : "Hidden"}
+          </span>
         </div>
       </div>
 
