@@ -72,7 +72,7 @@ export async function POST(req: Request) {
         currency: region === "egypt" ? "EGP" : "USD",
         status: "PENDING",
         region,
-        paymentMethod: paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : "Other",
+        paymentMethod: paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : paymentMethodId === 4 ? "Wallet" : "Other",
         notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''}`,
         couponId,
         discountAmount
@@ -138,7 +138,7 @@ export async function POST(req: Request) {
     }
 
     // 7. Send pending email to client + admin notification
-    const paymentMethodLabel = paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : "Other";
+    const paymentMethodLabel = paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : paymentMethodId === 4 ? "Wallet" : "Other";
     try {
       await Promise.all([
         email ? sendPendingEmail({ clientName, email, planName: plan.nameEn, amount, currency: region === "egypt" ? "EGP" : "USD" }) : Promise.resolve(),

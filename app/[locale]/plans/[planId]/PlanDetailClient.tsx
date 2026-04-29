@@ -13,7 +13,7 @@ import {
   MagneticButton,
 } from "../../../animations";
 import { ImageWithSkeleton } from "../../../image-with-skeleton";
-import { X, CreditCard, Loader2, Receipt, CheckCircle2, Smartphone, Upload, ImageIcon, Star } from "lucide-react";
+import { X, CreditCard, Loader2, Receipt, CheckCircle2, Smartphone, Upload, ImageIcon, Star, Wallet } from "lucide-react";
 
 export function PlanDetailClient({ plan }: { plan: any }) {
   const { t, locale, dir, region } = useLang();
@@ -197,11 +197,9 @@ export function PlanDetailClient({ plan }: { plan: any }) {
         localStorage.setItem("lastPurchaseId", data.purchaseId);
       }
 
-      if (data.url && paymentMethodId === 2) {
-        // Card / Apple Pay: redirect to Fawaterak payment page
+      if (data.url && (paymentMethodId === 2 || paymentMethodId === 4)) {
+        // Card / Wallet: redirect to Fawaterak payment page
         window.location.href = data.url;
-        setPaymentResponse(data);
-        setLoading(false);
       } else {
         // Fawry: show reference code modal
         setPaymentResponse(data);
@@ -658,7 +656,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
 
                     <div>
                       <label className="text-xs font-bold text-muted uppercase tracking-widest block mb-3 px-1">{ct.paymentMethod}</label>
-                      <div className="grid grid-cols-3 gap-3">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         <button
                           type="button"
                           onClick={() => setPaymentMethodId(2)}
@@ -674,6 +672,14 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                         >
                           <Receipt className="w-6 h-6 mb-2" />
                           <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.fawry}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPaymentMethodId(4)}
+                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 4 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
+                        >
+                          <Wallet className="w-6 h-6 mb-2" />
+                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.wallet}</span>
                         </button>
                         <button
                           type="button"
