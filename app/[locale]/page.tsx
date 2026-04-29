@@ -14,7 +14,7 @@ export default async function HomePage() {
       take: 4
     }),
     prisma.review.findMany({
-      where: { isApproved: true },
+      where: { isApproved: true, showOnHome: true },
       orderBy: { createdAt: "desc" },
       take: 10
     }),

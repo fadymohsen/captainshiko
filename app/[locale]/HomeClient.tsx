@@ -347,7 +347,7 @@ export function HomeClient({
       </section>
 
       {/* ===== CLIENT REVIEWS ===== */}
-      {dbReviews.length > 0 && (
+      {showReviewsPage && dbReviews.length > 0 && (
         <section className="py-20 relative">
           <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-accent/5 rounded-full glow-pulse pointer-events-none" />
           <div className="max-w-5xl mx-auto px-6 relative">

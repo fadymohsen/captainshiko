@@ -125,6 +125,7 @@ model Review {
   planId      String
   plan        Plan     @relation(fields: [planId], references: [id])
   isApproved  Boolean  @default(true)
+  showOnHome  Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
