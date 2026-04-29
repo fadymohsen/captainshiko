@@ -19,14 +19,24 @@ import {
   MagneticButton,
 } from "../animations";
 import { ImageWithSkeleton } from "../image-with-skeleton";
-
-// Removed hardcoded transformationImages in favor of translations.transformationsData
+import { Star } from "lucide-react";
 
 type Duration = "monthly" | "quarterly";
 
-export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbTransformations: any[] }) {
+export function HomeClient({ 
+  dbPlans, 
+  dbTransformations,
+  dbReviews = [],
+  showReviewsPage = false
+}: { 
+  dbPlans: any[], 
+  dbTransformations: any[],
+  dbReviews?: any[],
+  showReviewsPage?: boolean
+}) {
   const { t, locale, dir, region } = useLang();
   const [duration, setDuration] = useState<Duration>("monthly");
+  const [activeReviewIdx, setActiveReviewIdx] = useState(0);
   const p = t.pricing;
 
   const plans = dbPlans.filter(p => p.isActive).map(planData => {
@@ -335,6 +345,93 @@ export function HomeClient({ dbPlans, dbTransformations }: { dbPlans: any[], dbT
           </AnimatePresence>
         </div>
       </section>
+
+      {/* ===== CLIENT REVIEWS ===== */}
+      {dbReviews.length > 0 && (
+        <section className="py-20 relative">
+          <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-accent/5 rounded-full glow-pulse pointer-events-none" />
+          <div className="max-w-5xl mx-auto px-6 relative">
+            
+            <FadeUp>
+              <div className="text-center mb-16">
+                <span className="text-sm text-accent-light font-bold tracking-widest uppercase">
+                  {locale === "en" ? "Success Stories" : "قصص النجاح"}
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-black mt-2">
+                  {locale === "en" ? "What Our Champions Say" : "بيقولوا إيه عننا؟"}
+                </h2>
+              </div>
+            </FadeUp>
+
+            <FadeUp delay={0.2}>
+              <div className="bg-surface-light/20 border border-white/5 rounded-[2.5rem] p-8 sm:p-12 min-h-[300px] flex flex-col justify-between shadow-2xl relative">
+                <div className="flex-grow">
+                  <div className="flex justify-between items-start mb-6">
+                    <div>
+                      <h4 className="font-bold text-2xl text-accent-light">{dbReviews[activeReviewIdx].clientName}</h4>
+                      <div className="flex gap-0.5 mt-2">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className={`w-4 h-4 ${i < dbReviews[activeReviewIdx].rating ? 'text-yellow-500 fill-current' : 'text-white/10'}`} />
+                        ))}
+                      </div>
+                    </div>
+                    <span className="text-xs text-muted uppercase font-bold tracking-widest">
+                      {new Date(dbReviews[activeReviewIdx].createdAt).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US')}
+                    </span>
+                  </div>
+                  <p className="text-muted text-lg sm:text-xl leading-relaxed font-medium italic mt-6">
+                    "{dbReviews[activeReviewIdx].comment}"
+                  </p>
+                </div>
+
+                {/* Carousel Controls */}
+                <div className="flex items-center justify-between mt-10 pt-6 border-t border-white/5">
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setActiveReviewIdx((prev) => (prev === 0 ? dbReviews.length - 1 : prev - 1))}
+                      className="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all text-muted hover:text-white"
+                    >
+                      <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => setActiveReviewIdx((prev) => (prev === dbReviews.length - 1 ? 0 : prev + 1))}
+                      className="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all text-muted hover:text-white"
+                    >
+                      <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  <div className="text-xs text-muted font-bold">
+                    {activeReviewIdx + 1} / {dbReviews.length}
+                  </div>
+                </div>
+              </div>
+            </FadeUp>
+
+            {/* See More Link */}
+            {showReviewsPage && (
+              <FadeUp delay={0.3}>
+                <div className="text-center mt-10">
+                  <Link
+                    href={`/${locale}/reviews`}
+                    className="inline-flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-light transition-colors uppercase tracking-widest"
+                  >
+                    <span>{locale === "en" ? "See All Reviews" : "عرض كل التقييمات"}</span>
+                    <svg className={`w-4 h-4 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </Link>
+                </div>
+              </FadeUp>
+            )}
+
+          </div>
+        </section>
+      )}
 
       {/* ===== SEE ALL PLANS CTA ===== */}
       <section className="pb-28">

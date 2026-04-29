@@ -1,10 +1,10 @@
 import prisma from "@/lib/prisma";
 import { HomeClient } from "./HomeClient";
 
-export const revalidate = 60; // optionally cache for 60 seconds
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [plans, transformations] = await Promise.all([
+  const [plans, transformations, reviews, setting] = await Promise.all([
     prisma.plan.findMany({
       where: { isActive: true },
       orderBy: { order: 'asc' }
@@ -12,8 +12,25 @@ export default async function HomePage() {
     prisma.transformation.findMany({
       orderBy: { order: 'asc' },
       take: 4
+    }),
+    prisma.review.findMany({
+      where: { isApproved: true },
+      orderBy: { createdAt: "desc" },
+      take: 10
+    }),
+    prisma.setting.findUnique({
+      where: { key: "showReviewsPage" }
     })
   ]);
 
-  return <HomeClient dbPlans={plans} dbTransformations={transformations} />;
+  const showReviewsPage = setting?.value === "true";
+
+  return (
+    <HomeClient 
+      dbPlans={plans} 
+      dbTransformations={transformations} 
+      dbReviews={reviews} 
+      showReviewsPage={showReviewsPage} 
+    />
+  );
 }
