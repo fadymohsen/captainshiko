@@ -555,7 +555,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg bg-surface-light border border-white/10 rounded-3xl p-4 sm:p-8 shadow-2xl overflow-y-auto max-h-[75vh] sm:max-h-[90vh]"
+              className="relative w-full max-w-md bg-surface-light border border-white/10 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-y-auto max-h-[75vh] sm:max-h-[85vh]"
               dir={dir}
             >
               <button 
@@ -566,38 +566,38 @@ export function PlanDetailClient({ plan }: { plan: any }) {
               </button>
 
               {instapayStep === "instructions" ? (
-                <div className="py-6">
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent">
-                      <Smartphone className="w-6 h-6" />
+                <div className="py-4">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center text-accent">
+                      <Smartphone className="w-5 h-5" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold">{ct.instapayTitle}</h2>
-                      <p className="text-sm text-muted">{name}</p>
+                      <h2 className="text-xl font-bold">{ct.instapayTitle}</h2>
+                      <p className="text-xs text-muted">{name}</p>
                     </div>
                   </div>
 
-                  <div className="bg-background/50 rounded-2xl p-6 border border-white/5 mb-8">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-accent mb-4">{locale === 'en' ? 'Instructions' : 'التعليمات'}</h3>
+                  <div className="bg-background/50 rounded-xl p-4 border border-white/5 mb-5">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-accent mb-2">{locale === 'en' ? 'Instructions' : 'التعليمات'}</h3>
                     <p className="text-muted text-sm leading-relaxed whitespace-pre-line">{ct.instapayInstructions}</p>
                   </div>
 
                   <button
                     onClick={handleInstapayConfirm}
                     disabled={loading}
-                    className="w-full py-5 rounded-full bg-white text-black font-black flex items-center justify-center gap-2 hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-4 rounded-full bg-white text-black font-black flex items-center justify-center gap-2 hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : ct.instapayConfirm}
                   </button>
                 </div>
               ) : instapayStep === "done" ? (
-                <div className="text-center py-10">
-                  <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mx-auto mb-6 border border-green-500/20">
-                    <CheckCircle2 className="w-10 h-10" />
+                <div className="text-center py-4">
+                  <div className="w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mx-auto mb-4 border border-green-500/20">
+                    <CheckCircle2 className="w-7 h-7" />
                   </div>
-                  <h2 className="text-3xl font-black mb-4">{ct.instapayDoneTitle}</h2>
-                  <p className="text-muted mb-8 leading-relaxed">{ct.instapayDoneNote}</p>
-                  
+                  <h2 className="text-2xl font-black mb-2">{ct.instapayDoneTitle}</h2>
+                  <p className="text-muted text-sm mb-5 leading-relaxed">{ct.instapayDoneNote}</p>
+
                   <div className="space-y-3">
                     <a
                       href={`https://wa.me/201553038830?text=${encodeURIComponent(
@@ -795,18 +795,18 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                   </form>
                 </>
               ) : (
-                <div className="text-center py-10">
-                  <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mx-auto mb-6 border border-green-500/20">
-                    <CheckCircle2 className="w-10 h-10" />
+                <div className="text-center py-4">
+                  <div className="w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mx-auto mb-4 border border-green-500/20">
+                    <CheckCircle2 className="w-7 h-7" />
                   </div>
-                  <h2 className="text-3xl font-black mb-4">{ct.orderCreated}</h2>
-                  <p className="text-muted mb-8 leading-relaxed">
+                  <h2 className="text-2xl font-black mb-2">{ct.orderCreated}</h2>
+                  <p className="text-muted text-sm mb-5 leading-relaxed">
                     {ct.fawryNote}
                   </p>
-                  
-                  <div className="bg-background rounded-3xl p-8 mb-8 border border-white/5">
-                    <div className="text-sm text-muted uppercase tracking-widest mb-2">{ct.referenceCode}</div>
-                    <div className="text-5xl font-black text-accent tracking-tighter">
+
+                  <div className="bg-background rounded-2xl p-5 mb-5 border border-white/5">
+                    <div className="text-xs text-muted uppercase tracking-widest mb-1">{ct.referenceCode}</div>
+                    <div className="text-3xl font-black text-accent tracking-tighter">
                       {paymentResponse.paymentData?.fawryCode || paymentResponse.paymentData?.meezaReference || "REF-" + paymentResponse.invoiceId}
                     </div>
                   </div>

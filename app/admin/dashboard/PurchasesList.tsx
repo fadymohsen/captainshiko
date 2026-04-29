@@ -251,6 +251,7 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
                   <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted">Date</th>
                   <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted">Customer</th>
                   <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted">Plan & Amount</th>
+                  <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted">Payment</th>
                   <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted">Status</th>
                   <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted text-right">Actions</th>
                 </tr>
@@ -258,7 +259,7 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
               <tbody className="divide-y divide-white/5">
                 {purchases.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-6 py-20 text-center text-muted italic">
+                    <td colSpan={6} className="px-6 py-20 text-center text-muted italic">
                       No orders found.
                     </td>
                   </tr>
@@ -302,6 +303,17 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
                             📎 Receipt
                           </a>
                         )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black tracking-tighter uppercase ${
+                          purchase.paymentMethod === "Card" ? "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                          : purchase.paymentMethod === "Fawry" ? "bg-orange-500/10 text-orange-400 border border-orange-500/20"
+                          : purchase.paymentMethod === "Wallet" ? "bg-purple-500/10 text-purple-400 border border-purple-500/20"
+                          : purchase.paymentMethod === "InstaPay" ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
+                          : "bg-white/5 text-muted border border-white/10"
+                        }`}>
+                          {purchase.paymentMethod || "N/A"}
+                        </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 rounded-full text-[10px] font-black tracking-tighter uppercase ${
