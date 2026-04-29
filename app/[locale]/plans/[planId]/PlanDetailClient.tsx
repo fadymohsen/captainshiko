@@ -366,126 +366,6 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                 </FadeUp>
               </section>
 
-              {/* Reviews Section */}
-              <section className="pt-10 border-t border-white/5">
-                <FadeUp>
-                  <div className="flex items-center gap-4 mb-10">
-                    <h2 className="text-2xl font-black uppercase tracking-tight">
-                      {(t as any).reviews.title}
-                    </h2>
-                    <div className="h-px flex-grow bg-white/10" />
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-8 items-start">
-                    
-                    {/* Reviews Carousel */}
-                    <div className="bg-surface-light/20 border border-white/5 rounded-3xl p-8 min-h-[320px] flex flex-col justify-between relative">
-                      {loadingReviews ? (
-                        <div className="flex items-center justify-center flex-grow">
-                          <Loader2 className="w-8 h-8 animate-spin text-accent" />
-                        </div>
-                      ) : reviews.length === 0 ? (
-                        <div className="flex items-center justify-center flex-grow">
-                          <p className="text-muted italic">{(t as any).reviews.noReviews}</p>
-                        </div>
-                      ) : (
-                        <>
-                          <div className="flex-grow">
-                            <div className="flex justify-between items-start mb-6">
-                              <div>
-                                <h4 className="font-bold text-xl text-accent-light">{reviews[activeReviewIdx].clientName}</h4>
-                                <div className="flex gap-0.5 mt-2">
-                                  {[...Array(5)].map((_, i) => (
-                                    <Star key={i} className={`w-4 h-4 ${i < reviews[activeReviewIdx].rating ? 'text-yellow-500 fill-current' : 'text-white/10'}`} />
-                                  ))}
-                                </div>
-                              </div>
-                              <span className="text-[10px] text-muted uppercase font-bold tracking-widest">
-                                {new Date(reviews[activeReviewIdx].createdAt).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US')}
-                              </span>
-                            </div>
-                            <p className="text-muted text-lg leading-relaxed font-medium italic mt-4">
-                              "{reviews[activeReviewIdx].comment}"
-                            </p>
-                          </div>
-
-                          {/* Carousel Controls */}
-                          {reviews.length > 1 && (
-                            <div className="flex gap-3 mt-8">
-                              <button
-                                onClick={() => setActiveReviewIdx((prev) => (prev === 0 ? reviews.length - 1 : prev - 1))}
-                                className="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all text-muted hover:text-white"
-                              >
-                                <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                </svg>
-                              </button>
-                              <button
-                                onClick={() => setActiveReviewIdx((prev) => (prev === reviews.length - 1 ? 0 : prev + 1))}
-                                className="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all text-muted hover:text-white"
-                              >
-                                <svg className={`w-5 h-5 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                              </button>
-                              <div className="flex items-center ml-auto text-xs text-muted font-bold">
-                                {activeReviewIdx + 1} / {reviews.length}
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-
-                    {/* Review Form */}
-                    <div className="bg-surface-light/30 border border-white/5 rounded-3xl p-8">
-                      <h3 className="text-lg font-bold mb-6">{(t as any).reviews.addReview}</h3>
-                      <form onSubmit={handleSubmitReview} className="space-y-4">
-                        <div>
-                          <input
-                            required
-                            type="text"
-                            placeholder={(t as any).reviews.name}
-                            value={reviewFormData.clientName}
-                            onChange={(e) => setReviewFormData({...reviewFormData, clientName: e.target.value})}
-                            className="w-full bg-background/50 border border-white/10 rounded-xl px-5 py-3 focus:outline-none focus:border-accent/50 transition-all text-sm"
-                          />
-                        </div>
-                        <div className="flex items-center gap-3 bg-background/50 border border-white/10 rounded-xl px-5 py-3">
-                          <span className="text-xs text-muted uppercase tracking-wider">{(t as any).reviews.rating}:</span>
-                          <div className="flex gap-1">
-                            {[1, 2, 3, 4, 5].map((s) => (
-                              <button
-                                key={s}
-                                type="button"
-                                onClick={() => setReviewFormData({...reviewFormData, rating: s})}
-                                className={`transition-colors ${s <= reviewFormData.rating ? 'text-yellow-500' : 'text-white/10'}`}
-                              >
-                                <Star className="w-5 h-5 fill-current" />
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                        <textarea
-                          required
-                          placeholder={(t as any).reviews.comment}
-                          value={reviewFormData.comment}
-                          onChange={(e) => setReviewFormData({...reviewFormData, comment: e.target.value})}
-                          className="w-full bg-background/50 border border-white/10 rounded-xl px-5 py-3 h-32 focus:outline-none focus:border-accent/50 transition-all resize-none text-sm"
-                        />
-                        <button
-                          type="submit"
-                          disabled={submittingReview}
-                          className="w-full bg-accent text-white font-bold py-4 rounded-xl hover:bg-accent-light transition-all disabled:opacity-50 text-sm uppercase tracking-widest font-black"
-                        >
-                          {submittingReview ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (t as any).reviews.submit}
-                        </button>
-                      </form>
-                    </div>
-
-                  </div>
-                </FadeUp>
-              </section>
             </div>
 
             <div className="lg:col-span-5 relative lg:h-full">
@@ -570,8 +450,131 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                 </ScaleIn>
               </div>
             </div>
-
           </div>
+
+          {/* Reviews Section */}
+          <section className="pt-20 mt-20 border-t border-white/5 w-full">
+            <FadeUp>
+              <div className="flex items-center gap-4 mb-12">
+                <h2 className="text-3xl font-black uppercase tracking-tight">
+                  {(t as any).reviews.title}
+                </h2>
+                <div className="h-px flex-grow bg-white/10" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-12 items-stretch">
+                
+                {/* Reviews Carousel */}
+                <div className="bg-surface-light/20 border border-white/5 rounded-[2rem] p-10 flex flex-col justify-between relative shadow-2xl">
+                  {loadingReviews ? (
+                    <div className="flex items-center justify-center flex-grow py-20">
+                      <Loader2 className="w-10 h-10 animate-spin text-accent" />
+                    </div>
+                  ) : reviews.length === 0 ? (
+                    <div className="flex items-center justify-center flex-grow py-20">
+                      <p className="text-muted text-lg italic">{(t as any).reviews.noReviews}</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex-grow">
+                        <div className="flex justify-between items-start mb-8">
+                          <div>
+                            <h4 className="font-black text-2xl text-accent-light">{reviews[activeReviewIdx].clientName}</h4>
+                            <div className="flex gap-1 mt-3">
+                              {[...Array(5)].map((_, i) => (
+                                <Star key={i} className={`w-5 h-5 ${i < reviews[activeReviewIdx].rating ? 'text-yellow-500 fill-current' : 'text-white/10'}`} />
+                              ))}
+                            </div>
+                          </div>
+                          <span className="text-xs text-muted uppercase font-black tracking-widest bg-white/5 px-4 py-2 rounded-full">
+                            {new Date(reviews[activeReviewIdx].createdAt).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US')}
+                          </span>
+                        </div>
+                        <p className="text-muted text-xl md:text-2xl leading-relaxed font-medium italic mt-8">
+                          "{reviews[activeReviewIdx].comment}"
+                        </p>
+                      </div>
+
+                      {/* Carousel Controls */}
+                      {reviews.length > 1 && (
+                        <div className="flex items-center justify-between mt-12 pt-6 border-t border-white/5">
+                          <div className="flex gap-4">
+                            <button
+                              onClick={() => setActiveReviewIdx((prev) => (prev === 0 ? reviews.length - 1 : prev - 1))}
+                              className="p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-all text-muted hover:text-white hover:scale-105 active:scale-95"
+                            >
+                              <svg className={`w-6 h-6 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                              </svg>
+                            </button>
+                            <button
+                              onClick={() => setActiveReviewIdx((prev) => (prev === reviews.length - 1 ? 0 : prev + 1))}
+                              className="p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-all text-muted hover:text-white hover:scale-105 active:scale-95"
+                            >
+                              <svg className={`w-6 h-6 ${dir === 'rtl' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                              </svg>
+                            </button>
+                          </div>
+                          <div className="text-sm text-muted font-black bg-white/5 px-5 py-2 rounded-full tracking-widest">
+                            {activeReviewIdx + 1} / {reviews.length}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+
+                {/* Review Form */}
+                <div className="bg-surface-light/30 border border-white/5 rounded-[2rem] p-10 shadow-2xl">
+                  <h3 className="text-2xl font-black mb-8 text-foreground">{(t as any).reviews.addReview}</h3>
+                  <form onSubmit={handleSubmitReview} className="space-y-6">
+                    <div>
+                      <input
+                        required
+                        type="text"
+                        placeholder={(t as any).reviews.name}
+                        value={reviewFormData.clientName}
+                        onChange={(e) => setReviewFormData({...reviewFormData, clientName: e.target.value})}
+                        className="w-full bg-background/50 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-accent/50 transition-all text-base font-medium"
+                      />
+                    </div>
+                    <div className="flex items-center gap-4 bg-background/50 border border-white/10 rounded-2xl px-6 py-4">
+                      <span className="text-sm text-muted font-bold uppercase tracking-widest">{(t as any).reviews.rating}:</span>
+                      <div className="flex gap-2">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            onClick={() => setReviewFormData({...reviewFormData, rating: s})}
+                            className={`transition-all hover:scale-125 ${s <= reviewFormData.rating ? 'text-yellow-500' : 'text-white/10'}`}
+                          >
+                            <Star className="w-7 h-7 fill-current" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <textarea
+                      required
+                      placeholder={(t as any).reviews.comment}
+                      value={reviewFormData.comment}
+                      onChange={(e) => setReviewFormData({...reviewFormData, comment: e.target.value})}
+                      className="w-full bg-background/50 border border-white/10 rounded-2xl px-6 py-4 h-40 focus:outline-none focus:border-accent/50 transition-all resize-none text-base font-medium"
+                    />
+                    <button
+                      type="submit"
+                      disabled={submittingReview}
+                      className="w-full bg-accent text-white font-black py-5 rounded-2xl hover:bg-accent-light transition-all disabled:opacity-50 text-base uppercase tracking-[0.2em] shadow-lg shadow-accent/20 active:scale-[0.98]"
+                    >
+                      {submittingReview ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : (t as any).reviews.submit}
+                    </button>
+                  </form>
+                </div>
+
+              </div>
+            </FadeUp>
+          </section>
+
         </div>
       </main>
 
