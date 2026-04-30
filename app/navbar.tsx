@@ -44,9 +44,9 @@ export function Navbar() {
       <nav className="fixed top-0 left-0 right-0 z-[100] bg-background/40 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
-          <Link 
-            href={`/${locale}/#top`} 
-            className="text-xl font-extrabold tracking-tight relative z-[110]" 
+          <Link
+            href={`/${locale}`}
+            className="text-xl font-extrabold tracking-tight relative z-[110]"
             onClick={() => {
               setIsOpen(false);
               if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
