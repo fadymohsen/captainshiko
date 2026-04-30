@@ -12,7 +12,7 @@ import {
   MagneticButton,
 } from "../../animations";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, CreditCard, Loader2, Receipt, CheckCircle2, Smartphone, Upload, ImageIcon, Wallet } from "lucide-react";
+import { X, CreditCard, Loader2, Receipt, CheckCircle2, Smartphone, Upload, ImageIcon } from "lucide-react";
 
 const COUNTRY_CODES = [
   { code: "20",  flag: "🇪🇬", name: "Egypt" },
@@ -139,8 +139,8 @@ export function PlansClient({ plans }: { plans: any[] }) {
         localStorage.setItem("lastPurchaseId", data.purchaseId);
       }
 
-      if ((paymentMethodId === 2 || paymentMethodId === 4) && data.url) {
-        // Card / Wallet: redirect to Fawaterak payment page
+      if (paymentMethodId === 2 && data.url) {
+        // Card: redirect to Fawaterak payment page
         window.location.href = data.url;
       } else {
         // Fawry: show reference code modal
@@ -429,7 +429,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
 
                     <div>
                       <label className="text-xs font-bold text-muted uppercase tracking-widest block mb-3 px-1">{ct.paymentMethod}</label>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      <div className="grid grid-cols-3 gap-3">
                         <button
                           type="button"
                           onClick={() => setPaymentMethodId(2)}
@@ -445,14 +445,6 @@ export function PlansClient({ plans }: { plans: any[] }) {
                         >
                           <Receipt className="w-6 h-6 mb-2" />
                           <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.fawry}</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setPaymentMethodId(4)}
-                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 4 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
-                        >
-                          <Wallet className="w-6 h-6 mb-2" />
-                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.wallet}</span>
                         </button>
                         <button
                           type="button"
