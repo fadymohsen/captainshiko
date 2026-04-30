@@ -91,7 +91,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
       window.open("https://ipn.eg/S/mohamed.hussein4920/instapay/3f1Dxi", "_blank");
       setInstapayStep("done");
     } catch (err: any) {
-      alert("Error: " + (err.message || "Unknown Error"));
+      alert(locale === "ar" ? "حدث خطأ، يرجى المحاولة مرة أخرى." : "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -128,7 +128,6 @@ export function PlansClient({ plans }: { plans: any[] }) {
       const data = await res.json();
 
       if (!res.ok) {
-        alert("DEBUG - SERVER RAW RESPONSE: " + JSON.stringify(data));
         throw new Error(data.error || "Payment failed");
       }
 
@@ -149,13 +148,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
       }
     } catch (err: any) {
       console.error("Checkout Error:", err);
-      // Ultra-robust error display
-      let msg = "Unknown Error";
-      if (err.message) msg = err.message;
-      else if (typeof err === 'string') msg = err;
-      else msg = JSON.stringify(err);
-
-      alert("Error Details: " + msg);
+      alert(locale === "ar" ? "حدث خطأ، يرجى المحاولة مرة أخرى." : "Something went wrong. Please try again.");
       setLoading(false);
     }
   };

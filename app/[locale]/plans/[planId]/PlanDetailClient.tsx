@@ -158,7 +158,8 @@ export function PlanDetailClient({ plan }: { plan: any }) {
       window.open("https://ipn.eg/S/mohamed.hussein4920/instapay/3f1Dxi", "_blank");
       setInstapayStep("done");
     } catch (err: any) {
-      alert("Error: " + (err.message || "Unknown Error"));
+      console.error("InstaPay error:", err);
+      alert(locale === "ar" ? "حدث خطأ، يرجى المحاولة مرة أخرى." : "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -233,7 +234,8 @@ export function PlanDetailClient({ plan }: { plan: any }) {
         setLoading(false);
       }
     } catch (err: any) {
-      alert("Error Details: " + (err.message || "Unknown Error"));
+      console.error("Checkout Error:", err);
+      alert(locale === "ar" ? "حدث خطأ، يرجى المحاولة مرة أخرى." : "Something went wrong. Please try again.");
       setLoading(false);
     }
   };
