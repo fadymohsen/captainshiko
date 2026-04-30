@@ -175,6 +175,12 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
     window.open(`https://wa.me/${cleanPhone}?text=${text}`, "_blank");
   };
 
+  const formatPhone = (phone: string | null) => {
+    if (!phone) return "No phone";
+    const digits = phone.replace(/\D/g, "");
+    return digits ? `+${digits}` : phone;
+  };
+
   const totalRevenue = purchases
     .filter(p => p.status === "COMPLETED")
     .reduce((acc, p) => acc + p.amount, 0);
@@ -282,7 +288,7 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
                             <Mail className="w-3 h-3" /> {purchase.email || "No email"}
                           </div>
                           <div className="text-xs text-accent-light font-medium flex items-center gap-1">
-                            <Smartphone className="w-3 h-3" /> {purchase.whatsapp || "No phone"}
+                            <Smartphone className="w-3 h-3" /> {formatPhone(purchase.whatsapp)}
                           </div>
                         </div>
                       </td>

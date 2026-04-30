@@ -14,6 +14,31 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CreditCard, Loader2, Receipt, CheckCircle2, Smartphone, Upload, ImageIcon, Wallet } from "lucide-react";
 
+const COUNTRY_CODES = [
+  { code: "20",  flag: "🇪🇬", name: "Egypt" },
+  { code: "966", flag: "🇸🇦", name: "Saudi Arabia" },
+  { code: "971", flag: "🇦🇪", name: "UAE" },
+  { code: "965", flag: "🇰🇼", name: "Kuwait" },
+  { code: "974", flag: "🇶🇦", name: "Qatar" },
+  { code: "973", flag: "🇧🇭", name: "Bahrain" },
+  { code: "968", flag: "🇴🇲", name: "Oman" },
+  { code: "962", flag: "🇯🇴", name: "Jordan" },
+  { code: "961", flag: "🇱🇧", name: "Lebanon" },
+  { code: "218", flag: "🇱🇾", name: "Libya" },
+  { code: "213", flag: "🇩🇿", name: "Algeria" },
+  { code: "212", flag: "🇲🇦", name: "Morocco" },
+  { code: "216", flag: "🇹🇳", name: "Tunisia" },
+  { code: "249", flag: "🇸🇩", name: "Sudan" },
+  { code: "964", flag: "🇮🇶", name: "Iraq" },
+  { code: "1",   flag: "🇺🇸", name: "USA / Canada" },
+  { code: "44",  flag: "🇬🇧", name: "UK" },
+  { code: "49",  flag: "🇩🇪", name: "Germany" },
+  { code: "33",  flag: "🇫🇷", name: "France" },
+  { code: "39",  flag: "🇮🇹", name: "Italy" },
+  { code: "34",  flag: "🇪🇸", name: "Spain" },
+  { code: "61",  flag: "🇦🇺", name: "Australia" },
+];
+
 export function PlansClient({ plans }: { plans: any[] }) {
   const { t, locale, dir, region } = useLang();
   
@@ -28,6 +53,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
     email: "",
     whatsapp: ""
   });
+  const [countryCode, setCountryCode] = useState("20");
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
   const [couponError, setCouponError] = useState("");
@@ -49,7 +75,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
           planType,
           clientName: formData.name,
           email: formData.email,
-          whatsapp: formData.whatsapp,
+          whatsapp: countryCode + formData.whatsapp.replace(/^0+/, ""),
           region,
           couponCode: appliedCoupon ? couponCode : undefined,
         }),
@@ -92,7 +118,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
           paymentMethodId,
           clientName: formData.name,
           email: formData.email,
-          whatsapp: formData.whatsapp,
+          whatsapp: countryCode + formData.whatsapp.replace(/^0+/, ""),
           region,
           locale,
           couponCode: appliedCoupon ? couponCode : undefined
@@ -448,14 +474,27 @@ export function PlansClient({ plans }: { plans: any[] }) {
                         className="w-full bg-background border border-white/5 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 transition-colors text-sm"
                         placeholder={ct.fullName}
                       />
-                      <input
-                        required
-                        type="tel"
-                        value={formData.whatsapp}
-                        onChange={(e) => setFormData({...formData, whatsapp: e.target.value})}
-                        className="w-full bg-background border border-white/5 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 transition-colors text-sm"
-                        placeholder={ct.whatsapp}
-                      />
+                      <div className="flex bg-background border border-white/5 rounded-2xl overflow-hidden focus-within:border-accent/50 transition-colors">
+                        <select
+                          value={countryCode}
+                          onChange={(e) => setCountryCode(e.target.value)}
+                          className="bg-white/5 text-sm px-3 py-4 border-r border-white/5 focus:outline-none text-foreground shrink-0"
+                        >
+                          {COUNTRY_CODES.map((c) => (
+                            <option key={c.code} value={c.code}>
+                              {c.flag} +{c.code}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          required
+                          type="tel"
+                          value={formData.whatsapp}
+                          onChange={(e) => setFormData({...formData, whatsapp: e.target.value})}
+                          className="flex-1 bg-transparent px-4 py-4 focus:outline-none text-sm"
+                          placeholder={ct.whatsapp}
+                        />
+                      </div>
                       <input
                         required
                         type="email"

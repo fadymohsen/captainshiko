@@ -10,7 +10,7 @@ export function Footer() {
   return (
     <footer className="border-t border-border py-10">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-        <Link href={`/${locale}/#top`} className="text-lg font-extrabold tracking-tight" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        <Link href={`/${locale}`} className="text-lg font-extrabold tracking-tight" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           Coach Mohamed Roshdy<span className="text-accent">.</span>
         </Link>
         <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold uppercase tracking-widest text-muted">

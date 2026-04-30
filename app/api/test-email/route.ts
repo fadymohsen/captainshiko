@@ -46,8 +46,17 @@ export async function GET() {
 }
 
 // POST /api/test-email — send real emails for the latest COMPLETED purchase
-export async function POST() {
+// Accepts optional body: { email?: string } to override the client email address
+export async function POST(req: Request) {
   try {
+    let emailOverride: string | undefined;
+    try {
+      const body = await req.json();
+      if (body?.email) emailOverride = body.email;
+    } catch {
+      // no body or invalid JSON — use purchase email
+    }
+
     const purchase = await prisma.purchase.findFirst({
       where: { status: "COMPLETED" },
       include: { plan: true },
@@ -60,7 +69,7 @@ export async function POST() {
 
     const emailData = {
       clientName: purchase.clientName,
-      email: purchase.email || "",
+      email: emailOverride || purchase.email || "",
       whatsapp: purchase.whatsapp,
       planName: purchase.plan.nameEn,
       amount: purchase.amount,
@@ -81,6 +90,7 @@ export async function POST() {
     return NextResponse.json({
       success: true,
       message: "Both emails sent!",
+      sentTo: emailData.email,
       purchase: {
         id: purchase.id,
         clientName: purchase.clientName,
