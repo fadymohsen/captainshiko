@@ -13,7 +13,7 @@ import {
   MagneticButton,
 } from "../../../animations";
 import { ImageWithSkeleton } from "../../../image-with-skeleton";
-import { X, CreditCard, Loader2, Receipt, CheckCircle2, Smartphone, Upload, ImageIcon, Star } from "lucide-react";
+import { X, Wallet, Loader2, Receipt, CheckCircle2, Smartphone, Upload, ImageIcon, Star } from "lucide-react";
 
 const COUNTRY_CODES = [
   { code: "20",  flag: "🇪🇬", name: "Egypt" },
@@ -66,7 +66,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
   // Checkout State
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [planType, setPlanType] = useState<"monthly" | "quarterly">("monthly");
-  const [paymentMethodId, setPaymentMethodId] = useState<number | "instapay">(2); // Default to Card
+  const [paymentMethodId, setPaymentMethodId] = useState<number | "instapay">(4); // Default to Wallet
   const [loading, setLoading] = useState(false);
   const [paymentResponse, setPaymentResponse] = useState<any>(null);
   const [formData, setFormData] = useState({
@@ -225,8 +225,8 @@ export function PlanDetailClient({ plan }: { plan: any }) {
         localStorage.setItem("lastPurchaseId", data.purchaseId);
       }
 
-      if (data.url && paymentMethodId === 2) {
-        // Card: redirect to Fawaterak payment page
+      if (data.url && paymentMethodId === 4) {
+        // Wallet: redirect to Fawaterak payment page
         window.location.href = data.url;
       } else {
         // Fawry: show reference code modal
@@ -693,7 +693,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                 <>
                   <div className="flex items-center gap-4 mb-8">
                     <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent">
-                      <CreditCard className="w-6 h-6" />
+                      <Wallet className="w-6 h-6" />
                     </div>
                     <div>
                       <h2 className="text-2xl font-bold">{ct.title}</h2>
@@ -726,11 +726,11 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                       <div className="grid grid-cols-3 gap-3">
                         <button
                           type="button"
-                          onClick={() => setPaymentMethodId(2)}
-                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 2 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
+                          onClick={() => setPaymentMethodId(4)}
+                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${paymentMethodId === 4 ? "bg-accent/10 border-accent text-accent" : "bg-background border-white/5 text-muted hover:border-white/10"}`}
                         >
-                          <CreditCard className="w-6 h-6 mb-2" />
-                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.card}</span>
+                          <Wallet className="w-6 h-6 mb-2" />
+                          <span className="text-[10px] font-bold uppercase tracking-tighter">{ct.wallet}</span>
                         </button>
                         <button
                           type="button"
