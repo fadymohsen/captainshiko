@@ -21,13 +21,13 @@ const metadataByLocale: Record<Locale, Metadata> = {
       title: "Coach Mohamed Roshdy | Elite Online Fitness Coaching",
       description:
         "Transform your body with Coach Mohamed Roshdy — personalized training, nutrition plans, and 1-on-1 coaching.",
-      images: [{ url: "/hero-coach.jpg", width: 1200, height: 630, alt: "Coach Mohamed Roshdy – Captain Shiko" }],
+      images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Coach Mohamed Roshdy – Captain Shiko" }],
       locale: "en_US",
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      images: ["/hero-coach.jpg"],
+      images: ["/og-image.jpg"],
     },
   },
   ar: {
@@ -44,7 +44,7 @@ const metadataByLocale: Record<Locale, Metadata> = {
     },
     twitter: {
       card: "summary_large_image",
-      images: ["/hero-coach.jpg"],
+      images: ["/og-image.jpg"],
     },
   },
 };
