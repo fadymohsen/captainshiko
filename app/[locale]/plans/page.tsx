@@ -20,10 +20,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       title,
       description,
       url: `https://www.coachmohamedroshdy.com/${locale}/plans`,
-      images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Coach Mohamed Roshdy – Captain Shiko" }],
+      images: [{ url: "https://www.coachmohamedroshdy.com/og-image.jpg", width: 1200, height: 630, alt: "Coach Mohamed Roshdy – Captain Shiko" }],
       type: "website",
     },
-    twitter: { card: "summary_large_image", title, description, images: ["/og-image.jpg"] },
+    twitter: { card: "summary_large_image", title, description, images: ["https://www.coachmohamedroshdy.com/og-image.jpg"] },
   };
 }
 

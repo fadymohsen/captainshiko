@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://coachmohamedroshdy.com"),
+  metadataBase: new URL("https://www.coachmohamedroshdy.com"),
   title: "Coach Mohamed Roshdy | Elite Online Fitness Coaching",
   description:
     "Transform your body with Coach Mohamed Roshdy — personalized training programs, nutrition plans, and 1-on-1 online coaching.",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     url: "https://www.coachmohamedroshdy.com",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "https://www.coachmohamedroshdy.com/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Coach Mohamed Roshdy – Captain Shiko",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: "Coach Mohamed Roshdy | Elite Online Fitness Coaching",
     description:
       "Transform your body with Coach Mohamed Roshdy — personalized training programs, nutrition plans, and 1-on-1 online coaching.",
-    images: ["/og-image.jpg"],
+    images: ["https://www.coachmohamedroshdy.com/og-image.jpg"],
   },
 };
 
