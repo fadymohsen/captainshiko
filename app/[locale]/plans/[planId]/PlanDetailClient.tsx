@@ -633,7 +633,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                     </div>
                   </form>
                 </>
-              )
+              )}
             </motion.div>
           </div>
         )}
