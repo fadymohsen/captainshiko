@@ -164,9 +164,13 @@ export async function POST(req: Request) {
       console.error("Email error (non-fatal):", emailErr);
     }
 
+    const paymentUrl = paymentData.url
+      || paymentData.payment_data?.redirectTo
+      || `https://app.fawaterk.com/invoice/${paymentData.invoice_id}/${paymentData.invoice_key}`;
+
     return NextResponse.json({
       status: "success",
-      url: paymentData.url || paymentData.payment_data?.redirectTo,
+      url: paymentUrl,
       paymentData: paymentData.payment_data,
       invoiceId: paymentData.invoice_id,
       purchaseId: finalPurchaseId
