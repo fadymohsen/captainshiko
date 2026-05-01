@@ -17,6 +17,7 @@ export interface FawaterakInitPayRequest {
     phone: string;
   };
   vendor_id?: number | string;
+  order_id?: string;
   cartItems: FawaterakInvoiceItem[];
   redirectionUrls: {
     successUrl: string;

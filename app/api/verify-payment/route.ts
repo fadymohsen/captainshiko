@@ -11,9 +11,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing invoiceId or purchaseId" }, { status: 400 });
     }
 
-    const purchase = purchaseId
+    let purchase = purchaseId
       ? await prisma.purchase.findUnique({ where: { id: purchaseId }, include: { plan: true } })
-      : await prisma.purchase.findUnique({ where: { invoiceId: invoiceId.toString() }, include: { plan: true } });
+      : null;
+
+    // Fall back to invoiceId lookup if purchaseId not found (handles retry/reuse cases)
+    if (!purchase && invoiceId) {
+      purchase = await prisma.purchase.findUnique({ where: { invoiceId: invoiceId.toString() }, include: { plan: true } });
+    }
 
     if (!purchase) {
       return NextResponse.json({ error: "Purchase not found" }, { status: 404 });

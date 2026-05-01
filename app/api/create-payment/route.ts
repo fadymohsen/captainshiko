@@ -98,6 +98,7 @@ export async function POST(req: Request) {
     const paymentData = await fawaterakClient.initPayment({
       payment_method_id: paymentMethodId,
       vendor_id: process.env.FAWATERAK_VENDOR_KEY?.includes('.') ? process.env.FAWATERAK_VENDOR_KEY.split('.').pop() : process.env.FAWATERAK_VENDOR_KEY,
+      order_id: purchase.id,
       cartTotal: amount,
       currency: region === "egypt" ? "EGP" : "USD",
       customer: {
