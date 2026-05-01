@@ -128,7 +128,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Payment failed");
+        throw new Error(data.error || data.details || "Payment failed");
       }
 
       if (data.invoiceId) {
@@ -148,7 +148,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
       }
     } catch (err: any) {
       console.error("Checkout Error:", err);
-      alert(locale === "ar" ? "حدث خطأ، يرجى المحاولة مرة أخرى." : "Something went wrong. Please try again.");
+      alert("DEBUG: " + (err.message || "Unknown error"));
       setLoading(false);
     }
   };
