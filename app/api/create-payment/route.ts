@@ -72,7 +72,7 @@ export async function POST(req: Request) {
         currency: region === "egypt" ? "EGP" : "USD",
         status: "PENDING",
         region,
-        paymentMethod: paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : paymentMethodId === 4 ? "Wallet" : "Other",
+        paymentMethod: paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : paymentMethodId === 4 ? "Wallet" : paymentMethodId === 6 ? "Apple Pay" : "Other",
         notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''}`,
         couponId,
         discountAmount
@@ -91,7 +91,7 @@ export async function POST(req: Request) {
     const currentLocale = locale || 'en';
     const successUrl = `${baseUrl}/payment/success?purchaseId=${purchase.id}`;
     const failUrl = `${baseUrl}/${currentLocale}/plans`;
-    const pendingUrl = `${baseUrl}/${currentLocale}/plans`;
+    const pendingUrl = `${baseUrl}/payment/success?purchaseId=${purchase.id}`;
 
     console.log("DEBUG - Fawaterak Redirects (Rollback Mode):", { successUrl, failUrl, pendingUrl });
 
@@ -138,7 +138,7 @@ export async function POST(req: Request) {
     }
 
     // 7. Send pending email to client + admin notification
-    const paymentMethodLabel = paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : paymentMethodId === 4 ? "Wallet" : "Other";
+    const paymentMethodLabel = paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : paymentMethodId === 4 ? "Wallet" : paymentMethodId === 6 ? "Apple Pay" : "Other";
     try {
       await Promise.all([
         email ? sendPendingEmail({ clientName, email, planName: plan.nameEn, amount, currency: region === "egypt" ? "EGP" : "USD" }) : Promise.resolve(),
