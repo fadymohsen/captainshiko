@@ -121,13 +121,28 @@ export async function POST(req: Request) {
     });
 
     // 5. Update with Invoice details (API returns snake_case keys)
-    await prisma.purchase.update({
-      where: { id: purchase.id },
-      data: {
-        invoiceId: paymentData.invoice_id.toString(),
-        invoiceKey: paymentData.invoice_key,
-      },
-    });
+    let finalPurchaseId = purchase.id;
+    try {
+      await prisma.purchase.update({
+        where: { id: purchase.id },
+        data: {
+          invoiceId: paymentData.invoice_id.toString(),
+          invoiceKey: paymentData.invoice_key,
+        },
+      });
+    } catch (updateErr: any) {
+      if (updateErr.code === 'P2002') {
+        // Fawaterak returned an invoiceId already linked to a previous attempt.
+        // Delete the orphaned purchase and reuse the existing one.
+        await prisma.purchase.delete({ where: { id: purchase.id } }).catch(() => {});
+        const existing = await prisma.purchase.findUnique({
+          where: { invoiceId: paymentData.invoice_id.toString() },
+        });
+        if (existing) finalPurchaseId = existing.id;
+      } else {
+        throw updateErr;
+      }
+    }
 
     // 6. Increment coupon usage if applied
     if (couponId) {
@@ -153,7 +168,7 @@ export async function POST(req: Request) {
       url: paymentData.url || paymentData.payment_data?.redirectTo,
       paymentData: paymentData.payment_data,
       invoiceId: paymentData.invoice_id,
-      purchaseId: purchase.id
+      purchaseId: finalPurchaseId
     });
 
   } catch (error: any) {

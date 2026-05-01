@@ -148,7 +148,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
       }
     } catch (err: any) {
       console.error("Checkout Error:", err);
-      alert("DEBUG: " + (err.message || "Unknown error"));
+      alert(locale === "ar" ? "حدث خطأ، يرجى المحاولة مرة أخرى." : "Something went wrong. Please try again.");
       setLoading(false);
     }
   };
