@@ -181,9 +181,10 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
     return digits ? `+${digits}` : phone;
   };
 
+  const USD_TO_EGP = 50;
   const totalRevenue = purchases
     .filter(p => p.status === "COMPLETED")
-    .reduce((acc, p) => acc + p.amount, 0);
+    .reduce((acc, p) => acc + (p.currency === "USD" ? p.amount * USD_TO_EGP : p.amount), 0);
   const pendingOrders = purchases.filter(p => p.status === "PENDING").length;
   const completedOrders = purchases.filter(p => p.status === "COMPLETED").length;
 
