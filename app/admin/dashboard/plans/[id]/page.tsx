@@ -27,6 +27,7 @@ export async function updatePlanAction(id: string, formData: FormData) {
         salePriceQuarterlyEgp: formData.get('salePriceQuarterlyEgp') as string || null,
         salePriceMonthlyUsd: formData.get('salePriceMonthlyUsd') as string || null,
         salePriceQuarterlyUsd: formData.get('salePriceQuarterlyUsd') as string || null,
+        isOnHold: formData.get('isOnHold') === 'on',
       }
     });
 
@@ -155,6 +156,28 @@ export default async function EditPlanPage({ params }: { params: Promise<{ id: s
               </label>
             </div>
           </div>
+        </div>
+
+        {/* Availability Section */}
+        <div className="border-b border-white/10 pb-8">
+          <h3 className="uppercase tracking-widest text-accent text-xs font-bold mb-6">Availability Control</h3>
+          <label className="flex items-start gap-4 cursor-pointer group">
+            <div className="relative mt-0.5">
+              <input
+                type="checkbox"
+                name="isOnHold"
+                defaultChecked={plan.isOnHold}
+                className="sr-only peer"
+              />
+              <div className="w-12 h-6 rounded-full bg-white/10 peer-checked:bg-amber-500/80 transition-all duration-300 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:transition-all after:duration-300 peer-checked:after:translate-x-6" />
+            </div>
+            <div>
+              <span className="text-sm font-bold text-foreground group-hover:text-accent-light transition-colors">Put on Hold (Fully Booked)</span>
+              <p className="text-xs text-muted mt-1 leading-relaxed">
+                Plan stays visible with a "Fully Booked" badge but clients cannot subscribe. Use this to create scarcity and anticipation while pausing intake.
+              </p>
+            </div>
+          </label>
         </div>
 
         <div className="pt-6 flex flex-col sm:flex-row gap-4">

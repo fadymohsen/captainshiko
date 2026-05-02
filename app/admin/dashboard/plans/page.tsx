@@ -23,11 +23,16 @@ export default async function PlansPage() {
           <div key={plan.id} className="bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
             
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
+              <div className="flex items-center gap-3 mb-2 flex-wrap">
                 <h2 className="text-xl font-bold">{plan.nameEn}</h2>
                 <span className={`text-[10px] uppercase font-black tracking-widest px-2 py-0.5 rounded-md ${plan.isActive ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                   {plan.isActive ? 'Active' : 'Hidden'}
                 </span>
+                {plan.isOnHold && (
+                  <span className="text-[10px] uppercase font-black tracking-widest px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-400">
+                    Fully Booked
+                  </span>
+                )}
               </div>
               <p className="text-sm text-muted line-clamp-2 mb-4">{plan.briefEn}</p>
               

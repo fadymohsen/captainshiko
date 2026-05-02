@@ -166,8 +166,14 @@ export function PlansClient({ plans }: { plans: any[] }) {
           <div className="flex flex-wrap justify-center gap-8">
             {plans.filter((p) => p.isActive).map((plan) => (
               <StaggerItem key={plan.id} className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.4rem)] max-w-sm lg:max-w-none">
-                <div className="group h-full flex flex-col rounded-2xl p-8 bg-surface-light border border-border hover:border-accent/30 transition-all duration-500 relative glow-border overflow-hidden">
+                <div className={`group h-full flex flex-col rounded-2xl p-8 bg-surface-light border transition-all duration-500 relative glow-border overflow-hidden ${plan.isOnHold ? 'border-amber-500/20' : 'border-border hover:border-accent/30'}`}>
                   <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-accent/10 transition-colors duration-500" />
+                  {plan.isOnHold && (
+                    <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full backdrop-blur-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                      {locale === "ar" ? "الأماكن ممتلئة" : "Fully Booked"}
+                    </div>
+                  )}
                   <div className="relative z-10 flex flex-col h-full">
                     <h3 className="text-2xl font-bold mb-3 group-hover:text-accent-light transition-colors">
                       {locale === "en" ? plan.nameEn : plan.nameAr}
@@ -207,14 +213,20 @@ export function PlansClient({ plans }: { plans: any[] }) {
                       </div>
                     </div>
                     <div className="flex flex-col gap-3 mt-auto">
-                      <MagneticButton>
-                        <button
-                          onClick={() => setSelectedPlan(plan)}
-                          className="w-full py-4 rounded-full text-sm font-bold bg-accent text-white hover:bg-accent-light transition-all duration-300 shadow-lg shadow-accent/20"
-                        >
-                          {locale === "en" ? "Subscribe Now" : "اشترك الآن"}
-                        </button>
-                      </MagneticButton>
+                      {plan.isOnHold ? (
+                        <div className="w-full py-4 rounded-full text-sm font-bold bg-amber-500/10 border border-amber-500/20 text-amber-400/80 text-center cursor-not-allowed select-none">
+                          {locale === "ar" ? "الأماكن ممتلئة · قريباً" : "Fully Booked · Coming Soon"}
+                        </div>
+                      ) : (
+                        <MagneticButton>
+                          <button
+                            onClick={() => setSelectedPlan(plan)}
+                            className="w-full py-4 rounded-full text-sm font-bold bg-accent text-white hover:bg-accent-light transition-all duration-300 shadow-lg shadow-accent/20"
+                          >
+                            {locale === "en" ? "Subscribe Now" : "اشترك الآن"}
+                          </button>
+                        </MagneticButton>
+                      )}
                       <Link
                         href={`/${locale}/plans/${plan.slug}`}
                         className="block w-full text-center py-4 rounded-full text-sm font-bold border border-white/10 bg-white/5 text-muted hover:bg-accent/10 hover:border-accent/30 hover:text-accent-light transition-all duration-300"

@@ -246,6 +246,12 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                 <span className="inline-block text-accent-light font-black text-xs tracking-[0.3em] uppercase mb-4">
                   {locale === "en" ? "Elite Performance" : "أداء احترافي"}
                 </span>
+                {plan.isOnHold && (
+                  <div className="inline-flex items-center gap-2 bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-black uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                    {locale === "ar" ? "الأماكن ممتلئة — فتح التسجيل قريباً" : "Fully Booked — Registration Opens Soon"}
+                  </div>
+                )}
                 <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black leading-[1.05] tracking-tight mb-8">
                   <span className="gradient-text">{name}</span>
                 </h1>
@@ -395,17 +401,32 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                       </AnimatePresence>
 
                       <div className="mt-12 space-y-4 relative z-10">
-                        <MagneticButton>
-                          <button
-                            onClick={() => setIsCheckoutOpen(true)}
-                            className="w-full block text-center bg-white text-background font-black py-5 rounded-2xl text-xs uppercase tracking-[0.2em] hover:bg-accent hover:text-white transition-all shadow-xl active:scale-95"
-                          >
-                            {locale === "en" ? "Start Transformation" : "ابدأ التحول الآن"}
-                          </button>
-                        </MagneticButton>
-                        <p className="text-[10px] text-muted text-center tracking-tight">
-                          * Fast & secure checkout. Instant access after payment.
-                        </p>
+                        {plan.isOnHold ? (
+                          <>
+                            <div className="w-full text-center bg-amber-500/10 border border-amber-500/20 text-amber-400 font-black py-5 rounded-2xl text-xs uppercase tracking-[0.2em] cursor-not-allowed select-none">
+                              {locale === "ar" ? "الأماكن ممتلئة · فتح التسجيل قريباً" : "Fully Booked · Coming Soon"}
+                            </div>
+                            <p className="text-[10px] text-amber-400/60 text-center tracking-tight">
+                              {locale === "ar"
+                                ? "* هذه الباقة ممتلئة حالياً. تابعنا لمعرفة موعد فتح التسجيل."
+                                : "* This plan is currently full. Follow us to know when registration opens."}
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <MagneticButton>
+                              <button
+                                onClick={() => setIsCheckoutOpen(true)}
+                                className="w-full block text-center bg-white text-background font-black py-5 rounded-2xl text-xs uppercase tracking-[0.2em] hover:bg-accent hover:text-white transition-all shadow-xl active:scale-95"
+                              >
+                                {locale === "en" ? "Start Transformation" : "ابدأ التحول الآن"}
+                              </button>
+                            </MagneticButton>
+                            <p className="text-[10px] text-muted text-center tracking-tight">
+                              * Fast & secure checkout. Instant access after payment.
+                            </p>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>

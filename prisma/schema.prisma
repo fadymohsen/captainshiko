@@ -34,6 +34,7 @@ model Plan {
   featuresAr  String   // Stored as JSON string
   videoUrl    String?
   isActive    Boolean  @default(true)
+  isOnHold    Boolean  @default(false)
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
