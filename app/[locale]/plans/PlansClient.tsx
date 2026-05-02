@@ -168,12 +168,6 @@ export function PlansClient({ plans }: { plans: any[] }) {
               <StaggerItem key={plan.id} className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.4rem)] max-w-sm lg:max-w-none">
                 <div className={`group h-full flex flex-col rounded-2xl p-8 bg-surface-light border transition-all duration-500 relative glow-border overflow-hidden ${plan.isOnHold ? 'border-amber-500/20' : 'border-border hover:border-accent/30'}`}>
                   <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-accent/10 transition-colors duration-500" />
-                  {plan.isOnHold && (
-                    <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full backdrop-blur-sm">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                      {locale === "ar" ? "الأماكن ممتلئة" : "Fully Booked"}
-                    </div>
-                  )}
                   <div className="relative z-10 flex flex-col h-full">
                     <h3 className="text-2xl font-bold mb-3 group-hover:text-accent-light transition-colors">
                       {locale === "en" ? plan.nameEn : plan.nameAr}
