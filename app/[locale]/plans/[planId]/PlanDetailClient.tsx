@@ -149,7 +149,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
         body: JSON.stringify({
           planId: plan.id,
           planType,
-          paymentMethodId: 2,
+          paymentMethodId: 4,
           clientName: formData.name,
           email: formData.email,
           whatsapp: countryCode + formData.whatsapp.replace(/^0+/, ""),

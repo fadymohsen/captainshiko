@@ -63,7 +63,7 @@ export function PlansClient({ plans }: { plans: any[] }) {
         body: JSON.stringify({
           planId: selectedPlan.id,
           planType,
-          paymentMethodId: 2,
+          paymentMethodId: 4,
           clientName: formData.name,
           email: formData.email,
           whatsapp: countryCode + formData.whatsapp.replace(/^0+/, ""),
