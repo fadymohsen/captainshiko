@@ -141,21 +141,21 @@ export function PlansClient({ plans }: { plans: any[] }) {
     <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
       <Navbar />
 
-      <main className="flex-grow pt-32 pb-20 relative">
+      <main className="flex-grow pt-28 pb-20 relative">
         <div className="absolute top-[10%] right-[10%] w-[300px] h-[300px] rounded-full bg-accent/10 glow-pulse pointer-events-none" />
         <div className="absolute bottom-[20%] left-[5%] w-[400px] h-[400px] rounded-full bg-accent/5 glow-pulse pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <FadeUp>
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <span className="text-sm text-accent-light font-bold tracking-wider uppercase">
                 {locale === "en" ? "Choose Your Path" : "اختر طريقك"}
               </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black mt-4 mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black mt-3 mb-4 leading-tight">
                 {locale === "en" ? "TRANSFORMATION " : "باقات "}
                 <span className="gradient-text">{locale === "en" ? "PLANS" : "التحول"}</span>
               </h1>
-              <p className="text-muted max-w-2xl mx-auto text-lg leading-relaxed">
+              <p className="text-muted max-w-xl mx-auto text-base leading-relaxed">
                 {locale === "en"
                   ? "Choose the plan that fits your goals and lifestyle. Science-backed programs tailored for results."
                   : "اختر الباقة اللي تناسب أهدافك ونمط حياتك. برامج مبنية على أسس علمية ومصممة خصيصاً عشان توصل لأفضل نتايج."}
@@ -163,59 +163,106 @@ export function PlansClient({ plans }: { plans: any[] }) {
             </div>
           </FadeUp>
 
-          <div className="flex flex-wrap justify-center gap-8">
+          <div className="flex flex-wrap justify-center gap-6">
             {plans.filter((p) => p.isActive).map((plan) => (
-              <StaggerItem key={plan.id} className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.4rem)] max-w-sm lg:max-w-none">
-                <div className={`group h-full flex flex-col rounded-2xl p-8 bg-surface-light border transition-all duration-500 relative glow-border overflow-hidden ${plan.isOnHold ? 'border-amber-500/20' : 'border-border hover:border-accent/30'}`}>
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-accent/10 transition-colors duration-500" />
-                  <div className="relative z-10 flex flex-col h-full">
-                    <h3 className="text-2xl font-bold mb-3 group-hover:text-accent-light transition-colors">
+              <StaggerItem key={plan.id} className="w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] max-w-sm lg:max-w-none">
+                <div className={`group h-full flex flex-col rounded-2xl overflow-hidden bg-surface-light border transition-all duration-500 ${
+                  plan.isOnHold
+                    ? 'border-amber-500/20'
+                    : 'border-border hover:border-accent/40 hover:shadow-2xl hover:shadow-accent/10'
+                }`}>
+                  {/* Top accent stripe */}
+                  <div className={`h-[3px] w-full flex-shrink-0 ${
+                    plan.isOnHold
+                      ? 'bg-gradient-to-r from-amber-600/50 via-amber-400/70 to-amber-600/50'
+                      : 'bg-gradient-to-r from-accent via-accent-light to-accent/60'
+                  }`} />
+
+                  <div className="p-6 sm:p-8 flex flex-col h-full">
+
+                    {/* Inline badge */}
+                    {plan.isOnHold && (
+                      <div className="self-start flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                        {locale === "ar" ? "الأماكن ممتلئة" : "Fully Booked"}
+                      </div>
+                    )}
+
+                    {/* Plan name */}
+                    <h3 className="text-2xl font-black mb-2 leading-tight group-hover:text-accent-light transition-colors duration-300">
                       {locale === "en" ? plan.nameEn : plan.nameAr}
                     </h3>
-                    <p className="text-muted text-sm leading-relaxed mb-6 flex-grow italic">
-                      "{locale === "en" ? plan.briefEn : plan.briefAr}"
+
+                    {/* Brief */}
+                    <p className="text-muted text-sm leading-relaxed mb-5 flex-grow">
+                      {locale === "en" ? plan.briefEn : plan.briefAr}
                     </p>
-                    <div className="mb-6 p-4 rounded-xl bg-background/40 border border-white/5">
-                      <div className="text-xs text-muted uppercase tracking-widest mb-1">
+
+                    {/* Trust pills */}
+                    <div className="flex flex-wrap gap-1.5 mb-5">
+                      {(locale === "en"
+                        ? ["Personal Plan", "Direct Support", "Nutrition Guide"]
+                        : ["خطة شخصية", "متابعة مباشرة", "خطة تغذية"]
+                      ).map((tag) => (
+                        <span key={tag} className="text-[10px] text-muted/80 font-bold uppercase tracking-wider bg-white/5 border border-white/[0.06] px-2.5 py-1 rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Price box */}
+                    <div className={`mb-5 rounded-xl border p-5 ${
+                      plan.isOnHold
+                        ? 'bg-amber-500/5 border-amber-500/10'
+                        : 'bg-background/60 border-white/5 group-hover:border-accent/10 transition-colors'
+                    }`}>
+                      <div className="text-[10px] text-muted uppercase tracking-[0.18em] font-bold mb-2">
                         {region === "egypt"
-                          ? (locale === "en" ? "Local Subscription" : "الاشتراك من داخل مصر")
-                          : (locale === "en" ? "Global Subscription" : "الاشتراك الدولي")}
+                          ? (locale === "en" ? "Egypt" : "داخل مصر")
+                          : (locale === "en" ? "International" : "دولي")}
                       </div>
-                      <div className="flex items-baseline gap-2">
+                      <div className="flex items-end gap-2">
                         {region === "egypt" ? (
                           plan.salePriceMonthlyEgp ? (
                             <>
-                              <span className="text-3xl font-black text-accent-light">{plan.salePriceMonthlyEgp}</span>
-                              <span className="text-sm font-bold text-muted line-through opacity-50">{plan.priceMonthlyEgp}</span>
+                              <span className="text-4xl font-black text-accent-light leading-none">{plan.salePriceMonthlyEgp}</span>
+                              <span className="text-base font-bold text-muted line-through mb-0.5">{plan.priceMonthlyEgp}</span>
                             </>
                           ) : (
-                            <span className="text-3xl font-black">{plan.priceMonthlyEgp}</span>
+                            <span className="text-4xl font-black leading-none">{plan.priceMonthlyEgp}</span>
                           )
                         ) : (
                           plan.salePriceMonthlyUsd ? (
                             <>
-                              <span className="text-3xl font-black text-accent-light">{plan.salePriceMonthlyUsd}</span>
-                              <span className="text-sm font-bold text-muted line-through opacity-50">{plan.priceMonthlyUsd}</span>
+                              <span className="text-4xl font-black text-accent-light leading-none">{plan.salePriceMonthlyUsd}</span>
+                              <span className="text-base font-bold text-muted line-through mb-0.5">{plan.priceMonthlyUsd}</span>
                             </>
                           ) : (
-                            <span className="text-3xl font-black">{plan.priceMonthlyUsd}</span>
+                            <span className="text-4xl font-black leading-none">{plan.priceMonthlyUsd}</span>
                           )
                         )}
-                        <span className="text-sm text-muted font-bold uppercase tracking-tight">
-                          {region === "egypt" ? "EGP" : "USD"} {locale === "en" ? "/Mo" : "شهرياً"}
-                        </span>
+                        <div className="flex flex-col mb-0.5">
+                          <span className="text-xs text-muted font-black uppercase leading-none">
+                            {region === "egypt" ? "EGP" : "USD"}
+                          </span>
+                          <span className="text-[10px] text-muted/60 font-medium leading-none mt-0.5">
+                            {locale === "en" ? "/month" : "شهرياً"}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-3 mt-auto">
+
+                    {/* CTAs */}
+                    <div className="flex flex-col gap-2.5 mt-auto">
                       {plan.isOnHold ? (
-                        <div className="w-full py-4 rounded-full text-sm font-bold bg-amber-500/10 border border-amber-500/20 text-amber-400/80 text-center cursor-not-allowed select-none">
+                        <div className="w-full py-4 rounded-xl text-xs font-black bg-amber-500/10 border border-amber-500/20 text-amber-400/80 text-center cursor-not-allowed select-none uppercase tracking-widest">
                           {locale === "ar" ? "الأماكن ممتلئة · قريباً" : "Fully Booked · Coming Soon"}
                         </div>
                       ) : (
                         <MagneticButton>
                           <button
                             onClick={() => setSelectedPlan(plan)}
-                            className="w-full py-4 rounded-full text-sm font-bold bg-accent text-white hover:bg-accent-light transition-all duration-300 shadow-lg shadow-accent/20"
+                            className="w-full py-4 rounded-xl text-sm font-black bg-accent text-white hover:bg-accent-light active:scale-[0.98] transition-all duration-300 shadow-lg shadow-accent/25 uppercase tracking-wider"
                           >
                             {locale === "en" ? "Subscribe Now" : "اشترك الآن"}
                           </button>
@@ -223,9 +270,9 @@ export function PlansClient({ plans }: { plans: any[] }) {
                       )}
                       <Link
                         href={`/${locale}/plans/${plan.slug}`}
-                        className="block w-full text-center py-4 rounded-full text-sm font-bold border border-white/10 bg-white/5 text-muted hover:bg-accent/10 hover:border-accent/30 hover:text-accent-light transition-all duration-300"
+                        className="block w-full text-center py-3 text-sm font-bold text-muted hover:text-accent-light transition-colors duration-200"
                       >
-                        {(t as any).common.knowMore}
+                        {(t as any).common.knowMore} {dir === "rtl" ? "←" : "→"}
                       </Link>
                     </div>
                   </div>

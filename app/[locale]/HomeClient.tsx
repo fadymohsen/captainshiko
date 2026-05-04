@@ -118,12 +118,12 @@ export function HomeClient({
 
             <FadeUp delay={0.3}>
               <MagneticButton>
-                <a
-                  href={`/${locale}/#plans`}
+                <Link
+                  href={`/${locale}/plans`}
                   className="bg-accent text-white font-bold px-8 py-4 rounded-full text-sm tracking-wider hover:bg-accent-light transition-all duration-300 hover:shadow-[0_0_30px_rgba(165,34,34,0.4)] inline-block"
                 >
                   {t.hero.programs}
-                </a>
+                </Link>
               </MagneticButton>
             </FadeUp>
           </div>
