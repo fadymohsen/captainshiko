@@ -24,6 +24,7 @@ const COUNTRY_CODES = [
   { code: "973", flag: "🇧🇭", name: "Bahrain" },
   { code: "968", flag: "🇴🇲", name: "Oman" },
   { code: "962", flag: "🇯🇴", name: "Jordan" },
+  { code: "970", flag: "🇵🇸", name: "Palestine" },
   { code: "961", flag: "🇱🇧", name: "Lebanon" },
   { code: "218", flag: "🇱🇾", name: "Libya" },
   { code: "213", flag: "🇩🇿", name: "Algeria" },
