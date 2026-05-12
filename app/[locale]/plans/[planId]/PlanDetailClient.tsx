@@ -193,6 +193,8 @@ const COUNTRY_CODES = [
   { code: "211", flag: "🇸🇸", name: "South Sudan" },
 ];
 
+const INSTAPAY_LINK = "https://ipn.eg/S/mohamed.hussein4920/instapay/3f1Dxi";
+
 export function PlanDetailClient({ plan }: { plan: any }) {
   const { t, locale, dir, region } = useLang();
 
@@ -227,6 +229,8 @@ export function PlanDetailClient({ plan }: { plan: any }) {
   const [couponError, setCouponError] = useState("");
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
   const [consentChecked, setConsentChecked] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"fawaterak" | "instapay">("fawaterak");
+  const [instapayData, setInstapayData] = useState<{ purchaseId: string; amount: number; currency: string } | null>(null);
 
   // Reviews State
   const [reviews, setReviews] = useState<any[]>([]);
@@ -294,6 +298,10 @@ export function PlanDetailClient({ plan }: { plan: any }) {
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (paymentMethod === "instapay") {
+      await handleInstapayCheckout();
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch("/api/create-payment", {
@@ -325,6 +333,58 @@ export function PlanDetailClient({ plan }: { plan: any }) {
       alert(locale === "ar" ? "حدث خطأ، يرجى المحاولة مرة أخرى." : "Something went wrong. Please try again.");
       setLoading(false);
     }
+  };
+
+  const handleInstapayCheckout = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/create-instapay-purchase", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          planId: plan.id,
+          planType,
+          clientName: formData.name,
+          email: formData.email,
+          whatsapp: countryCode + formData.whatsapp.replace(/^0+/, ""),
+          region,
+          couponCode: appliedCoupon ? couponCode : undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to create order");
+      const basePrice = planType === "monthly"
+        ? (currentPricing.monthlySale || currentPricing.monthly)
+        : (currentPricing.quarterlySale || currentPricing.quarterly);
+      setInstapayData({
+        purchaseId: data.purchaseId,
+        amount: getDiscountedPrice(basePrice),
+        currency: currentPricing.currency,
+      });
+    } catch (err: any) {
+      console.error("InstaPay Order Error:", err);
+      alert(locale === "ar" ? "حدث خطأ، يرجى المحاولة مرة أخرى." : "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInstapayWhatsapp = () => {
+    const planName = locale === "en" ? plan.nameEn : plan.nameAr;
+    const msg = locale === "ar"
+      ? `مرحباً، لقد أتممت التحويل عبر إنستا باي.\nاسم البرنامج: ${planName}\nالمبلغ: ${instapayData?.amount?.toFixed(0)} ${instapayData?.currency}\nرقم الطلب: ${instapayData?.purchaseId}\nسأرسل لك الإيصال الآن.`
+      : `Hello, I just completed an InstaPay transfer.\nPlan: ${planName}\nAmount: ${instapayData?.amount?.toFixed(0)} ${instapayData?.currency}\nOrder ID: ${instapayData?.purchaseId}\nSending the receipt now.`;
+    window.open(`https://wa.me/201553038830?text=${encodeURIComponent(msg)}`, "_blank");
+  };
+
+  const closeCheckoutModal = () => {
+    setIsCheckoutOpen(false);
+    setConsentChecked(false);
+    setCouponCode("");
+    setAppliedCoupon(null);
+    setCouponError("");
+    setInstapayData(null);
+    setPaymentMethod("fawaterak");
   };
 
   const handleApplyCoupon = async () => {
@@ -724,7 +784,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => { setIsCheckoutOpen(false); setConsentChecked(false); setCouponCode(""); setAppliedCoupon(null); setCouponError(""); }}
+              onClick={closeCheckoutModal}
               className="absolute inset-0 bg-background/80 backdrop-blur-sm"
             />
             <motion.div
@@ -735,15 +795,65 @@ export function PlanDetailClient({ plan }: { plan: any }) {
               dir={dir}
             >
               <button
-                onClick={() => { setIsCheckoutOpen(false); setConsentChecked(false); setCouponCode(""); setAppliedCoupon(null); setCouponError(""); }}
+                onClick={closeCheckoutModal}
                 className={`absolute top-6 ${dir === "rtl" ? "left-6" : "right-6"} p-2 rounded-full hover:bg-white/5 text-muted transition-colors`}
               >
                 <X className="w-5 h-5" />
               </button>
 
-              {false ? (
-                <span />
+              {instapayData ? (
+                /* InstaPay Confirmation Screen */
+                <div className="space-y-5 pt-2">
+                  <div className="text-center pb-1">
+                    <div className="w-14 h-14 rounded-full bg-green-500/15 flex items-center justify-center mx-auto mb-3">
+                      <CheckCircle2 className="w-7 h-7 text-green-400" />
+                    </div>
+                    <h2 className="text-xl font-black">{ct.instapayTitle}</h2>
+                    <p className="text-sm text-muted mt-1">{ct.instapayNote}</p>
+                  </div>
+
+                  <div className="p-5 bg-accent/10 border border-accent/20 rounded-2xl text-center">
+                    <p className="text-[10px] font-black text-muted uppercase tracking-widest mb-1">{ct.total}</p>
+                    <p className="text-3xl font-black text-accent-light">
+                      {instapayData.amount.toFixed(0)} {instapayData.currency}
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-background/40 border border-white/5 rounded-2xl">
+                    <p className="text-xs text-muted leading-relaxed whitespace-pre-line">{ct.instapayInstructions}</p>
+                  </div>
+
+                  <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex gap-3">
+                    <span className="text-amber-400 text-base shrink-0 mt-0.5">⚠️</span>
+                    <p className="text-xs text-amber-300/90 leading-relaxed font-semibold">{ct.instapayDoneNote}</p>
+                  </div>
+
+                  <div className="space-y-3 pt-1">
+                    <a
+                      href={INSTAPAY_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-4 rounded-2xl bg-accent hover:bg-accent-light text-white font-black text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-accent/20"
+                    >
+                      {ct.instapayConfirm}
+                    </a>
+                    <button
+                      onClick={handleInstapayWhatsapp}
+                      className="w-full py-4 rounded-2xl bg-[#25D366] hover:bg-[#20b857] text-white font-black text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-900/30"
+                    >
+                      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                      {ct.sendToWhatsapp}
+                    </button>
+                    <button
+                      onClick={closeCheckoutModal}
+                      className="w-full py-3 rounded-2xl text-muted text-sm font-bold hover:text-foreground transition-colors"
+                    >
+                      {ct.backToPlans}
+                    </button>
+                  </div>
+                </div>
               ) : (
+                /* Normal Checkout Form */
                 <>
                   <div className="mb-8">
                     <h2 className="text-2xl font-bold">{ct.title}</h2>
@@ -754,6 +864,14 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                     <div className="grid grid-cols-2 gap-3 p-1 bg-background/50 rounded-2xl border border-white/5">
                       <button type="button" onClick={() => setPlanType("monthly")} className={`py-3 rounded-xl text-sm font-bold transition-all ${planType === "monthly" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>{ct.monthly}</button>
                       <button type="button" onClick={() => setPlanType("quarterly")} className={`py-3 rounded-xl text-sm font-bold transition-all ${planType === "quarterly" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>{ct.quarterly}</button>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-muted uppercase tracking-widest block px-1">{ct.paymentMethod}</label>
+                      <div className="grid grid-cols-2 gap-3 p-1 bg-background/50 rounded-2xl border border-white/5">
+                        <button type="button" onClick={() => setPaymentMethod("instapay")} className={`py-3 rounded-xl text-sm font-bold transition-all ${paymentMethod === "instapay" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>{ct.instapay}</button>
+                        <button type="button" onClick={() => setPaymentMethod("fawaterak")} className={`py-3 rounded-xl text-sm font-bold transition-all ${paymentMethod === "fawaterak" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>Fawaterak</button>
+                      </div>
                     </div>
 
                     <div className="space-y-4">
@@ -799,11 +917,13 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                         <span className="text-xs text-muted leading-relaxed group-hover:text-foreground transition-colors">{ct.consentCheckbox}</span>
                       </label>
 
-                      <p className="text-xs text-muted/70 mb-5 px-1 leading-relaxed">{ct.redirectNotice}</p>
+                      {paymentMethod === "fawaterak" && (
+                        <p className="text-xs text-muted/70 mb-5 px-1 leading-relaxed">{ct.redirectNotice}</p>
+                      )}
 
                       <MagneticButton>
                         <button disabled={loading || !consentChecked} className="w-full py-5 rounded-full bg-white text-black font-black flex items-center justify-center gap-2 hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                          {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : ct.continue}
+                          {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (paymentMethod === "instapay" ? (locale === "ar" ? "تأكيد وإنشاء الطلب" : "Confirm Order") : ct.continue)}
                         </button>
                       </MagneticButton>
                     </div>
