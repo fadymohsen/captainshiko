@@ -434,6 +434,16 @@ export const translations = {
       consentCheckbox: "I understand that this information is collected solely to follow up with me after the payment process to begin my journey.",
       redirectNotice: "You will be redirected to a secure, authorized payment page to complete your transaction."
     },
+    howItWorks: {
+      title: "How It Works",
+      steps: [
+        { title: "Subscribe to Your Plan", desc: "Choose the plan that fits your goals and complete your payment to secure your spot." },
+        { title: "Download the App", desc: "Get the app and create your account to access your personalized dashboard." },
+        { title: "Fill In the Questions", desc: "Answer a few quick questions about your goals, lifestyle, and current situation." },
+        { title: "Our Team Will Contact You", desc: "A team member will reach out to confirm your details and walk you through the next steps." },
+        { title: "Start Your Development", desc: "Your program is ready — it's time to start changing your life." },
+      ],
+    },
     reviews: {
       title: "Client Reviews",
       noReviews: "No reviews yet. Be the first to review!",
@@ -838,6 +848,16 @@ export const translations = {
       invalidCoupon: "كود خصم غير صالح أو منتهي",
       consentCheckbox: "أوافق على أن هذه البيانات تُجمع فقط للتواصل معي بعد عملية الدفع لبدء رحلتي.",
       redirectNotice: "سيتم تحويلك إلى صفحة دفع آمنة ومعتمدة لإتمام العملية."
+    },
+    howItWorks: {
+      title: "إزاي الموضوع بيمشي",
+      steps: [
+        { title: "اشترك في الباقة", desc: "اختار الباقة اللي تناسب أهدافك وأتمم الدفع عشان تحجز مكانك." },
+        { title: "حمّل التطبيق", desc: "حمّل التطبيق وسجّل حسابك عشان توصل للوحة التحكم الخاصة بيك." },
+        { title: "جاوب على الأسئلة", desc: "جاوب على شوية أسئلة سريعة عن أهدافك ونمط حياتك ووضعك الحالي." },
+        { title: "الفريق هيتواصل معاك", desc: "حد من الفريق هيتواصل معاك يأكد بياناتك ويشرحلك الخطوات الجاية." },
+        { title: "ابدأ رحلة التطوير", desc: "برنامجك جاهز — وقت التغيير الحقيقي." },
+      ],
     },
     reviews: {
       title: "آراء الأبطال",

@@ -590,6 +590,56 @@ export function PlanDetailClient({ plan }: { plan: any }) {
             </div>
           </div>
 
+          {/* How It Works Section */}
+          <section className="pt-20 mt-20 border-t border-white/5 w-full">
+            <FadeUp>
+              <div className="flex items-center gap-4 mb-12">
+                <h2 className="text-3xl font-black uppercase tracking-tight">
+                  {(t as any).howItWorks.title}
+                </h2>
+                <div className="h-px flex-grow bg-white/10" />
+              </div>
+
+              <div className="relative max-w-2xl mx-auto">
+                {(t as any).howItWorks.steps.map((step: { title: string; desc: string }, idx: number) => (
+                  <StaggerItem key={idx}>
+                    <div className="flex gap-6 mb-10 last:mb-0">
+                      {/* Number badge + connector line */}
+                      <div className="flex flex-col items-center">
+                        <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white font-black text-sm shrink-0 shadow-lg shadow-accent/30">
+                          {idx + 1}
+                        </div>
+                        {idx < (t as any).howItWorks.steps.length - 1 && (
+                          <div className="w-px flex-grow bg-accent/20 mt-3" />
+                        )}
+                      </div>
+                      {/* Content */}
+                      <div className="pb-6">
+                        <h3 className="text-lg font-black mb-1">{step.title}</h3>
+                        <p className="text-muted leading-relaxed text-sm">
+                          {step.desc}
+                          {idx === 1 && (
+                            <>
+                              {" "}
+                              <a
+                                href="https://cmohamedroshdy.beprime.site/login"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-accent-light underline underline-offset-2 hover:text-accent transition-colors font-bold"
+                              >
+                                {locale === "en" ? "Download here" : "حمّل من هنا"}
+                              </a>
+                            </>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </StaggerItem>
+                ))}
+              </div>
+            </FadeUp>
+          </section>
+
           {/* Reviews Section */}
           <section className="pt-20 mt-20 border-t border-white/5 w-full">
             <FadeUp>
