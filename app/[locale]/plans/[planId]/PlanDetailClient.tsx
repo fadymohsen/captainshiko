@@ -677,7 +677,22 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                       <div className="pb-6">
                         <h3 className="text-lg font-black mb-1">{step.title}</h3>
                         <p className="text-muted leading-relaxed text-sm">
-                          {step.desc}
+                          {step.desc.includes("{whatsapp}") ? (
+                            <>
+                              {step.desc.split("{whatsapp}")[0]}
+                              <a
+                                href="https://wa.me/201553038830"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[#25D366] underline underline-offset-2 hover:text-[#20b857] transition-colors font-bold"
+                              >
+                                WhatsApp
+                              </a>
+                              {step.desc.split("{whatsapp}")[1]}
+                            </>
+                          ) : (
+                            step.desc
+                          )}
                           {idx === 1 && (
                             <>
                               {" "}
@@ -692,6 +707,13 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                             </>
                           )}
                         </p>
+                        {idx === (t as any).howItWorks.steps.length - 1 && (
+                          <p className="text-accent-light text-xs font-bold mt-2">
+                            {locale === "en"
+                              ? "* Your subscription starts once your plan is live on the app."
+                              : "* اشتراكك بيبدأ رسمياً لما خطتك تكون جاهزة على التطبيق."}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </StaggerItem>

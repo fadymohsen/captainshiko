@@ -440,8 +440,9 @@ export const translations = {
         { title: "Subscribe to Your Plan", desc: "Choose the plan that fits your goals and complete your payment to secure your spot." },
         { title: "Download the App", desc: "Get the app and create your account to access your personalized dashboard." },
         { title: "Fill In the Questions", desc: "Answer a few quick questions about your goals, lifestyle, and current situation." },
+        { title: "Send Us Your Username", desc: "After completing the questionnaire, send us your app username on {whatsapp} so we can link your account." },
         { title: "Our Team Will Contact You", desc: "A team member will reach out to confirm your details and walk you through the next steps." },
-        { title: "Start Your Development", desc: "Your program is ready — it's time to start changing your life." },
+        { title: "Start Your Development", desc: "Your program will be ready on the app — your subscription officially starts once your plan is live. It's time to change your life." },
       ],
     },
     reviews: {
@@ -855,8 +856,9 @@ export const translations = {
         { title: "اشترك في الباقة", desc: "اختار الباقة اللي تناسب أهدافك وأتمم الدفع عشان تحجز مكانك." },
         { title: "حمّل التطبيق", desc: "حمّل التطبيق وسجّل حسابك عشان توصل للوحة التحكم الخاصة بيك." },
         { title: "جاوب على الأسئلة", desc: "جاوب على شوية أسئلة سريعة عن أهدافك ونمط حياتك ووضعك الحالي." },
+        { title: "ابعتلنا اسم المستخدم", desc: "بعد ما تخلّص الأسئلة، ابعتلنا اسم المستخدم بتاعك على {whatsapp} عشان نربط حسابك." },
         { title: "الفريق هيتواصل معاك", desc: "حد من الفريق هيتواصل معاك يأكد بياناتك ويشرحلك الخطوات الجاية." },
-        { title: "ابدأ رحلة التطوير", desc: "برنامجك جاهز — وقت التغيير الحقيقي." },
+        { title: "ابدأ رحلة التطوير", desc: "برنامجك هيكون جاهز على التطبيق — اشتراكك بيبدأ رسمياً لما الخطة تكون جاهزة. وقت التغيير الحقيقي." },
       ],
     },
     reviews: {
