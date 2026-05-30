@@ -13,6 +13,7 @@ import {
 } from "../../animations";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2, CheckCircle2 } from "lucide-react";
+import { FollowUpTag } from "../../follow-up-tag";
 
 const COUNTRY_CODES = [
   // Arab & MENA
@@ -386,11 +387,16 @@ export function PlansClient({ plans }: { plans: any[] }) {
 
                   <div className="p-6 sm:p-8 flex flex-col h-full">
 
-                    {/* Inline badge */}
-                    {plan.isOnHold && (
-                      <div className="self-start flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                        {locale === "ar" ? "الأماكن ممتلئة" : "Fully Booked"}
+                    {/* Badges row */}
+                    {(plan.isOnHold || plan.followUpFrequency) && (
+                      <div className="flex flex-wrap items-center gap-2 mb-4">
+                        {plan.isOnHold && (
+                          <div className="flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                            {locale === "ar" ? "الأماكن ممتلئة" : "Fully Booked"}
+                          </div>
+                        )}
+                        <FollowUpTag frequency={plan.followUpFrequency} locale={locale} />
                       </div>
                     )}
 

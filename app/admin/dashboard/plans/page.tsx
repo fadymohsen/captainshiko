@@ -33,6 +33,15 @@ export default async function PlansPage() {
                     Fully Booked
                   </span>
                 )}
+                {plan.followUpFrequency && (
+                  <span className={`text-[10px] uppercase font-black tracking-widest px-2 py-0.5 rounded-md ${
+                    plan.followUpFrequency === 'daily' ? 'bg-amber-500/10 text-amber-400' :
+                    plan.followUpFrequency === 'weekly' ? 'bg-accent/10 text-accent-light' :
+                    'bg-white/5 text-slate-300'
+                  }`}>
+                    {plan.followUpFrequency} follow-up
+                  </span>
+                )}
               </div>
               <p className="text-sm text-muted line-clamp-2 mb-4">{plan.briefEn}</p>
               

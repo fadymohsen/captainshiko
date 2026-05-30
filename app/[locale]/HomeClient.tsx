@@ -21,6 +21,7 @@ import {
 import { ImageWithSkeleton } from "../image-with-skeleton";
 import { CertificateCarousel } from "../certificates-carousel";
 import { Star } from "lucide-react";
+import { FollowUpTag } from "../follow-up-tag";
 
 type Duration = "monthly" | "quarterly";
 
@@ -55,6 +56,8 @@ export function HomeClient({
       quarterly: pricing.quarterly,
       quarterlySale: region === "egypt" ? planData.salePriceQuarterlyEgp : planData.salePriceQuarterlyUsd,
       currency: pricing.currency,
+      followUpFrequency: planData.followUpFrequency ?? null,
+      isOnHold: planData.isOnHold ?? false,
     };
   });
 
@@ -329,6 +332,17 @@ export function HomeClient({
                     transition={{ duration: 0.4, delay: i * 0.1 }}
                     className="rounded-[2rem] p-8 flex flex-col transition-all duration-300 glow-border relative bg-surface-light w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] min-w-[300px] max-w-[350px] border border-white/10 hover:border-accent/30 shadow-xl"
                   >
+                    {(plan.isOnHold || plan.followUpFrequency) && (
+                      <div className="flex flex-wrap items-center gap-2 mb-3">
+                        {plan.isOnHold && (
+                          <div className="flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                            {locale === "ar" ? "الأماكن ممتلئة" : "Fully Booked"}
+                          </div>
+                        )}
+                        <FollowUpTag frequency={plan.followUpFrequency} locale={locale} />
+                      </div>
+                    )}
                     <h3 className="text-lg font-black mb-4 tracking-tight text-foreground">{plan.name}</h3>
                     <div className="flex flex-col mb-1 min-h-[60px] justify-center">
                       <div className="flex items-baseline gap-2">

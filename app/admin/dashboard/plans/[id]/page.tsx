@@ -28,6 +28,7 @@ export async function updatePlanAction(id: string, formData: FormData) {
         salePriceMonthlyUsd: formData.get('salePriceMonthlyUsd') as string || null,
         salePriceQuarterlyUsd: formData.get('salePriceQuarterlyUsd') as string || null,
         isOnHold: formData.get('isOnHold') === 'on',
+        followUpFrequency: (formData.get('followUpFrequency') as string) || null,
       }
     });
 
@@ -80,6 +81,23 @@ export default async function EditPlanPage({ params }: { params: Promise<{ id: s
               </p>
             </div>
           </label>
+
+          <div className="mt-6">
+            <label className="flex flex-col gap-2">
+              <span className="text-sm font-bold text-foreground">Follow-up Frequency Tag</span>
+              <p className="text-xs text-muted leading-relaxed">Displayed as a badge on the plan card to highlight how often clients receive follow-ups.</p>
+              <select
+                name="followUpFrequency"
+                defaultValue={plan.followUpFrequency || ''}
+                className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none mt-1"
+              >
+                <option value="">— No tag —</option>
+                <option value="daily">Daily Follow-up</option>
+                <option value="weekly">Weekly Follow-up</option>
+                <option value="monthly">Monthly Follow-up</option>
+              </select>
+            </label>
+          </div>
         </div>
 
         {/* Content Section */}

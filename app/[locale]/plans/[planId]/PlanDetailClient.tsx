@@ -14,6 +14,7 @@ import {
 } from "../../../animations";
 import { ImageWithSkeleton } from "../../../image-with-skeleton";
 import { X, Loader2, CheckCircle2, Star } from "lucide-react";
+import { FollowUpTag } from "../../../follow-up-tag";
 
 const COUNTRY_CODES = [
   // Arab & MENA
@@ -466,6 +467,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                       {locale === "ar" ? "الأماكن ممتلئة — فتح التسجيل قريباً" : "Fully Booked — Registration Opens Soon"}
                     </span>
                   )}
+                  <FollowUpTag frequency={plan.followUpFrequency} locale={locale} />
                 </div>
                 <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black leading-[1.05] tracking-tight mb-8">
                   <span className="gradient-text">{name}</span>
