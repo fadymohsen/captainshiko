@@ -3,7 +3,7 @@ import React from "react";
 const CONFIG = {
   daily:   { en: "Daily Follow-up",   ar: "متابعة يومية",    className: "text-amber-400 bg-amber-500/10 border-amber-500/25" },
   weekly:  { en: "Weekly Follow-up",  ar: "متابعة أسبوعية", className: "text-accent-light bg-accent/10 border-accent/25" },
-  monthly: { en: "Monthly Follow-up", ar: "متابعة شهرية",   className: "text-slate-300 bg-white/5 border-white/10" },
+  monthly: { en: "Monthly Follow-up", ar: "متابعة شهرية",   className: "text-violet-400 bg-violet-500/10 border-violet-500/25" },
 };
 
 export function FollowUpTag({ frequency, locale }: { frequency: string | null | undefined; locale: string }) {
