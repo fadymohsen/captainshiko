@@ -5,7 +5,7 @@ import { sendPendingEmail, sendAdminEmail } from "@/lib/email";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { planId, clientName, email, whatsapp, region, planType, couponCode } = body;
+    const { planId, clientName, email, whatsapp, region, planType, couponCode, bookedDate, bookedTime } = body;
 
     if (!planId || !clientName || !whatsapp || !region) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -53,6 +53,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
 
+    // Slot conflict check for booking plans
+    if (bookedDate && bookedTime) {
+      const conflicting = await prisma.purchase.findFirst({
+        where: { planId: plan.id, bookedDate, bookedTime, status: { not: "CANCELLED" } },
+      });
+      if (conflicting) {
+        return NextResponse.json({ error: "This time slot is no longer available. Please choose another." }, { status: 409 });
+      }
+    }
+
     // Create purchase with InstaPay method
     const purchase = await prisma.purchase.create({
       data: {
@@ -65,9 +75,11 @@ export async function POST(req: Request) {
         status: "PENDING",
         region,
         paymentMethod: "InstaPay",
-        notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''} | InstaPay`,
+        notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''} | InstaPay${bookedDate ? ` | Booked: ${bookedDate} ${bookedTime}` : ''}`,
         couponId,
         discountAmount,
+        ...(bookedDate ? { bookedDate } : {}),
+        ...(bookedTime ? { bookedTime } : {}),
       },
     });
 

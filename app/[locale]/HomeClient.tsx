@@ -20,7 +20,7 @@ import {
 } from "../animations";
 import { ImageWithSkeleton } from "../image-with-skeleton";
 import { CertificateCarousel } from "../certificates-carousel";
-import { Star } from "lucide-react";
+import { Star, Phone, Clock, CalendarCheck } from "lucide-react";
 import { FollowUpTag } from "../follow-up-tag";
 
 type Duration = "monthly" | "quarterly";
@@ -41,11 +41,11 @@ export function HomeClient({
   const [activeReviewIdx, setActiveReviewIdx] = useState(0);
   const p = t.pricing;
 
-  const plans = dbPlans.filter(p => p.isActive).map(planData => {
-    const pricing = region === "egypt" 
-      ? { monthly: planData.priceMonthlyEgp, quarterly: planData.priceQuarterlyEgp, currency: "EGP" } 
+  const allActivePlans = dbPlans.filter(p => p.isActive).map(planData => {
+    const pricing = region === "egypt"
+      ? { monthly: planData.priceMonthlyEgp, quarterly: planData.priceQuarterlyEgp, currency: "EGP" }
       : { monthly: planData.priceMonthlyUsd, quarterly: planData.priceQuarterlyUsd, currency: "USD" };
-      
+
     return {
       id: planData.id,
       slug: planData.slug,
@@ -58,8 +58,12 @@ export function HomeClient({
       currency: pricing.currency,
       followUpFrequency: planData.followUpFrequency ?? null,
       isOnHold: planData.isOnHold ?? false,
+      isBooking: planData.isBooking ?? false,
     };
   });
+
+  const plans = allActivePlans.filter(p => !p.isBooking);
+  const bookingPlans = allActivePlans.filter(p => p.isBooking);
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -387,6 +391,93 @@ export function HomeClient({
               })}
             </motion.div>
           </AnimatePresence>
+
+          {/* Book a Call — special section */}
+          {bookingPlans.length > 0 && (
+            <div className="mt-16">
+              <FadeUp>
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="h-px flex-grow bg-white/5" />
+                  <span className="text-[11px] font-black text-accent-light uppercase tracking-[0.3em]">
+                    {locale === "en" ? "Private Session" : "جلسة خاصة"}
+                  </span>
+                  <div className="h-px flex-grow bg-white/5" />
+                </div>
+
+                {bookingPlans.map((plan) => (
+                  <div key={plan.id} className="relative rounded-3xl overflow-hidden bg-surface-light border border-accent/20 shadow-2xl shadow-accent/10">
+                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-accent via-accent-light to-accent/30" />
+
+                    <div className="relative p-8 sm:p-10 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+                      <div>
+                        <div className="flex flex-wrap items-center gap-3 mb-4">
+                          <span className="inline-flex items-center gap-1.5 bg-accent/15 border border-accent/30 text-accent-light text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-full">
+                            <CalendarCheck className="w-3 h-3" />
+                            {locale === "en" ? "Book a Call" : "احجز مكالمة"}
+                          </span>
+                          <span className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 text-muted text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">
+                            <Clock className="w-3 h-3" />
+                            {locale === "en" ? "45–60 min" : "٤٥–٦٠ دقيقة"}
+                          </span>
+                        </div>
+
+                        <h3 className="text-3xl sm:text-4xl font-black mb-3 leading-tight">{plan.name}</h3>
+                        <p className="text-muted leading-relaxed max-w-lg text-sm sm:text-base">"{plan.brief}"</p>
+
+                        <div className="flex flex-wrap gap-2 mt-5">
+                          {(locale === "en"
+                            ? ["Private 1-on-1", "Cairo Time", "Instant Confirmation"]
+                            : ["خاص ١ على ١", "توقيت القاهرة", "تأكيد فوري"]
+                          ).map((tag) => (
+                            <span key={tag} className="text-[10px] text-muted/80 font-bold uppercase tracking-wider bg-white/5 border border-white/[0.06] px-2.5 py-1 rounded-full">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col items-center md:items-end gap-5 shrink-0">
+                        <div className="text-center md:text-right">
+                          <p className="text-[10px] text-muted uppercase tracking-[0.18em] font-bold mb-2">
+                            {locale === "en" ? "One-time session" : "جلسة واحدة"}
+                          </p>
+                          <div className="flex items-baseline gap-2 justify-center md:justify-end">
+                            <span className="text-4xl sm:text-5xl font-black text-accent-light leading-none">
+                              {plan.monthlySale || plan.monthly} {plan.currency}
+                            </span>
+                            {plan.monthlySale && (
+                              <span className="text-base font-bold text-muted line-through">{plan.monthly} {plan.currency}</span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-2.5 w-full min-w-[180px]">
+                          <MagneticButton>
+                            <Link
+                              href={`/${locale}/plans/${plan.slug}`}
+                              className="block w-full text-center py-4 rounded-xl text-sm font-black bg-accent text-white hover:bg-accent-light active:scale-[0.98] transition-all duration-300 shadow-lg shadow-accent/25 uppercase tracking-wider"
+                            >
+                              <span className="flex items-center justify-center gap-2">
+                                <Phone className="w-4 h-4" />
+                                {locale === "en" ? "Book Now" : "احجز الآن"}
+                              </span>
+                            </Link>
+                          </MagneticButton>
+                          <Link
+                            href={`/${locale}/plans/${plan.slug}`}
+                            className="block w-full text-center py-2 text-xs font-bold text-muted hover:text-accent-light transition-colors duration-200"
+                          >
+                            {locale === "en" ? "See full details →" : "← عرض التفاصيل كاملة"}
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </FadeUp>
+            </div>
+          )}
         </div>
       </section>
 

@@ -36,6 +36,10 @@ model Plan {
   isActive    Boolean  @default(true)
   isOnHold    Boolean  @default(false)
   followUpFrequency String? // 'monthly' | 'weekly' | 'daily'
+  isBooking   Boolean  @default(false)
+  bookingStartHour Int? @default(9)
+  bookingEndHour   Int? @default(16)
+  bookingSlotMins  Int? @default(60)
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -100,6 +104,8 @@ model Purchase {
   coupon       Coupon?  @relation(fields: [couponId], references: [id])
   discountAmount Float   @default(0)
   receiptUrl   String?
+  bookedDate   String?
+  bookedTime   String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

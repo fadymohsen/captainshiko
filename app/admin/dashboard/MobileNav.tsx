@@ -32,6 +32,7 @@ export default function MobileNav() {
             <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/coupons" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Coupons</Link>
             <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/policies" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Policies</Link>
             <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/purchases" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Purchases</Link>
+            <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/sessions" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Sessions</Link>
             <Link onClick={() => setIsOpen(false)} href="/admin/dashboard/reviews" className="py-4 px-6 rounded-xl border border-white/5 text-lg font-bold tracking-wider hover:bg-white/10 transition-colors">Reviews</Link>
             
             <div className="mt-8">

@@ -12,9 +12,9 @@ import {
   StaggerItem,
   MagneticButton,
 } from "../../../animations";
-import { ImageWithSkeleton } from "../../../image-with-skeleton";
 import { X, Loader2, CheckCircle2, Star } from "lucide-react";
 import { FollowUpTag } from "../../../follow-up-tag";
+import { BookingCalendar } from "./BookingCalendar";
 
 const COUNTRY_CODES = [
   // Arab & MENA
@@ -219,6 +219,15 @@ export function PlanDetailClient({ plan }: { plan: any }) {
 
   const videoEmbedUrl = getVideoEmbedUrl(plan.videoUrl);
   
+  // Booking State
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+
+  const handleBookingSelect = (date: string, time: string) => {
+    setSelectedDate(date);
+    setSelectedTime(time || null);
+  };
+
   // Checkout State
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [planType, setPlanType] = useState<"monthly" | "quarterly">("monthly");
@@ -231,6 +240,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
   const [consentChecked, setConsentChecked] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"fawaterak" | "instapay">("fawaterak");
+  const [checkoutStep, setCheckoutStep] = useState<1 | 2 | 3>(1);
   const [instapayData, setInstapayData] = useState<{ purchaseId: string; amount: number; currency: string } | null>(null);
 
   // Reviews State
@@ -310,7 +320,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           planId: plan.id,
-          planType,
+          planType: plan.isBooking ? "monthly" : planType,
           paymentMethodId: 4,
           clientName: formData.name,
           email: formData.email,
@@ -318,9 +328,20 @@ export function PlanDetailClient({ plan }: { plan: any }) {
           region,
           locale,
           couponCode: appliedCoupon ? couponCode : undefined,
+          ...(plan.isBooking && selectedDate && selectedTime
+            ? { bookedDate: selectedDate, bookedTime: selectedTime }
+            : {}),
         }),
       });
       const data = await res.json();
+      if (res.status === 409) {
+        alert(locale === "ar" ? "هذا الموعد تم حجزه للتو. اختار موعداً آخر." : "This slot was just taken. Please go back and pick another time.");
+        setCheckoutStep(2);
+        setSelectedDate(null);
+        setSelectedTime(null);
+        setLoading(false);
+        return;
+      }
       if (!res.ok) throw new Error(data.error || data.details || "Payment failed");
       if (data.invoiceId) localStorage.setItem("lastInvoiceId", data.invoiceId.toString());
       if (data.purchaseId) localStorage.setItem("lastPurchaseId", data.purchaseId);
@@ -344,15 +365,26 @@ export function PlanDetailClient({ plan }: { plan: any }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           planId: plan.id,
-          planType,
+          planType: plan.isBooking ? "monthly" : planType,
           clientName: formData.name,
           email: formData.email,
           whatsapp: countryCode + formData.whatsapp.replace(/^0+/, ""),
           region,
           couponCode: appliedCoupon ? couponCode : undefined,
+          ...(plan.isBooking && selectedDate && selectedTime
+            ? { bookedDate: selectedDate, bookedTime: selectedTime }
+            : {}),
         }),
       });
       const data = await res.json();
+      if (res.status === 409) {
+        alert(locale === "ar" ? "هذا الموعد تم حجزه للتو. اختار موعداً آخر." : "This slot was just taken. Please go back and pick another time.");
+        setCheckoutStep(2);
+        setSelectedDate(null);
+        setSelectedTime(null);
+        setLoading(false);
+        return;
+      }
       if (!res.ok) throw new Error(data.error || "Failed to create order");
       const basePrice = planType === "monthly"
         ? (currentPricing.monthlySale || currentPricing.monthly)
@@ -386,6 +418,8 @@ export function PlanDetailClient({ plan }: { plan: any }) {
     setCouponError("");
     setInstapayData(null);
     setPaymentMethod("fawaterak");
+    setCheckoutStep(1);
+    if (plan.isBooking) { setSelectedDate(null); setSelectedTime(null); }
   };
 
   const handleApplyCoupon = async () => {
@@ -480,12 +514,12 @@ export function PlanDetailClient({ plan }: { plan: any }) {
           </section>
 
           {/* Centered Reel Section */}
-          <section className="relative mb-24">
-            <FadeUp>
-              <div className="relative group max-w-[400px] mx-auto">
-                <div className="absolute inset-x-0 -inset-y-4 bg-accent/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="relative aspect-[9/16] rounded-[2.5rem] overflow-hidden bg-surface-light border-4 border-white/5 shadow-2xl">
-                  {videoEmbedUrl ? (
+          {videoEmbedUrl && (
+            <section className="relative mb-24">
+              <FadeUp>
+                <div className="relative group max-w-[400px] mx-auto">
+                  <div className="absolute inset-x-0 -inset-y-4 bg-accent/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="relative aspect-[9/16] rounded-[2.5rem] overflow-hidden bg-surface-light border-4 border-white/5 shadow-2xl">
                     <iframe
                       src={videoEmbedUrl}
                       className="w-full h-full"
@@ -493,32 +527,11 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                       allowFullScreen
                       title="Plan Video Guide"
                     />
-                  ) : (
-                    <>
-                      <ImageWithSkeleton
-                        src="/hero-coach.jpg"
-                        alt="Visual Guide"
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        aspectRatio="aspect-[9/16]"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/80 flex flex-col items-center justify-center p-10 text-center z-20">
-                        <motion.div 
-                          animate={{ scale: [1, 1.1, 1] }} 
-                          transition={{ repeat: Infinity, duration: 2 }}
-                          className="w-20 h-20 rounded-full bg-accent text-white flex items-center justify-center mb-6 cursor-pointer hover:bg-accent-light"
-                        >
-                          <svg className="w-10 h-10 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        </motion.div>
-                        <h4 className="text-lg font-black uppercase tracking-[0.2em] mb-2">
-                          {locale === 'en' ? 'Video Guide Coming Soon' : 'دليل مرئي قريباً'}
-                        </h4>
-                      </div>
-                    </>
-                  )}
+                  </div>
                 </div>
-              </div>
-            </FadeUp>
-          </section>
+              </FadeUp>
+            </section>
+          )}
 
           <div className="grid lg:grid-cols-12 gap-16 items-start">
             
@@ -548,6 +561,7 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                       </StaggerItem>
                     ))}
                   </div>
+
                 </FadeUp>
               </section>
 
@@ -562,7 +576,9 @@ export function PlanDetailClient({ plan }: { plan: any }) {
 
                     <div className="relative z-10 text-center lg:text-left">
                       <h3 className="text-2xl font-black mb-8">
-                        {locale === "en" ? "Secure Your Spot" : "احجز مكانك الآن"}
+                        {plan.isBooking
+                          ? (locale === "en" ? "Book Your Call" : "احجز مكالمتك")
+                          : (locale === "en" ? "Secure Your Spot" : "احجز مكانك الآن")}
                       </h3>
 
                       <AnimatePresence mode="wait">
@@ -574,48 +590,80 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                           transition={{ duration: 0.4 }}
                           className="space-y-6"
                         >
-                          <div className="group relative">
-                            <div className="p-8 rounded-3xl bg-background/40 border border-white/5 flex flex-col items-center lg:items-start group-hover:border-accent/20 transition-all">
-                              <span className="text-[10px] font-black text-muted uppercase tracking-[0.2em] mb-2">
-                                {locale === "en" ? "Monthly" : "شهرياً"}
-                              </span>
-                              <div className="flex items-baseline gap-2">
-                                {currentPricing.monthlySale ? (
-                                  <>
-                                    <span className="text-5xl font-black text-accent-light">{currentPricing.monthlySale}</span>
-                                    <span className="text-xl font-bold text-muted line-through opacity-50">{currentPricing.monthly}</span>
-                                  </>
-                                ) : (
-                                  <span className="text-5xl font-black group-hover:text-foreground transition-colors">{currentPricing.monthly || 'N/A'}</span>
-                                )}
-                                <span className="text-xl font-bold text-muted">{currentPricing.currency}</span>
+                          {plan.isBooking ? (
+                            /* Booking — single flat price */
+                            <div className="group relative">
+                              <div className="absolute -top-3 -right-3 bg-accent text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter z-20 shadow-xl -rotate-2">
+                                {locale === "en" ? "Limited Slots" : "أماكن محدودة"}
+                              </div>
+                              <div className="p-8 rounded-3xl bg-accent/[0.03] border border-accent/20 flex flex-col items-center lg:items-start">
+                                <span className="text-[10px] font-black text-accent-light uppercase tracking-[0.2em] mb-2">
+                                  {locale === "en" ? "One-time session" : "جلسة واحدة"}
+                                </span>
+                                <div className="flex items-baseline gap-2 flex-wrap">
+                                  {currentPricing.monthlySale ? (
+                                    <>
+                                      <span className="text-5xl font-black text-accent-light">{currentPricing.monthlySale}</span>
+                                      <span className="text-xl font-bold text-muted line-through opacity-50">{currentPricing.monthly}</span>
+                                    </>
+                                  ) : (
+                                    <span className="text-5xl font-black text-accent-light">{currentPricing.monthly || "N/A"}</span>
+                                  )}
+                                  <span className="text-xl font-bold text-muted">{currentPricing.currency}</span>
+                                </div>
+                                <p className="text-[10px] text-muted mt-3 font-bold uppercase tracking-widest">
+                                  {locale === "en" ? "45–60 min • Cairo time" : "٤٥–٦٠ دقيقة • توقيت القاهرة"}
+                                </p>
                               </div>
                             </div>
-                          </div>
+                          ) : (
+                            /* Regular plans — monthly + quarterly */
+                            <>
+                              <div className="group relative">
+                                <div className="p-8 rounded-3xl bg-background/40 border border-white/5 flex flex-col items-center lg:items-start group-hover:border-accent/20 transition-all">
+                                  <span className="text-[10px] font-black text-muted uppercase tracking-[0.2em] mb-2">
+                                    {locale === "en" ? "Monthly" : "شهرياً"}
+                                  </span>
+                                  <div className="flex items-baseline gap-2">
+                                    {currentPricing.monthlySale ? (
+                                      <>
+                                        <span className="text-5xl font-black text-accent-light">{currentPricing.monthlySale}</span>
+                                        <span className="text-xl font-bold text-muted line-through opacity-50">{currentPricing.monthly}</span>
+                                      </>
+                                    ) : (
+                                      <span className="text-5xl font-black group-hover:text-foreground transition-colors">{currentPricing.monthly || "N/A"}</span>
+                                    )}
+                                    <span className="text-xl font-bold text-muted">{currentPricing.currency}</span>
+                                  </div>
+                                </div>
+                              </div>
 
-                          <div className="group relative">
-                            <div className="absolute -top-3 -right-3 sm:-right-4 bg-accent text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter z-20 shadow-xl rotate-3">
-                              {locale === "en" ? "Best Value" : "الأكثر توفيراً"}
-                            </div>
-                            <div className="p-8 rounded-3xl bg-accent/[0.03] border border-accent/20 flex flex-col items-center lg:items-start group-hover:bg-accent/5 transition-all">
-                              <span className="text-[10px] font-black text-accent-light uppercase tracking-[0.2em] mb-2">
-                                {locale === "en" ? "3 Months Bundle" : "باقة ٣ شهور"}
-                              </span>
-                              <div className="flex items-baseline gap-2">
-                                {currentPricing.quarterlySale ? (
-                                  <>
-                                    <span className="text-5xl font-black text-accent-light">{currentPricing.quarterlySale}</span>
-                                    <span className="text-xl font-bold text-muted line-through opacity-50">{currentPricing.quarterly}</span>
-                                  </>
-                                ) : (
-                                  <span className="text-5xl font-black text-accent-light">{currentPricing.quarterly || 'N/A'}</span>
-                                )}
-                                <span className="text-xl font-bold text-muted">{currentPricing.currency}</span>
+                              <div className="group relative">
+                                <div className="absolute -top-3 -right-3 sm:-right-4 bg-accent text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter z-20 shadow-xl rotate-3">
+                                  {locale === "en" ? "Best Value" : "الأكثر توفيراً"}
+                                </div>
+                                <div className="p-8 rounded-3xl bg-accent/[0.03] border border-accent/20 flex flex-col items-center lg:items-start group-hover:bg-accent/5 transition-all">
+                                  <span className="text-[10px] font-black text-accent-light uppercase tracking-[0.2em] mb-2">
+                                    {locale === "en" ? "3 Months Bundle" : "باقة ٣ شهور"}
+                                  </span>
+                                  <div className="flex items-baseline gap-2">
+                                    {currentPricing.quarterlySale ? (
+                                      <>
+                                        <span className="text-5xl font-black text-accent-light">{currentPricing.quarterlySale}</span>
+                                        <span className="text-xl font-bold text-muted line-through opacity-50">{currentPricing.quarterly}</span>
+                                      </>
+                                    ) : (
+                                      <span className="text-5xl font-black text-accent-light">{currentPricing.quarterly || "N/A"}</span>
+                                    )}
+                                    <span className="text-xl font-bold text-muted">{currentPricing.currency}</span>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
+                            </>
+                          )}
                         </motion.div>
                       </AnimatePresence>
+
 
                       <div className="mt-12 space-y-4 relative z-10">
                         {plan.isOnHold ? (
@@ -636,11 +684,15 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                                 onClick={() => setIsCheckoutOpen(true)}
                                 className="w-full block text-center bg-white text-background font-black py-5 rounded-2xl text-xs uppercase tracking-[0.2em] hover:bg-accent hover:text-white transition-all shadow-xl active:scale-95"
                               >
-                                {locale === "en" ? "Start Transformation" : "ابدأ التحول الآن"}
+                                {plan.isBooking
+                                  ? (locale === "en" ? "Book My Call" : "احجز مكالمتي")
+                                  : (locale === "en" ? "Start Transformation" : "ابدأ التحول الآن")}
                               </button>
                             </MagneticButton>
                             <p className="text-[10px] text-muted text-center tracking-tight">
-                              * Fast & secure checkout. Instant access after payment.
+                              {plan.isBooking
+                                ? (locale === "en" ? "* Cairo time (UTC+2). Secure payment." : "* توقيت القاهرة (UTC+2). دفع آمن.")
+                                : "* Fast & secure checkout. Instant access after payment."}
                             </p>
                           </>
                         )}
@@ -663,63 +715,80 @@ export function PlanDetailClient({ plan }: { plan: any }) {
               </div>
 
               <div className="relative max-w-2xl mx-auto">
-                {(t as any).howItWorks.steps.map((step: { title: string; desc: string }, idx: number) => (
-                  <StaggerItem key={idx}>
-                    <div className="flex gap-6 mb-10 last:mb-0">
-                      {/* Number badge + connector line */}
-                      <div className="flex flex-col items-center">
-                        <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white font-black text-sm shrink-0 shadow-lg shadow-accent/30">
-                          {idx + 1}
+                {plan.isBooking ? (
+                  (locale === "en" ? [
+                    { title: "Fill Your Details", desc: "Enter your name, email, and WhatsApp number to reserve your slot." },
+                    { title: "Pick Your Slot", desc: "Choose the date and time that works best for you from the available slots." },
+                    { title: "Complete Payment", desc: "Pay securely via card, wallet, or InstaPay — your spot is reserved instantly." },
+                    { title: "Get Confirmed", desc: "Coach Roshdy will reach out on WhatsApp to confirm your session details before the call." },
+                  ] : [
+                    { title: "ادخل بياناتك", desc: "ادخل اسمك وإيميلك ورقم واتساب عشان نحجزلك مكانك." },
+                    { title: "اختار موعدك", desc: "اختار التاريخ والوقت المناسب ليك من المواعيد المتاحة." },
+                    { title: "أتمّ الدفع", desc: "ادفع بأمان بالكارت أو الفيزا أو إنستا باي — مكانك بيتحجز على طول." },
+                    { title: "تأكيد الجلسة", desc: "كوتش رشدي هيتواصل معاك على واتساب عشان يأكدلك تفاصيل المكالمة قبل الموعد." },
+                  ]).map((step, idx) => (
+                    <StaggerItem key={idx}>
+                      <div className="flex gap-6 mb-10 last:mb-0">
+                        <div className="flex flex-col items-center">
+                          <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white font-black text-sm shrink-0 shadow-lg shadow-accent/30">
+                            {idx + 1}
+                          </div>
+                          {idx < 3 && <div className="w-px flex-grow bg-accent/20 mt-3" />}
                         </div>
-                        {idx < (t as any).howItWorks.steps.length - 1 && (
-                          <div className="w-px flex-grow bg-accent/20 mt-3" />
-                        )}
+                        <div className="pb-6">
+                          <h3 className="text-lg font-black mb-1">{step.title}</h3>
+                          <p className="text-muted leading-relaxed text-sm">{step.desc}</p>
+                        </div>
                       </div>
-                      {/* Content */}
-                      <div className="pb-6">
-                        <h3 className="text-lg font-black mb-1">{step.title}</h3>
-                        <p className="text-muted leading-relaxed text-sm">
-                          {step.desc.includes("{whatsapp}") ? (
-                            <>
-                              {step.desc.split("{whatsapp}")[0]}
-                              <a
-                                href="https://wa.me/201553038830"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-[#25D366] underline underline-offset-2 hover:text-[#20b857] transition-colors font-bold"
-                              >
-                                WhatsApp
-                              </a>
-                              {step.desc.split("{whatsapp}")[1]}
-                            </>
-                          ) : (
-                            step.desc
+                    </StaggerItem>
+                  ))
+                ) : (
+                  (t as any).howItWorks.steps.map((step: { title: string; desc: string }, idx: number) => (
+                    <StaggerItem key={idx}>
+                      <div className="flex gap-6 mb-10 last:mb-0">
+                        <div className="flex flex-col items-center">
+                          <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white font-black text-sm shrink-0 shadow-lg shadow-accent/30">
+                            {idx + 1}
+                          </div>
+                          {idx < (t as any).howItWorks.steps.length - 1 && (
+                            <div className="w-px flex-grow bg-accent/20 mt-3" />
                           )}
-                          {idx === 1 && (
-                            <>
-                              {" "}
-                              <a
-                                href="https://cmohamedroshdy.beprime.site/login"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-accent-light underline underline-offset-2 hover:text-accent transition-colors font-bold"
-                              >
-                                {locale === "en" ? "Download here" : "حمّل من هنا"}
-                              </a>
-                            </>
-                          )}
-                        </p>
-                        {idx === (t as any).howItWorks.steps.length - 1 && (
-                          <p className="text-accent-light text-xs font-bold mt-2">
-                            {locale === "en"
-                              ? "* Your subscription starts once your plan is live on the app."
-                              : "* اشتراكك بيبدأ رسمياً لما خطتك تكون جاهزة على التطبيق."}
+                        </div>
+                        <div className="pb-6">
+                          <h3 className="text-lg font-black mb-1">{step.title}</h3>
+                          <p className="text-muted leading-relaxed text-sm">
+                            {step.desc.includes("{whatsapp}") ? (
+                              <>
+                                {step.desc.split("{whatsapp}")[0]}
+                                <a href="https://wa.me/201553038830" target="_blank" rel="noopener noreferrer" className="text-[#25D366] underline underline-offset-2 hover:text-[#20b857] transition-colors font-bold">
+                                  WhatsApp
+                                </a>
+                                {step.desc.split("{whatsapp}")[1]}
+                              </>
+                            ) : (
+                              step.desc
+                            )}
+                            {idx === 1 && (
+                              <>
+                                {" "}
+                                <a href="https://cmohamedroshdy.beprime.site/login" target="_blank" rel="noopener noreferrer" className="text-accent-light underline underline-offset-2 hover:text-accent transition-colors font-bold">
+                                  {locale === "en" ? "Download here" : "حمّل من هنا"}
+                                </a>
+                              </>
+                            )}
                           </p>
-                        )}
+                          {idx === (t as any).howItWorks.steps.length - 1 && (
+                            <p className="text-accent-light text-xs font-bold mt-2">
+                              {locale === "en"
+                                ? "* Your subscription starts once your plan is live on the app."
+                                : "* اشتراكك بيبدأ رسمياً لما خطتك تكون جاهزة على التطبيق."}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </StaggerItem>
-                ))}
+                    </StaggerItem>
+                  ))
+                )}
               </div>
             </FadeUp>
           </section>
@@ -927,81 +996,254 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                   </div>
                 </div>
               ) : (
-                /* Normal Checkout Form */
+                /* Checkout */
                 <>
-                  <div className="mb-8">
-                    <h2 className="text-2xl font-bold">{ct.title}</h2>
+                  {/* Header + step indicator for booking */}
+                  <div className="mb-6">
+                    <h2 className="text-2xl font-bold">
+                      {plan.isBooking ? (locale === "en" ? "Book Your Call" : "احجز مكالمتك") : ct.title}
+                    </h2>
                     <p className="text-sm text-muted mt-1">{name}</p>
+                    {plan.isBooking && (
+                      <div className="flex items-center gap-1.5 mt-4">
+                        {[1, 2, 3].map((s) => (
+                          <div key={s} className="flex items-center gap-1.5">
+                            <div className={`w-7 h-7 rounded-full text-xs font-black flex items-center justify-center transition-all ${
+                              checkoutStep === s ? "bg-accent text-white shadow-lg shadow-accent/30" : s < checkoutStep ? "bg-accent/25 text-accent-light" : "bg-white/5 text-muted"
+                            }`}>{s}</div>
+                            {s < 3 && <div className={`w-8 h-px transition-all ${s < checkoutStep ? "bg-accent/50" : "bg-white/10"}`} />}
+                          </div>
+                        ))}
+                        <span className="text-[10px] text-muted font-bold uppercase tracking-widest ml-2">
+                          {locale === "en"
+                            ? (checkoutStep === 1 ? "Your Details" : checkoutStep === 2 ? "Pick Your Slot" : "Payment")
+                            : (checkoutStep === 1 ? "بياناتك" : checkoutStep === 2 ? "اختار موعدك" : "الدفع")}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
-                  <form onSubmit={handleCheckout} className="space-y-4 sm:space-y-5">
-                    <div className="grid grid-cols-2 gap-3 p-1 bg-background/50 rounded-2xl border border-white/5">
-                      <button type="button" onClick={() => setPlanType("monthly")} className={`py-3 rounded-xl text-sm font-bold transition-all ${planType === "monthly" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>{ct.monthly}</button>
-                      <button type="button" onClick={() => setPlanType("quarterly")} className={`py-3 rounded-xl text-sm font-bold transition-all ${planType === "quarterly" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>{ct.quarterly}</button>
-                    </div>
+                  {plan.isBooking ? (
+                    /* Booking: 3-step wizard */
+                    <AnimatePresence mode="wait">
+                      {checkoutStep === 1 && (
+                        <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }} className="space-y-5">
+                          <div className="space-y-4">
+                            <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full bg-background border border-white/5 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 transition-colors text-sm" placeholder={ct.fullName} />
+                            <div className="flex bg-background border border-white/5 rounded-2xl overflow-hidden focus-within:border-accent/50 transition-colors">
+                              <select value={countryCode} onChange={(e) => setCountryCode(e.target.value)} className="bg-white/5 text-sm px-3 py-4 border-r border-white/5 focus:outline-none text-foreground shrink-0">
+                                {COUNTRY_CODES.map((c) => (<option key={c.code} value={c.code}>{c.flag} +{c.code}</option>))}
+                              </select>
+                              <input type="tel" value={formData.whatsapp} onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })} className="flex-1 bg-transparent px-4 py-4 focus:outline-none text-sm" placeholder={ct.whatsapp} />
+                            </div>
+                            <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full bg-background border border-white/5 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 transition-colors text-sm" placeholder={ct.email} />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setCheckoutStep(2)}
+                            disabled={!formData.name.trim() || !formData.whatsapp.trim() || !formData.email.trim()}
+                            className="w-full py-4 rounded-2xl bg-accent text-white font-black text-sm uppercase tracking-[0.15em] hover:bg-accent-light transition-all shadow-lg shadow-accent/20 disabled:opacity-40 disabled:cursor-not-allowed"
+                          >
+                            {locale === "en" ? "Continue — Pick Your Slot" : "متابعة — اختار موعدك"}
+                          </button>
+                        </motion.div>
+                      )}
 
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-muted uppercase tracking-widest block px-1">{ct.paymentMethod}</label>
-                      <div className="grid grid-cols-2 gap-3 p-1 bg-background/50 rounded-2xl border border-white/5">
-                        <button type="button" onClick={() => setPaymentMethod("instapay")} className={`py-3 rounded-xl text-sm font-bold transition-all ${paymentMethod === "instapay" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>{ct.instapay}</button>
-                        <button type="button" onClick={() => setPaymentMethod("fawaterak")} className={`py-3 rounded-xl text-sm font-bold transition-all ${paymentMethod === "fawaterak" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>Fawaterak</button>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <input required type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full bg-background border border-white/5 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 transition-colors text-sm" placeholder={ct.fullName} />
-                      <div className="flex bg-background border border-white/5 rounded-2xl overflow-hidden focus-within:border-accent/50 transition-colors">
-                        <select value={countryCode} onChange={(e) => setCountryCode(e.target.value)} className="bg-white/5 text-sm px-3 py-4 border-r border-white/5 focus:outline-none text-foreground shrink-0">
-                          {COUNTRY_CODES.map((c) => (<option key={c.code} value={c.code}>{c.flag} +{c.code}</option>))}
-                        </select>
-                        <input required type="tel" value={formData.whatsapp} onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })} className="flex-1 bg-transparent px-4 py-4 focus:outline-none text-sm" placeholder={ct.whatsapp} />
-                      </div>
-                      <input required type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full bg-background border border-white/5 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 transition-colors text-sm" placeholder={ct.email} />
-                    </div>
-
-                    <div className="space-y-3">
-                      <label className="text-xs font-bold text-muted uppercase tracking-widest block px-1">{ct.promoCode}</label>
-                      <div className="flex gap-2">
-                        <input type="text" value={couponCode} onChange={(e) => setCouponCode(e.target.value.toUpperCase())} className="flex-1 bg-background border border-white/5 rounded-2xl px-5 py-3 focus:outline-none focus:border-accent/50 transition-colors text-sm uppercase tracking-widest font-black" placeholder="CODE" />
-                        <button type="button" onClick={handleApplyCoupon} disabled={isValidatingCoupon || !couponCode} className="bg-white/10 hover:bg-white/20 text-white px-6 rounded-2xl text-xs font-black uppercase tracking-widest transition-all disabled:opacity-50">
-                          {isValidatingCoupon ? <Loader2 className="w-4 h-4 animate-spin" /> : ct.apply}
-                        </button>
-                      </div>
-                      {couponError && <p className="text-[10px] text-red-500 px-2 font-bold uppercase">{couponError}</p>}
-                      {appliedCoupon && <p className="text-[10px] text-green-500 px-2 font-bold uppercase">✓ {ct.discountApplied}</p>}
-                    </div>
-
-                    <div className="pt-4 border-t border-white/5">
-                      <div className="flex justify-between items-center mb-6 px-1">
-                        <span className="text-muted">{ct.total}</span>
-                        <div className="flex flex-col items-end">
-                          <span className={`text-2xl font-black ${appliedCoupon ? "text-accent scale-110" : ""} transition-all`}>
-                            {getDiscountedPrice(planType === "monthly" ? (currentPricing.monthlySale || currentPricing.monthly) : (currentPricing.quarterlySale || currentPricing.quarterly)).toFixed(0)} {currentPricing.currency}
-                          </span>
-                          {appliedCoupon && (
-                            <span className="text-[10px] text-muted line-through">
-                              {parseFloat(planType === "monthly" ? (currentPricing.monthlySale || currentPricing.monthly) : (currentPricing.quarterlySale || currentPricing.quarterly) || "0").toFixed(0)} {currentPricing.currency}
-                            </span>
+                      {checkoutStep === 2 && (
+                        <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }} className="space-y-4">
+                          <BookingCalendar
+                            planId={plan.id}
+                            startHour={plan.bookingStartHour ?? 9}
+                            endHour={plan.bookingEndHour ?? 16}
+                            slotMins={plan.bookingSlotMins ?? 60}
+                            locale={locale}
+                            dir={dir}
+                            selectedDate={selectedDate}
+                            selectedTime={selectedTime}
+                            onSelect={handleBookingSelect}
+                          />
+                          {selectedDate && selectedTime && (
+                            <div className="p-3 rounded-2xl bg-accent/10 border border-accent/30">
+                              <p className="text-[10px] font-black text-accent-light uppercase tracking-widest mb-1">
+                                {locale === "en" ? "Your appointment" : "موعدك"}
+                              </p>
+                              <p className="font-black text-sm">
+                                {new Date(selectedDate + "T12:00:00").toLocaleDateString(
+                                  locale === "ar" ? "ar-EG" : "en-US",
+                                  { weekday: "long", month: "long", day: "numeric", year: "numeric" }
+                                )}
+                                {" · "}
+                                {(() => {
+                                  const [h, m] = selectedTime.split(":").map(Number);
+                                  const h12 = h % 12 || 12;
+                                  const ampm = h < 12 ? (locale === "ar" ? "ص" : "AM") : (locale === "ar" ? "م" : "PM");
+                                  return `${h12}:${m.toString().padStart(2, "0")} ${ampm}`;
+                                })()}
+                              </p>
+                            </div>
                           )}
+                          <div className="flex gap-3 pt-1">
+                            <button type="button" onClick={() => setCheckoutStep(1)} className="flex-1 py-4 rounded-2xl bg-white/5 text-muted font-black text-sm uppercase tracking-[0.12em] hover:bg-white/10 transition-all">
+                              {locale === "en" ? "← Back" : "رجوع →"}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setCheckoutStep(3)}
+                              disabled={!selectedDate || !selectedTime}
+                              className="flex-[2] py-4 rounded-2xl bg-accent text-white font-black text-sm uppercase tracking-[0.12em] hover:bg-accent-light transition-all shadow-lg shadow-accent/20 disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                              {locale === "en" ? "Continue to Payment →" : "→ متابعة للدفع"}
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {checkoutStep === 3 && (
+                        <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
+                          <form onSubmit={handleCheckout} className="space-y-4">
+                            {selectedDate && selectedTime && (
+                              <div className="p-3 rounded-2xl bg-accent/10 border border-accent/30 flex items-center justify-between">
+                                <div>
+                                  <p className="text-[10px] font-black text-accent-light uppercase tracking-widest mb-0.5">
+                                    {locale === "en" ? "Your appointment" : "موعدك"}
+                                  </p>
+                                  <p className="font-black text-sm">
+                                    {new Date(selectedDate + "T12:00:00").toLocaleDateString(
+                                      locale === "ar" ? "ar-EG" : "en-US",
+                                      { weekday: "short", month: "short", day: "numeric" }
+                                    )}
+                                    {" · "}
+                                    {(() => {
+                                      const [h, m] = selectedTime.split(":").map(Number);
+                                      const h12 = h % 12 || 12;
+                                      const ampm = h < 12 ? (locale === "ar" ? "ص" : "AM") : (locale === "ar" ? "م" : "PM");
+                                      return `${h12}:${m.toString().padStart(2, "0")} ${ampm}`;
+                                    })()}
+                                  </p>
+                                </div>
+                                <button type="button" onClick={() => setCheckoutStep(2)} className="text-[10px] text-accent-light font-black uppercase tracking-widest underline">
+                                  {locale === "en" ? "Change" : "تغيير"}
+                                </button>
+                              </div>
+                            )}
+
+                            <div className="space-y-2">
+                              <label className="text-xs font-bold text-muted uppercase tracking-widest block px-1">{ct.paymentMethod}</label>
+                              <div className="grid grid-cols-2 gap-3 p-1 bg-background/50 rounded-2xl border border-white/5">
+                                <button type="button" onClick={() => setPaymentMethod("instapay")} className={`py-3 rounded-xl text-sm font-bold transition-all ${paymentMethod === "instapay" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>{ct.instapay}</button>
+                                <button type="button" onClick={() => setPaymentMethod("fawaterak")} className={`py-3 rounded-xl text-sm font-bold transition-all ${paymentMethod === "fawaterak" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>Fawaterak</button>
+                              </div>
+                            </div>
+
+                            <div className="space-y-3">
+                              <label className="text-xs font-bold text-muted uppercase tracking-widest block px-1">{ct.promoCode}</label>
+                              <div className="flex gap-2">
+                                <input type="text" value={couponCode} onChange={(e) => setCouponCode(e.target.value.toUpperCase())} className="flex-1 bg-background border border-white/5 rounded-2xl px-5 py-3 focus:outline-none focus:border-accent/50 transition-colors text-sm uppercase tracking-widest font-black" placeholder="CODE" />
+                                <button type="button" onClick={handleApplyCoupon} disabled={isValidatingCoupon || !couponCode} className="bg-white/10 hover:bg-white/20 text-white px-6 rounded-2xl text-xs font-black uppercase tracking-widest transition-all disabled:opacity-50">
+                                  {isValidatingCoupon ? <Loader2 className="w-4 h-4 animate-spin" /> : ct.apply}
+                                </button>
+                              </div>
+                              {couponError && <p className="text-[10px] text-red-500 px-2 font-bold uppercase">{couponError}</p>}
+                              {appliedCoupon && <p className="text-[10px] text-green-500 px-2 font-bold uppercase">✓ {ct.discountApplied}</p>}
+                            </div>
+
+                            <div className="pt-4 border-t border-white/5">
+                              <div className="flex justify-between items-center mb-6 px-1">
+                                <span className="text-muted">{ct.total}</span>
+                                <span className={`text-2xl font-black ${appliedCoupon ? "text-accent" : ""} transition-all`}>
+                                  {getDiscountedPrice(currentPricing.monthlySale || currentPricing.monthly).toFixed(0)} {currentPricing.currency}
+                                </span>
+                              </div>
+                              <label className="flex items-start gap-3 mb-4 cursor-pointer group px-1">
+                                <input type="checkbox" checked={consentChecked} onChange={(e) => setConsentChecked(e.target.checked)} className="mt-1 w-4 h-4 rounded border-white/20 bg-background accent-accent shrink-0" />
+                                <span className="text-xs text-muted leading-relaxed group-hover:text-foreground transition-colors">{ct.consentCheckbox}</span>
+                              </label>
+                              {paymentMethod === "fawaterak" && (
+                                <p className="text-xs text-muted/70 mb-5 px-1 leading-relaxed">{ct.redirectNotice}</p>
+                              )}
+                              <div className="flex gap-3">
+                                <button type="button" onClick={() => setCheckoutStep(2)} className="flex-1 py-4 rounded-2xl bg-white/5 text-muted font-black text-sm uppercase tracking-[0.12em] hover:bg-white/10 transition-all">
+                                  {locale === "en" ? "← Back" : "رجوع →"}
+                                </button>
+                                <MagneticButton>
+                                  <button type="submit" disabled={loading || !consentChecked} className="flex-[2] py-4 rounded-2xl bg-accent text-white font-black flex items-center justify-center gap-2 hover:bg-accent-light transition-all shadow-lg shadow-accent/20 disabled:opacity-40 disabled:cursor-not-allowed text-sm">
+                                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (paymentMethod === "instapay" ? (locale === "ar" ? "تأكيد وإنشاء الطلب" : "Confirm & Book") : (locale === "ar" ? "احجز مكالمتي" : "Book My Call"))}
+                                  </button>
+                                </MagneticButton>
+                              </div>
+                            </div>
+                          </form>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  ) : (
+                    /* Regular plans: single form */
+                    <form onSubmit={handleCheckout} className="space-y-4 sm:space-y-5">
+                      <div className="grid grid-cols-2 gap-3 p-1 bg-background/50 rounded-2xl border border-white/5">
+                        <button type="button" onClick={() => setPlanType("monthly")} className={`py-3 rounded-xl text-sm font-bold transition-all ${planType === "monthly" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>{ct.monthly}</button>
+                        <button type="button" onClick={() => setPlanType("quarterly")} className={`py-3 rounded-xl text-sm font-bold transition-all ${planType === "quarterly" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>{ct.quarterly}</button>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-muted uppercase tracking-widest block px-1">{ct.paymentMethod}</label>
+                        <div className="grid grid-cols-2 gap-3 p-1 bg-background/50 rounded-2xl border border-white/5">
+                          <button type="button" onClick={() => setPaymentMethod("instapay")} className={`py-3 rounded-xl text-sm font-bold transition-all ${paymentMethod === "instapay" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>{ct.instapay}</button>
+                          <button type="button" onClick={() => setPaymentMethod("fawaterak")} className={`py-3 rounded-xl text-sm font-bold transition-all ${paymentMethod === "fawaterak" ? "bg-accent text-white shadow-lg shadow-accent/20" : "text-muted hover:bg-white/5"}`}>Fawaterak</button>
                         </div>
                       </div>
 
-                      <label className="flex items-start gap-3 mb-4 cursor-pointer group px-1">
-                        <input type="checkbox" checked={consentChecked} onChange={(e) => setConsentChecked(e.target.checked)} className="mt-1 w-4 h-4 rounded border-white/20 bg-background accent-accent shrink-0" />
-                        <span className="text-xs text-muted leading-relaxed group-hover:text-foreground transition-colors">{ct.consentCheckbox}</span>
-                      </label>
+                      <div className="space-y-4">
+                        <input required type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full bg-background border border-white/5 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 transition-colors text-sm" placeholder={ct.fullName} />
+                        <div className="flex bg-background border border-white/5 rounded-2xl overflow-hidden focus-within:border-accent/50 transition-colors">
+                          <select value={countryCode} onChange={(e) => setCountryCode(e.target.value)} className="bg-white/5 text-sm px-3 py-4 border-r border-white/5 focus:outline-none text-foreground shrink-0">
+                            {COUNTRY_CODES.map((c) => (<option key={c.code} value={c.code}>{c.flag} +{c.code}</option>))}
+                          </select>
+                          <input required type="tel" value={formData.whatsapp} onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })} className="flex-1 bg-transparent px-4 py-4 focus:outline-none text-sm" placeholder={ct.whatsapp} />
+                        </div>
+                        <input required type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full bg-background border border-white/5 rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 transition-colors text-sm" placeholder={ct.email} />
+                      </div>
 
-                      {paymentMethod === "fawaterak" && (
-                        <p className="text-xs text-muted/70 mb-5 px-1 leading-relaxed">{ct.redirectNotice}</p>
-                      )}
+                      <div className="space-y-3">
+                        <label className="text-xs font-bold text-muted uppercase tracking-widest block px-1">{ct.promoCode}</label>
+                        <div className="flex gap-2">
+                          <input type="text" value={couponCode} onChange={(e) => setCouponCode(e.target.value.toUpperCase())} className="flex-1 bg-background border border-white/5 rounded-2xl px-5 py-3 focus:outline-none focus:border-accent/50 transition-colors text-sm uppercase tracking-widest font-black" placeholder="CODE" />
+                          <button type="button" onClick={handleApplyCoupon} disabled={isValidatingCoupon || !couponCode} className="bg-white/10 hover:bg-white/20 text-white px-6 rounded-2xl text-xs font-black uppercase tracking-widest transition-all disabled:opacity-50">
+                            {isValidatingCoupon ? <Loader2 className="w-4 h-4 animate-spin" /> : ct.apply}
+                          </button>
+                        </div>
+                        {couponError && <p className="text-[10px] text-red-500 px-2 font-bold uppercase">{couponError}</p>}
+                        {appliedCoupon && <p className="text-[10px] text-green-500 px-2 font-bold uppercase">✓ {ct.discountApplied}</p>}
+                      </div>
 
-                      <MagneticButton>
-                        <button disabled={loading || !consentChecked} className="w-full py-5 rounded-full bg-white text-black font-black flex items-center justify-center gap-2 hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                          {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (paymentMethod === "instapay" ? (locale === "ar" ? "تأكيد وإنشاء الطلب" : "Confirm Order") : ct.continue)}
-                        </button>
-                      </MagneticButton>
-                    </div>
-                  </form>
+                      <div className="pt-4 border-t border-white/5">
+                        <div className="flex justify-between items-center mb-6 px-1">
+                          <span className="text-muted">{ct.total}</span>
+                          <div className="flex flex-col items-end">
+                            <span className={`text-2xl font-black ${appliedCoupon ? "text-accent scale-110" : ""} transition-all`}>
+                              {getDiscountedPrice(planType === "monthly" ? (currentPricing.monthlySale || currentPricing.monthly) : (currentPricing.quarterlySale || currentPricing.quarterly)).toFixed(0)} {currentPricing.currency}
+                            </span>
+                            {appliedCoupon && (
+                              <span className="text-[10px] text-muted line-through">
+                                {parseFloat(planType === "monthly" ? (currentPricing.monthlySale || currentPricing.monthly) : (currentPricing.quarterlySale || currentPricing.quarterly) || "0").toFixed(0)} {currentPricing.currency}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <label className="flex items-start gap-3 mb-4 cursor-pointer group px-1">
+                          <input type="checkbox" checked={consentChecked} onChange={(e) => setConsentChecked(e.target.checked)} className="mt-1 w-4 h-4 rounded border-white/20 bg-background accent-accent shrink-0" />
+                          <span className="text-xs text-muted leading-relaxed group-hover:text-foreground transition-colors">{ct.consentCheckbox}</span>
+                        </label>
+                        {paymentMethod === "fawaterak" && (
+                          <p className="text-xs text-muted/70 mb-5 px-1 leading-relaxed">{ct.redirectNotice}</p>
+                        )}
+                        <MagneticButton>
+                          <button disabled={loading || !consentChecked} className="w-full py-5 rounded-full bg-white text-black font-black flex items-center justify-center gap-2 hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (paymentMethod === "instapay" ? (locale === "ar" ? "تأكيد وإنشاء الطلب" : "Confirm Order") : ct.continue)}
+                          </button>
+                        </MagneticButton>
+                      </div>
+                    </form>
+                  )}
                 </>
               )}
             </motion.div>

@@ -29,6 +29,10 @@ export async function updatePlanAction(id: string, formData: FormData) {
         salePriceQuarterlyUsd: formData.get('salePriceQuarterlyUsd') as string || null,
         isOnHold: formData.get('isOnHold') === 'on',
         followUpFrequency: (formData.get('followUpFrequency') as string) || null,
+        isBooking: formData.get('isBooking') === 'on',
+        bookingStartHour: formData.get('bookingStartHour') ? parseInt(formData.get('bookingStartHour') as string) : null,
+        bookingEndHour: formData.get('bookingEndHour') ? parseInt(formData.get('bookingEndHour') as string) : null,
+        bookingSlotMins: formData.get('bookingSlotMins') ? parseInt(formData.get('bookingSlotMins') as string) : null,
       }
     });
 
@@ -97,6 +101,83 @@ export default async function EditPlanPage({ params }: { params: Promise<{ id: s
                 <option value="monthly">Monthly Follow-up</option>
               </select>
             </label>
+          </div>
+        </div>
+
+        {/* Booking Settings Section */}
+        <div className="border-b border-white/10 pb-8">
+          <h3 className="uppercase tracking-widest text-accent text-xs font-bold mb-6">Booking / Consultation Settings</h3>
+
+          <label className="flex items-start gap-4 cursor-pointer group mb-6">
+            <div className="relative mt-0.5">
+              <input
+                type="checkbox"
+                name="isBooking"
+                defaultChecked={plan.isBooking}
+                className="sr-only peer"
+              />
+              <div className="w-12 h-6 rounded-full bg-white/10 peer-checked:bg-accent/80 transition-all duration-300 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:transition-all after:duration-300 peer-checked:after:translate-x-6" />
+            </div>
+            <div>
+              <span className="text-sm font-bold text-foreground group-hover:text-accent-light transition-colors">This is a Booking / Consultation Plan</span>
+              <p className="text-xs text-muted mt-1 leading-relaxed">
+                Enables the calendar picker on the plan page so clients can select a date and time slot before checkout.
+              </p>
+            </div>
+          </label>
+
+          <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 space-y-5">
+            <h4 className="text-xs font-black uppercase tracking-widest text-muted">Duration Organizer (Cairo time · UTC+2)</h4>
+            <div className="grid grid-cols-3 gap-4">
+              <label className="flex flex-col gap-2">
+                <span className="text-[11px] font-bold text-muted uppercase">Start Hour</span>
+                <select
+                  name="bookingStartHour"
+                  defaultValue={(plan as any).bookingStartHour ?? 9}
+                  className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none text-sm"
+                >
+                  {Array.from({ length: 24 }, (_, i) => (
+                    <option key={i} value={i}>
+                      {i === 0 ? '12:00 AM' : i < 12 ? `${i}:00 AM` : i === 12 ? '12:00 PM' : `${i - 12}:00 PM`}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-[10px] text-muted italic">First available slot</p>
+              </label>
+              <label className="flex flex-col gap-2">
+                <span className="text-[11px] font-bold text-muted uppercase">End Hour</span>
+                <select
+                  name="bookingEndHour"
+                  defaultValue={(plan as any).bookingEndHour ?? 16}
+                  className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none text-sm"
+                >
+                  {Array.from({ length: 24 }, (_, i) => (
+                    <option key={i} value={i}>
+                      {i === 0 ? '12:00 AM' : i < 12 ? `${i}:00 AM` : i === 12 ? '12:00 PM' : `${i - 12}:00 PM`}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-[10px] text-muted italic">No slots start at or after this hour</p>
+              </label>
+              <label className="flex flex-col gap-2">
+                <span className="text-[11px] font-bold text-muted uppercase">Slot Duration</span>
+                <select
+                  name="bookingSlotMins"
+                  defaultValue={(plan as any).bookingSlotMins ?? 60}
+                  className="bg-background/50 border border-white/10 p-3 rounded-xl focus:border-accent outline-none text-sm"
+                >
+                  <option value={30}>30 minutes</option>
+                  <option value={45}>45 minutes</option>
+                  <option value={60}>60 minutes (1 hour)</option>
+                  <option value={90}>90 minutes</option>
+                  <option value={120}>120 minutes (2 hours)</option>
+                </select>
+                <p className="text-[10px] text-muted italic">Duration per appointment</p>
+              </label>
+            </div>
+            <p className="text-[10px] text-accent/70 font-bold leading-relaxed">
+              Example: Start 9, End 16, Slot 60 min → slots at 9:00, 10:00, 11:00, 12:00, 13:00, 14:00, 15:00 (last slot ends at 16:00).
+            </p>
           </div>
         </div>
 

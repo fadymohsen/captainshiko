@@ -367,6 +367,29 @@ export const translations = {
         localPricing: { monthly: "3000", quarterly: "6000", currency: "EGP" },
         globalPricing: { monthly: "150", quarterly: "400", currency: "USD" }
       },
+      "vip-fuel": {
+        name: "VIP Fuel",
+        brief: "Daily coaching with full nutrition and training — premium results at the right price",
+        monthly: "200",
+        quarterly: "450",
+        currency: "$",
+        followUpFrequency: "daily",
+        features: [
+          "In this package, I’m providing a combined nutrition and exercise program that is specifically tailored to your unique goals.",
+          "Full nutrition and exercise program customized for your body and goal.",
+          "Macro-calculated meals based on your daily activity.",
+          "Flexible food alternatives list for complete meal flexibility.",
+          "Custom training splits (Gym or Home).",
+          "Technique evaluation via video review.",
+          "Progressive overload tracking system.",
+          "Weekly weight and measurement tracking.",
+          "Weekly plan updates based on your progress.",
+          "Daily follow-up via WhatsApp.",
+          "Direct WhatsApp access for all queries."
+        ],
+        localPricing: { monthly: "3500", quarterly: "8000", currency: "EGP" },
+        globalPricing: { monthly: "200", quarterly: "450", currency: "USD" }
+      },
       "elite-coaching": {
         name: "Elite VIP",
         brief: "Daily 1-on-1 access and maximum care for fast results",
@@ -390,6 +413,32 @@ export const translations = {
         ],
         localPricing: { monthly: "7000", quarterly: "15000", currency: "EGP" },
         globalPricing: { monthly: "500", quarterly: "1100", currency: "USD" }
+      },
+      "book-a-call": {
+        name: "Book a Call",
+        brief: "A private 45–60 min session with Coach Roshdy — clear answers, a personalized roadmap, and real direction",
+        monthly: "70",
+        quarterly: "",
+        currency: "$",
+        isBooking: true,
+        bookingStartHour: 9,
+        bookingEndHour: 16,
+        bookingSlotMins: 60,
+        features: [
+          "Confused between the many diet types (keto, intermittent fasting, low carb) and unsure which one actually works for your body.",
+          "Your weight has stalled, or you’re dealing with constant hunger and poor appetite control — and you want to understand why your body is sending these signals.",
+          "Your schedule is packed and you can’t commit to a full monthly coaching subscription, but you have specific questions that need reliable, science-based answers.",
+          "You want to shift toward a healthy, flexible lifestyle — no deprivation, no feeling trapped inside a diet sheet.",
+          "What you’ll get from this call (Duration: 45–60 minutes)",
+          "Full lifestyle analysis: We’ll go through your eating habits, daily routine, and activity level together to pinpoint exactly where you stand.",
+          "Clear answers to all your questions: No question goes unanswered — we tackle hunger, weight stagnation, and how to manage your nutrition outside the house.",
+          "Your initial body needs assessment: I’ll walk you through approximate calorie and macro targets (protein, carbs, healthy fats) your body needs to reach your goal.",
+          "A clear roadmap: You won’t leave with just a chat — you’ll leave with practical, specific steps to start applying on your own the very next day."
+        ],
+        localPricing: { monthly: "1200", quarterly: "", currency: "EGP" },
+        globalPricing: { monthly: "70", quarterly: "", currency: "USD" },
+        saleLocalPricing: { monthly: "750" },
+        saleGlobalPricing: { monthly: "40" }
       }
     },
     transformationsPage: {
@@ -783,6 +832,29 @@ export const translations = {
         localPricing: { monthly: "3000", quarterly: "6000", currency: "جنيه" },
         globalPricing: { monthly: "150", quarterly: "400", currency: "$" }
       },
+      "vip-fuel": {
+        name: "باقة VIP Fuel",
+        brief: "متابعة يومية مع برنامج تغذية وتمرين متكامل — نتايج مميزة بسعر صح",
+        monthly: "200",
+        quarterly: "450",
+        currency: "$",
+        followUpFrequency: "daily",
+        features: [
+          "في الباقة دي، بقدملك برنامج تغذية وتمرين متكامل مخصص بالكامل لأهدافك.",
+          "برنامج تغذية وتمرين شامل ومخصص لجسمك وهدفك.",
+          "حساب السعرات والماكروز بناءً على نشاطك اليومي.",
+          "جداول بدائل الأطعمة عشان ياخد أكلك مرونة كاملة.",
+          "برنامج تدريبي مخصص (جيم أو بيت).",
+          "مراجعة تكنيك التمارين بالفيديو عشان تتجنب الإصابات.",
+          "نظام Progressive Overload أسبوعي عشان تقدمك ما يوقفش.",
+          "متابعة أسبوعية لنتايج الجسم والقياسات.",
+          "تحديث للخطة أول بأول بناءً على تقدمك.",
+          "متابعة يومية على الواتساب مع كابتن محمد رشدي.",
+          "تواصل مباشر على الواتساب للرد على كل استفساراتك."
+        ],
+        localPricing: { monthly: "3500", quarterly: "8000", currency: "جنيه" },
+        globalPricing: { monthly: "200", quarterly: "450", currency: "$" }
+      },
       "elite-coaching": {
         name: "باقة الـ VIP (Elite VIP)",
         brief: "متابعة يومية وتواصل دائم لأقصى درجات الاهتمام والنتائج",
@@ -806,6 +878,32 @@ export const translations = {
         ],
         localPricing: { monthly: "7000", quarterly: "15000", currency: "جنيه" },
         globalPricing: { monthly: "500", quarterly: "1100", currency: "$" }
+      },
+      "book-a-call": {
+        name: "احجز مكالمة",
+        brief: "جلسة خاصة 45–60 دقيقة مع كابتن محمد رشدي — إجابات واضحة وخارطة طريق حقيقية",
+        monthly: "70",
+        quarterly: "",
+        currency: "$",
+        isBooking: true,
+        bookingStartHour: 9,
+        bookingEndHour: 16,
+        bookingSlotMins: 60,
+        features: [
+          "محتار ومتشتت بين أنواع الدايت الكتير (كيتو، صيام متقطع، لو كارب) ومش عارف إيه اللي هيجيب نتيجة مع طبيعة جسمك.",
+          "وزنك ثابت، أو بتعاني من جوع مستمر وشهية مش مظبوطة، ونفسك تفهم جسمك باعتلك الإشارات دي ليه.",
+          "يومك زحمة وما عندكش وقت تلتزم باشتراك ومتابعة شهورية كاملة، بس عندك أسئلة محددة ومحتاج إجابات علمية وموثوقة.",
+          "نفسك تغير أسلوب حياتك لـ Life Style صحي ومرن، من غير حرمان، ومن غير ما تحس إنك سجين جوه ورقة دايت.",
+          "إيه اللي هتحصل عليه في المكالمة؟ (مدة المكالمة: 45 لـ 60 دقيقة)",
+          "تحليل كامل لأسلوب حياتك الحالي: هنقعد مع بعض ونفصص عاداتك الغذائية، طبيعة يومك، ومستوى نشاطك عشان نعرف إحنا واقفين فين بالظبط.",
+          "إجابات واضحة على كل أسئلتك: مفيش سؤال هيفضل محيرك.. هنحل مشاكل الجوع، ثبات الوزن، وإزاي تظبط أكلك بره البيت.",
+          "حساب احتياج جسمك المبدئي: هعرفك الحسبة التقريبية للسعرات والماكروز (بروتين، كارب، دهون صحية) اللي جسمك محتاجها عشان يوصل لهدفك.",
+          "خارطة طريق واضحة: مش هتخرج من المكالمة بدردشة، هتخرج بخطوات عملية ومحددة تبدأ تطبقها بنفسك من تاني يوم فوراً."
+        ],
+        localPricing: { monthly: "1200", quarterly: "", currency: "جنيه" },
+        globalPricing: { monthly: "70", quarterly: "", currency: "$" },
+        saleLocalPricing: { monthly: "750" },
+        saleGlobalPricing: { monthly: "40" }
       }
     },
     transformationsPage: {

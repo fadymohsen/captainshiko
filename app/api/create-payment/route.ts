@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   console.log("POST /api/create-payment - Start");
   try {
     const body = await req.json();
-    const { planId, clientName, email, whatsapp, region, planType, paymentMethodId, couponCode, locale } = body;
+    const { planId, clientName, email, whatsapp, region, planType, paymentMethodId, couponCode, locale, bookedDate, bookedTime } = body;
 
     if (!planId || !clientName || !whatsapp || !region || !paymentMethodId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -61,6 +61,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
 
+    // 3b. Slot conflict check for booking plans
+    if (bookedDate && bookedTime) {
+      const conflicting = await prisma.purchase.findFirst({
+        where: { planId: plan.id, bookedDate, bookedTime, status: { not: "CANCELLED" } },
+      });
+      if (conflicting) {
+        return NextResponse.json({ error: "This time slot is no longer available. Please choose another." }, { status: 409 });
+      }
+    }
+
     // 4. Create Pending Purchase
     const purchase = await prisma.purchase.create({
       data: {
@@ -73,9 +83,11 @@ export async function POST(req: Request) {
         status: "PENDING",
         region,
         paymentMethod: paymentMethodId === 2 ? "Card" : paymentMethodId === 3 ? "Fawry" : paymentMethodId === 4 ? "Wallet" : paymentMethodId === 6 ? "Apple Pay" : "Other",
-        notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''}`,
+        notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''}${bookedDate ? ` | Booked: ${bookedDate} ${bookedTime}` : ''}`,
         couponId,
-        discountAmount
+        discountAmount,
+        ...(bookedDate ? { bookedDate } : {}),
+        ...(bookedTime ? { bookedTime } : {}),
       },
     });
 

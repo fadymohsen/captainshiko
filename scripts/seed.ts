@@ -37,6 +37,16 @@ async function main() {
     const priceMonthlyUsd = en.globalPricing?.monthly || null;
     const priceQuarterlyUsd = en.globalPricing?.quarterly || null;
 
+    const followUpFrequency = en.followUpFrequency || null;
+    const isBooking = en.isBooking || false;
+    const bookingStartHour = en.bookingStartHour ?? null;
+    const bookingEndHour = en.bookingEndHour ?? null;
+    const bookingSlotMins = en.bookingSlotMins ?? null;
+    const salePriceMonthlyEgp = ar.saleLocalPricing?.monthly || null;
+    const salePriceQuarterlyEgp = ar.saleLocalPricing?.quarterly || null;
+    const salePriceMonthlyUsd = en.saleGlobalPricing?.monthly || null;
+    const salePriceQuarterlyUsd = en.saleGlobalPricing?.quarterly || null;
+
     await prisma.plan.upsert({
       where: { slug },
       update: {
@@ -46,10 +56,19 @@ async function main() {
         briefAr: ar.brief,
         featuresEn: JSON.stringify(en.features),
         featuresAr: JSON.stringify(ar.features),
-        priceMonthlyEgp: priceMonthlyEgp,
-        priceQuarterlyEgp: priceQuarterlyEgp,
-        priceMonthlyUsd: priceMonthlyUsd,
-        priceQuarterlyUsd: priceQuarterlyUsd,
+        priceMonthlyEgp: priceMonthlyEgp || null,
+        priceQuarterlyEgp: priceQuarterlyEgp || null,
+        priceMonthlyUsd: priceMonthlyUsd || null,
+        priceQuarterlyUsd: priceQuarterlyUsd || null,
+        salePriceMonthlyEgp,
+        salePriceQuarterlyEgp,
+        salePriceMonthlyUsd,
+        salePriceQuarterlyUsd,
+        ...(followUpFrequency && { followUpFrequency }),
+        isBooking,
+        ...(bookingStartHour !== null && { bookingStartHour }),
+        ...(bookingEndHour !== null && { bookingEndHour }),
+        ...(bookingSlotMins !== null && { bookingSlotMins }),
         order: order++,
         isActive: true,
       },
@@ -61,10 +80,19 @@ async function main() {
         briefAr: ar.brief,
         featuresEn: JSON.stringify(en.features),
         featuresAr: JSON.stringify(ar.features),
-        priceMonthlyEgp: priceMonthlyEgp,
-        priceQuarterlyEgp: priceQuarterlyEgp,
-        priceMonthlyUsd: priceMonthlyUsd,
-        priceQuarterlyUsd: priceQuarterlyUsd,
+        priceMonthlyEgp: priceMonthlyEgp || null,
+        priceQuarterlyEgp: priceQuarterlyEgp || null,
+        priceMonthlyUsd: priceMonthlyUsd || null,
+        priceQuarterlyUsd: priceQuarterlyUsd || null,
+        salePriceMonthlyEgp,
+        salePriceQuarterlyEgp,
+        salePriceMonthlyUsd,
+        salePriceQuarterlyUsd,
+        ...(followUpFrequency && { followUpFrequency }),
+        isBooking,
+        ...(bookingStartHour !== null && { bookingStartHour }),
+        ...(bookingEndHour !== null && { bookingEndHour }),
+        ...(bookingSlotMins !== null && { bookingSlotMins }),
         order: order++,
         isActive: true,
       }

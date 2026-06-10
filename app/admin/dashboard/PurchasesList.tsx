@@ -12,8 +12,16 @@ import {
   AlertCircle,
   CreditCard,
   Users,
-  X
+  X,
+  CalendarCheck,
 } from "lucide-react";
+
+function formatBookedTime(time: string) {
+  const [h, m] = time.split(":").map(Number);
+  const h12 = h % 12 || 12;
+  const ampm = h < 12 ? "AM" : "PM";
+  return `${h12}:${m.toString().padStart(2, "0")} ${ampm}`;
+}
 
 // --- Branded Toast ---
 type ToastType = "success" | "error" | "info";
@@ -281,6 +289,16 @@ export function PurchasesList({ initialPurchases }: { initialPurchases: any[] })
                           <Clock className="w-3 h-3" />
                           {new Date(purchase.createdAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                         </div>
+                        {purchase.bookedDate && purchase.bookedTime && (
+                          <div className="mt-2 flex items-center gap-1.5 bg-accent/10 border border-accent/20 rounded-lg px-2 py-1">
+                            <CalendarCheck className="w-3 h-3 text-accent flex-shrink-0" />
+                            <span className="text-[10px] font-bold text-accent leading-tight">
+                              {new Date(purchase.bookedDate + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                              {" · "}
+                              {formatBookedTime(purchase.bookedTime)}
+                            </span>
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm font-bold text-foreground">{purchase.clientName}</div>
