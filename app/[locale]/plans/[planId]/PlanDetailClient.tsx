@@ -1082,17 +1082,17 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                               </p>
                             </div>
                           )}
-                          <div className="flex gap-3 pt-1">
-                            <button type="button" onClick={() => setCheckoutStep(1)} className="flex-1 py-4 rounded-2xl bg-white/5 text-muted font-black text-sm uppercase tracking-[0.12em] hover:bg-white/10 transition-all">
-                              {locale === "en" ? "← Back" : "رجوع →"}
-                            </button>
+                          <div className="flex flex-col gap-3 pt-1">
                             <button
                               type="button"
                               onClick={() => setCheckoutStep(3)}
                               disabled={!selectedDate || !selectedTime}
-                              className="flex-[2] py-4 rounded-2xl bg-accent text-white font-black text-sm uppercase tracking-[0.12em] hover:bg-accent-light transition-all shadow-lg shadow-accent/20 disabled:opacity-40 disabled:cursor-not-allowed"
+                              className="w-full py-4 rounded-2xl bg-accent text-white font-black text-sm uppercase tracking-[0.12em] hover:bg-accent-light transition-all shadow-lg shadow-accent/20 disabled:opacity-40 disabled:cursor-not-allowed"
                             >
                               {locale === "en" ? "Continue to Payment →" : "→ متابعة للدفع"}
+                            </button>
+                            <button type="button" onClick={() => setCheckoutStep(1)} className="w-full py-4 rounded-2xl bg-white/5 text-muted font-black text-sm uppercase tracking-[0.12em] hover:bg-white/10 transition-all">
+                              {locale === "en" ? "← Back" : "رجوع →"}
                             </button>
                           </div>
                         </motion.div>
