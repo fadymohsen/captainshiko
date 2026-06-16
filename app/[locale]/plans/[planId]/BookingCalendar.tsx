@@ -62,17 +62,6 @@ export function BookingCalendar({
 
   const allSlots = generateSlots(startHour, endHour, slotMins);
 
-  // For today, filter out slots that are less than 2 hours from now
-  const isToday = (date: string) => date === todayStr;
-  const availableSlots = selectedDate && isToday(selectedDate)
-    ? allSlots.filter((slot) => {
-        const [h, m] = slot.split(":").map(Number);
-        const slotMinutes = h * 60 + m;
-        const nowMinutes = now.getHours() * 60 + now.getMinutes() + 120; // +2 hours
-        return slotMinutes >= nowMinutes;
-      })
-    : allSlots;
-
   useEffect(() => {
     if (!selectedDate) { setBookedTimes([]); return; }
     setLoadingSlots(true);
@@ -109,6 +98,17 @@ export function BookingCalendar({
   };
 
   const todayStr = toDateStr(todayYear, todayMonth, todayDay);
+
+  // For today, filter out slots that are less than 2 hours from now
+  const availableSlots = selectedDate === todayStr
+    ? allSlots.filter((slot) => {
+        const [h, m] = slot.split(":").map(Number);
+        const slotMinutes = h * 60 + m;
+        const nowMinutes = now.getHours() * 60 + now.getMinutes() + 120; // +2 hours
+        return slotMinutes >= nowMinutes;
+      })
+    : allSlots;
+
   const months = locale === "ar" ? MONTHS_AR : MONTHS_EN;
   const dayLabels = locale === "ar" ? DAYS_AR : DAYS_EN;
 
