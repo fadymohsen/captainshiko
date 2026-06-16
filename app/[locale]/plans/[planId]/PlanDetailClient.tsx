@@ -1161,15 +1161,15 @@ export function PlanDetailClient({ plan }: { plan: any }) {
                               {paymentMethod === "fawaterak" && (
                                 <p className="text-xs text-muted/70 mb-5 px-1 leading-relaxed">{ct.redirectNotice}</p>
                               )}
-                              <div className="flex gap-3">
-                                <button type="button" onClick={() => setCheckoutStep(2)} className="flex-1 py-4 rounded-2xl bg-white/5 text-muted font-black text-sm uppercase tracking-[0.12em] hover:bg-white/10 transition-all">
-                                  {locale === "en" ? "← Back" : "رجوع →"}
-                                </button>
-                                <MagneticButton>
-                                  <button type="submit" disabled={loading || !consentChecked} className="flex-[2] py-4 rounded-2xl bg-accent text-white font-black flex items-center justify-center gap-2 hover:bg-accent-light transition-all shadow-lg shadow-accent/20 disabled:opacity-40 disabled:cursor-not-allowed text-sm">
+                              <div className="flex flex-col gap-3">
+                                <MagneticButton className="w-full">
+                                  <button type="submit" disabled={loading || !consentChecked} className="w-full py-4 rounded-2xl bg-accent text-white font-black flex items-center justify-center gap-2 hover:bg-accent-light transition-all shadow-lg shadow-accent/20 disabled:opacity-40 disabled:cursor-not-allowed text-sm">
                                     {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (paymentMethod === "instapay" ? (locale === "ar" ? "تأكيد وإنشاء الطلب" : "Confirm & Book") : (locale === "ar" ? "احجز مكالمتي" : "Book My Call"))}
                                   </button>
                                 </MagneticButton>
+                                <button type="button" onClick={() => setCheckoutStep(2)} className="w-full py-4 rounded-2xl bg-white/5 text-muted font-black text-sm uppercase tracking-[0.12em] hover:bg-white/10 transition-all">
+                                  {locale === "en" ? "← Back" : "رجوع →"}
+                                </button>
                               </div>
                             </div>
                           </form>

@@ -62,6 +62,17 @@ export function BookingCalendar({
 
   const allSlots = generateSlots(startHour, endHour, slotMins);
 
+  // For today, filter out slots that are less than 2 hours from now
+  const isToday = (date: string) => date === todayStr;
+  const availableSlots = selectedDate && isToday(selectedDate)
+    ? allSlots.filter((slot) => {
+        const [h, m] = slot.split(":").map(Number);
+        const slotMinutes = h * 60 + m;
+        const nowMinutes = now.getHours() * 60 + now.getMinutes() + 120; // +2 hours
+        return slotMinutes >= nowMinutes;
+      })
+    : allSlots;
+
   useEffect(() => {
     if (!selectedDate) { setBookedTimes([]); return; }
     setLoadingSlots(true);
@@ -110,7 +121,7 @@ export function BookingCalendar({
     );
   };
 
-  const allSlotsFull = allSlots.length > 0 && allSlots.every((s) => bookedTimes.includes(s));
+  const allSlotsFull = availableSlots.length === 0 || availableSlots.every((s) => bookedTimes.includes(s));
 
   return (
     <div className="space-y-5">
@@ -206,7 +217,7 @@ export function BookingCalendar({
             </p>
           ) : (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-              {allSlots.map((slot) => {
+              {availableSlots.map((slot) => {
                 const booked = bookedTimes.includes(slot);
                 const selected = slot === selectedTime;
                 return (
