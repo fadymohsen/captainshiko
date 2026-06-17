@@ -481,6 +481,130 @@ export function HomeClient({
         </div>
       </section>
 
+      {/* ===== HOW IT WORKS ===== */}
+      <section className="py-28 relative bg-surface noise">
+        <div className="absolute top-0 left-0 w-[350px] h-[350px] bg-accent/8 rounded-full glow-pulse pointer-events-none" />
+        <div className="max-w-3xl mx-auto px-6 relative">
+          <FadeUp>
+            <div className="mb-14">
+              <span className="inline-flex items-center gap-2 text-accent-light text-xs font-bold tracking-[0.2em] uppercase border border-accent/20 px-4 py-1.5 rounded-full mb-5">
+                {locale === "ar" ? "دليلك الكامل" : "Your Complete Guide"}
+              </span>
+              <h2 className="text-5xl sm:text-6xl font-black uppercase tracking-tight">
+                {locale === "ar" ? "كيف يعمل" : "How It Works"}
+              </h2>
+            </div>
+          </FadeUp>
+
+          <StaggerContainer className="flex flex-col">
+            {[
+              {
+                n: 1,
+                en_title: "Subscribe to Your Plan",
+                ar_title: "اشترك في خطتك",
+                en_desc: "Choose the plan that fits your goals and complete your payment to secure your spot.",
+                ar_desc: "اختر الخطة التي تناسب أهدافك وأكمل الدفع لتأمين مكانك.",
+                extra: null,
+              },
+              {
+                n: 2,
+                en_title: "Download the App",
+                ar_title: "حمّل التطبيق",
+                en_desc: "Get the app and create your account to access your personalized dashboard.",
+                ar_desc: "حمّل التطبيق وأنشئ حسابك للوصول إلى لوحة التحكم الخاصة بك.",
+                extra: "download",
+              },
+              {
+                n: 3,
+                en_title: "Fill In the Questions",
+                ar_title: "أجب على الأسئلة",
+                en_desc: "Answer a few quick questions about your goals, lifestyle, and current situation.",
+                ar_desc: "أجب على بعض الأسئلة السريعة حول أهدافك ونمط حياتك ووضعك الحالي.",
+                extra: null,
+              },
+              {
+                n: 4,
+                en_title: "Send Us Your Username",
+                ar_title: "أرسل لنا اسم المستخدم",
+                en_desc: "After completing the questionnaire, send us your app username on",
+                ar_desc: "بعد إكمال الاستبيان، أرسل لنا اسم المستخدم في التطبيق عبر",
+                extra: "whatsapp",
+              },
+              {
+                n: 5,
+                en_title: "Our Team Will Contact You",
+                ar_title: "فريقنا سيتواصل معك",
+                en_desc: "A team member will reach out to confirm your details and walk you through the next steps.",
+                ar_desc: "سيتواصل معك أحد أعضاء الفريق لتأكيد تفاصيلك وشرح الخطوات التالية.",
+                extra: null,
+              },
+              {
+                n: 6,
+                en_title: "Start Your Development",
+                ar_title: "ابدأ تطورك",
+                en_desc: "Your program will be ready on the app — your subscription officially starts once your plan is live. It's time to change your life.",
+                ar_desc: "سيكون برنامجك جاهزاً في التطبيق — يبدأ اشتراكك رسمياً بمجرد تفعيل خطتك. حان وقت تغيير حياتك.",
+                extra: null,
+              },
+            ].map((step, i, arr) => (
+              <StaggerItem key={step.n} className="flex gap-5 sm:gap-7 relative">
+                  {/* Line connector */}
+                  <div className="flex flex-col items-center">
+                    <div className="w-11 h-11 rounded-full bg-accent flex items-center justify-center shrink-0 shadow-lg shadow-accent/30 z-10">
+                      <span className="text-white font-black text-base">{step.n}</span>
+                    </div>
+                    {i < arr.length - 1 && (
+                      <div className="w-px flex-1 bg-gradient-to-b from-accent/50 to-accent/10 mt-2 mb-2" />
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className={`pb-10 ${i === arr.length - 1 ? "pb-0" : ""}`}>
+                    <h3 className="text-xl font-black text-foreground mb-2 leading-tight">
+                      {locale === "ar" ? step.ar_title : step.en_title}
+                    </h3>
+                    <p className="text-muted text-[15px] leading-relaxed">
+                      {locale === "ar" ? step.ar_desc : step.en_desc}
+                      {step.extra === "whatsapp" && (
+                        <>
+                          {" "}
+                          <a
+                            href={`https://wa.me/201553038830`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-green-400 underline underline-offset-2 font-bold"
+                          >
+                            WhatsApp
+                          </a>
+                          {locale === "ar" ? " لربط حسابك." : " so we can link your account."}
+                        </>
+                      )}
+                      {step.extra === "download" && (
+                        <>
+                          {" "}
+                          <a
+                            href="#"
+                            className="text-accent-light underline underline-offset-2 font-bold"
+                          >
+                            {locale === "ar" ? "حمّل من هنا" : "Download here"}
+                          </a>
+                        </>
+                      )}
+                    </p>
+                    {step.n === 6 && (
+                      <p className="text-accent text-[13px] font-bold mt-3 leading-relaxed">
+                        {locale === "ar"
+                          ? "* يبدأ اشتراكك بمجرد تفعيل خطتك في التطبيق."
+                          : "* Your subscription starts once your plan is live on the app."}
+                      </p>
+                    )}
+                  </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
       {/* ===== CLIENT REVIEWS ===== */}
       {showReviewsPage && dbReviews.length > 0 && (
         <section className="py-20 relative">

@@ -57,9 +57,29 @@ export async function sendClientEmail(data: PurchaseEmailData) {
             <p style="margin: 0; color: #111827; font-size: 20px; font-weight: 800;">${data.planName}</p>
           </div>
 
-          <p style="font-size: 16px; color: #374151; line-height: 1.7; margin-bottom: 30px;">
-            Text us on WhatsApp to start our journey together!
-          </p>
+          <!-- How It Works -->
+          <div style="margin-bottom: 32px;">
+            <h2 style="font-size: 20px; font-weight: 900; color: #111827; margin: 0 0 20px; text-transform: uppercase; letter-spacing: 1px;">How It Works</h2>
+
+            ${[
+              { n: 1, title: "Subscribe to Your Plan", desc: "Choose the plan that fits your goals and complete your payment to secure your spot." },
+              { n: 2, title: "Download the App", desc: 'Get the app and create your account to access your personalized dashboard. <a href="#" style="color:#b91c1c;font-weight:700;">Download here</a>' },
+              { n: 3, title: "Fill In the Questions", desc: "Answer a few quick questions about your goals, lifestyle, and current situation." },
+              { n: 4, title: "Send Us Your Username", desc: `After completing the questionnaire, send us your app username on <a href="https://wa.me/201553038830" style="color:#16a34a;font-weight:700;text-decoration:underline;">WhatsApp</a> so we can link your account.` },
+              { n: 5, title: "Our Team Will Contact You", desc: "A team member will reach out to confirm your details and walk you through the next steps." },
+              { n: 6, title: "Start Your Development", desc: "Your program will be ready on the app — your subscription officially starts once your plan is live. It's time to change your life." },
+            ].map(s => `
+              <div style="display:flex;gap:16px;margin-bottom:20px;align-items:flex-start;">
+                <div style="min-width:36px;width:36px;height:36px;border-radius:50%;background:#b91c1c;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:white;text-align:center;line-height:36px;flex-shrink:0;">${s.n}</div>
+                <div style="padding-top:4px;">
+                  <p style="margin:0 0 4px;font-size:15px;font-weight:800;color:#111827;">${s.title}</p>
+                  <p style="margin:0;font-size:14px;color:#6b7280;line-height:1.6;">${s.desc}</p>
+                </div>
+              </div>
+            `).join("")}
+
+            <p style="margin:16px 0 0;font-size:13px;font-weight:700;color:#b91c1c;">* Your subscription starts once your plan is live on the app.</p>
+          </div>
 
           <div style="text-align: center; margin-bottom: 30px;">
             <a href="${whatsappUrl}" target="_blank" style="display: inline-block; background: #25D366; color: white; font-size: 16px; font-weight: 700; padding: 14px 40px; border-radius: 10px; text-decoration: none;">
