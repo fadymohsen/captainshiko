@@ -107,6 +107,12 @@ export async function POST(req: Request) {
 
     console.log("DEBUG - Fawaterak Redirects (Rollback Mode):", { successUrl, failUrl, pendingUrl });
 
+    // Fawaterak wallets (method 4) require local Egyptian format 01XXXXXXXXX, not 201XXXXXXXXX
+    const rawPhone = whatsapp.replace(/\+/g, "").replace(/\s/g, "");
+    const fawaterakPhone = rawPhone.startsWith("20") && rawPhone.length === 12
+      ? "0" + rawPhone.slice(2)
+      : rawPhone;
+
     const paymentData = await fawaterakClient.initPayment({
       payment_method_id: paymentMethodId,
       vendor_id: process.env.FAWATERAK_VENDOR_KEY?.includes('.') ? process.env.FAWATERAK_VENDOR_KEY.split('.').pop() : process.env.FAWATERAK_VENDOR_KEY,
@@ -117,7 +123,7 @@ export async function POST(req: Request) {
         first_name: firstName,
         last_name: lastName,
         email: email || "customer@example.com",
-        phone: whatsapp.replace(/\+/g, ""),
+        phone: fawaterakPhone,
       },
       cartItems: [
         {
