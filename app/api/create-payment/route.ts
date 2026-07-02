@@ -103,9 +103,9 @@ export async function POST(req: Request) {
     const currentLocale = locale || 'en';
     const successUrl = `${baseUrl}/payment/success?purchaseId=${purchase.id}`;
     const failUrl = `${baseUrl}/${currentLocale}/plans`;
-    const pendingUrl = `${baseUrl}/payment/success?purchaseId=${purchase.id}`;
+    const pendingUrl = `${baseUrl}/payment/pending?purchaseId=${purchase.id}`;
 
-    console.log("DEBUG - Fawaterak Redirects (Rollback Mode):", { successUrl, failUrl, pendingUrl });
+    console.log("DEBUG - Fawaterak Redirects:", { successUrl, failUrl, pendingUrl });
 
     // Fawaterak wallets (method 4) require local Egyptian format 01XXXXXXXXX, not 201XXXXXXXXX
     const rawPhone = whatsapp.replace(/\+/g, "").replace(/\s/g, "");
