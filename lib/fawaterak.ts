@@ -60,7 +60,69 @@ export interface FawaterakInvoiceDataResponse {
   };
 }
 
+export interface FawaterakInvoiceLinkRequest {
+  cartTotal: number;
+  currency: 'EGP' | 'USD';
+  customer: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+  };
+  cartItems: FawaterakInvoiceItem[];
+  redirectionUrls: {
+    successUrl: string;
+    failUrl: string;
+    pendingUrl: string;
+  };
+}
+
+export interface FawaterakInvoiceLinkResponse {
+  status: string;
+  data: {
+    url: string;
+    invoiceKey: string;
+    invoiceId: number;
+  };
+}
+
 export const fawaterakClient = {
+  /**
+   * Create a shareable invoice link — opens a Fawaterak-hosted payment page.
+   * Returns a url like https://app.fawaterk.com/link/XXXX
+   */
+  async createInvoiceLink(data: FawaterakInvoiceLinkRequest): Promise<FawaterakInvoiceLinkResponse['data']> {
+    const API_KEY = process.env.FAWATERAK_API_KEY;
+    const BASE_URL = process.env.FAWATERAK_API_URL || 'https://app.fawaterk.com/api/v2';
+
+    if (!API_KEY) throw new Error("FAWATERAK_API_KEY is missing from environment");
+
+    try {
+      console.log('Fawaterak - Creating Invoice Link');
+      const response = await axios.post(`${BASE_URL}/createInvoiceLink`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY}`,
+        },
+      });
+
+      if (response.data.status === 'success') {
+        return response.data.data;
+      } else {
+        const detail = typeof response.data.message === 'string' ? response.data.message : JSON.stringify(response.data.message);
+        throw new Error(detail || 'Failed to create invoice link');
+      }
+    } catch (error: any) {
+      if (error.response) {
+        console.error('Fawaterak createInvoiceLink Error Response:', error.response.data);
+        const detail = typeof error.response.data === 'string' ? error.response.data : JSON.stringify(error.response.data);
+        throw new Error(`FAWATERAK_API_ERROR: ${detail}`);
+      }
+      console.error('Fawaterak createInvoiceLink Error:', error.message);
+      throw new Error(`INIT_ERROR: ${error.message}`);
+    }
+  },
+
   /**
    * Initialize a payment with Fawaterak.
    */

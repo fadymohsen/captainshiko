@@ -113,10 +113,7 @@ export async function POST(req: Request) {
       ? "0" + rawPhone.slice(2)
       : rawPhone;
 
-    const paymentData = await fawaterakClient.initPayment({
-      payment_method_id: paymentMethodId,
-      vendor_id: process.env.FAWATERAK_VENDOR_KEY?.includes('.') ? process.env.FAWATERAK_VENDOR_KEY.split('.').pop() : process.env.FAWATERAK_VENDOR_KEY,
-      order_id: purchase.id,
+    const paymentData = await fawaterakClient.createInvoiceLink({
       cartTotal: amount,
       currency: region === "egypt" ? "EGP" : "USD",
       customer: {
@@ -139,23 +136,21 @@ export async function POST(req: Request) {
       },
     });
 
-    // 5. Update with Invoice details (API returns snake_case keys)
+    // 5. Update with Invoice details (createInvoiceLink returns camelCase)
     let finalPurchaseId = purchase.id;
     try {
       await prisma.purchase.update({
         where: { id: purchase.id },
         data: {
-          invoiceId: paymentData.invoice_id.toString(),
-          invoiceKey: paymentData.invoice_key,
+          invoiceId: paymentData.invoiceId.toString(),
+          invoiceKey: paymentData.invoiceKey,
         },
       });
     } catch (updateErr: any) {
       if (updateErr.code === 'P2002') {
-        // Fawaterak returned an invoiceId already linked to a previous attempt.
-        // Delete the orphaned purchase and reuse the existing one.
         await prisma.purchase.delete({ where: { id: purchase.id } }).catch(() => {});
         const existing = await prisma.purchase.findUnique({
-          where: { invoiceId: paymentData.invoice_id.toString() },
+          where: { invoiceId: paymentData.invoiceId.toString() },
         });
         if (existing) finalPurchaseId = existing.id;
       } else {
@@ -176,22 +171,19 @@ export async function POST(req: Request) {
     try {
       await Promise.all([
         email ? sendPendingEmail({ clientName, email, planName: plan.nameEn, amount, currency: region === "egypt" ? "EGP" : "USD" }) : Promise.resolve(),
-        sendAdminEmail({ clientName, email: email || "", whatsapp, planName: plan.nameEn, amount, currency: region === "egypt" ? "EGP" : "USD", paymentMethod: paymentMethodLabel, invoiceId: paymentData.invoice_id?.toString() || null, region, notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''}`, discountAmount, couponCode: couponCode || null }),
+        sendAdminEmail({ clientName, email: email || "", whatsapp, planName: plan.nameEn, amount, currency: region === "egypt" ? "EGP" : "USD", paymentMethod: paymentMethodLabel, invoiceId: paymentData.invoiceId?.toString() || null, region, notes: `Plan Type: ${planType || 'monthly'}${couponCode ? ` | Coupon: ${couponCode}` : ''}`, discountAmount, couponCode: couponCode || null }),
       ]);
     } catch (emailErr) {
       console.error("Email error (non-fatal):", emailErr);
     }
 
-    // Use the redirect URL Fawaterak provides — pendingUrl for wallet/Fawry, redirectTo for card
-    const paymentUrl = paymentData.payment_data?.redirectTo
-      || paymentData.payment_data?.pendingUrl
-      || `https://app.fawaterk.com/invoice/${paymentData.invoice_id}/${paymentData.invoice_key}`;
+    // createInvoiceLink returns a proper hosted payment page URL e.g. https://app.fawaterk.com/link/XXXX
+    const paymentUrl = paymentData.url;
 
     return NextResponse.json({
       status: "success",
       url: paymentUrl,
-      paymentData: paymentData.payment_data,
-      invoiceId: paymentData.invoice_id,
+      invoiceId: paymentData.invoiceId,
       purchaseId: finalPurchaseId
     });
 
