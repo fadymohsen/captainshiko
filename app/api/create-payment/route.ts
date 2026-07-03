@@ -105,7 +105,13 @@ export async function POST(req: Request) {
     const failUrl = `${baseUrl}/${currentLocale}/plans`;
     const pendingUrl = `${baseUrl}/payment/success?purchaseId=${purchase.id}`;
 
-    console.log("DEBUG - Fawaterak Redirects (Rollback Mode):", { successUrl, failUrl, pendingUrl });
+    console.log("DEBUG - Fawaterak Redirects:", { successUrl, failUrl, pendingUrl });
+
+    // Wallet (method 4) requires local Egyptian format 01XXXXXXXXX, not 201XXXXXXXXX
+    const rawPhone = whatsapp.replace(/\+/g, "").replace(/\s/g, "");
+    const fawaterakPhone = rawPhone.startsWith("20") && rawPhone.length === 12
+      ? "0" + rawPhone.slice(2)
+      : rawPhone;
 
     const paymentData = await fawaterakClient.initPayment({
       payment_method_id: paymentMethodId,
@@ -117,7 +123,7 @@ export async function POST(req: Request) {
         first_name: firstName,
         last_name: lastName,
         email: email || "customer@example.com",
-        phone: whatsapp.replace(/\+/g, ""),
+        phone: fawaterakPhone,
       },
       cartItems: [
         {

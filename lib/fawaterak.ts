@@ -66,7 +66,7 @@ export const fawaterakClient = {
    */
   async initPayment(data: FawaterakInitPayRequest): Promise<FawaterakInitPayResponse['data']> {
     const API_KEY = process.env.FAWATERAK_API_KEY;
-    const BASE_URL = process.env.FAWATERAK_API_URL || 'https://staging.fawaterk.com/api/v2';
+    const BASE_URL = process.env.FAWATERAK_API_URL || 'https://app.fawaterk.com/api/v2';
 
     if (!API_KEY) throw new Error("FAWATERAK_API_KEY is missing from environment");
 
@@ -102,8 +102,8 @@ export const fawaterakClient = {
    */
   async getInvoiceData(invoiceId: string | number): Promise<FawaterakInvoiceDataResponse['data']> {
     const API_KEY = process.env.FAWATERAK_API_KEY;
-    const BASE_URL = process.env.FAWATERAK_API_URL || 'https://staging.fawaterk.com/api/v2';
-    
+    const BASE_URL = process.env.FAWATERAK_API_URL || 'https://app.fawaterk.com/api/v2';
+
     if (!API_KEY) throw new Error("FAWATERAK_API_KEY is missing from environment");
 
     try {
