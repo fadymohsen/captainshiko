@@ -103,7 +103,7 @@ export async function POST(req: Request) {
     const currentLocale = locale || 'en';
     const successUrl = `${baseUrl}/payment/success?purchaseId=${purchase.id}`;
     const failUrl = `${baseUrl}/${currentLocale}/plans`;
-    const pendingUrl = `${baseUrl}/payment/success?purchaseId=${purchase.id}`;
+    const pendingUrl = `${baseUrl}/payment/pending?purchaseId=${purchase.id}`;
 
     console.log("DEBUG - Fawaterak Redirects:", { successUrl, failUrl, pendingUrl });
 
@@ -182,7 +182,10 @@ export async function POST(req: Request) {
       console.error("Email error (non-fatal):", emailErr);
     }
 
-    const paymentUrl = `https://app.fawaterk.com/invoice/${paymentData.invoice_id}/${paymentData.invoice_key}`;
+    // Use the redirect URL Fawaterak provides — pendingUrl for wallet/Fawry, redirectTo for card
+    const paymentUrl = paymentData.payment_data?.redirectTo
+      || paymentData.payment_data?.pendingUrl
+      || `https://app.fawaterk.com/invoice/${paymentData.invoice_id}/${paymentData.invoice_key}`;
 
     return NextResponse.json({
       status: "success",
