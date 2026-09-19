@@ -16,29 +16,37 @@ const LangContext = createContext<LangContextType | null>(null);
 
 export function LangProvider({
   locale,
+  initialRegion,
   children,
 }: {
   locale: Locale;
+  initialRegion?: Region;
   children: ReactNode;
 }) {
   const t = translations[locale];
   const dir = locale === "ar" ? "rtl" : "ltr";
-  
-  // Default to abroad (USD) for global safety
-  const [region, setRegion] = useState<Region>("abroad");
+
+  // Prefer the region resolved server-side (from Vercel's geo headers) so the
+  // first paint already shows the right currency. Fall back to "abroad" only
+  // when the server couldn't determine it (e.g. local dev / non-Vercel host).
+  const [region, setRegion] = useState<Region>(initialRegion ?? "abroad");
 
   useEffect(() => {
+    // Server already resolved the region from request headers — no need to
+    // re-check on the client.
+    if (initialRegion) return;
+
     async function detectRegion() {
       try {
         const response = await fetch("/api/geography", {
           cache: "no-store",
         });
-        
+
         if (!response.ok) throw new Error("Local geo check failed");
-        
+
         const data = await response.json();
         console.log(`Region detected: ${data.region} (Source: ${data.source}, Country: ${data.country})`);
-        
+
         if (data.region === "egypt") {
           setRegion("egypt");
         } else {
@@ -50,9 +58,9 @@ export function LangProvider({
         setRegion("abroad");
       }
     }
-    
+
     detectRegion();
-  }, []);
+  }, [initialRegion]);
 
   return (
     <LangContext.Provider value={{ locale, t, dir, region }}>

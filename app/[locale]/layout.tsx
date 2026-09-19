@@ -1,9 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { Almarai } from "next/font/google";
-import { LangProvider } from "../lang-context";
+import { LangProvider, type Region } from "../lang-context";
 import type { Locale } from "../translations";
 import { WhatsAppButton } from "../whatsapp-button";
+
+function resolveRegion(headerList: Headers): Region | undefined {
+  const countryHeader =
+    headerList.get("x-vercel-ip-country") ||
+    headerList.get("cf-ipcountry") ||
+    headerList.get("x-country-code");
+
+  if (!countryHeader) return undefined;
+
+  return countryHeader.toUpperCase() === "EG" ? "egypt" : "abroad";
+}
 
 const almarai = Almarai({
   subsets: ["arabic"],
@@ -83,13 +95,14 @@ export default async function LocaleLayout({
   }
 
   const dir = locale === "ar" ? "rtl" : "ltr";
+  const initialRegion = resolveRegion(await headers());
 
   return (
     <div lang={locale} dir={dir} className={locale === "ar" ? almarai.className : ""}>
       {locale === "ar" && (
         <style dangerouslySetInnerHTML={{ __html: `* { --font-sans: ${almarai.style.fontFamily} !important; }` }} />
       )}
-      <LangProvider locale={locale as Locale}>
+      <LangProvider locale={locale as Locale} initialRegion={initialRegion}>
         {children}
         <WhatsAppButton />
       </LangProvider>
