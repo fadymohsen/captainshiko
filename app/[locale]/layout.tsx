@@ -7,9 +7,13 @@ import type { Locale } from "../translations";
 import { WhatsAppButton } from "../whatsapp-button";
 
 function resolveRegion(headerList: Headers): Region | undefined {
+  // Cloudflare proxies this domain in front of Vercel, so Vercel's edge only
+  // ever sees Cloudflare's connecting IP — x-vercel-ip-country reflects
+  // Cloudflare's PoP, not the visitor. cf-ipcountry is the one header that's
+  // actually derived from the real client IP, so it must win when present.
   const countryHeader =
-    headerList.get("x-vercel-ip-country") ||
     headerList.get("cf-ipcountry") ||
+    headerList.get("x-vercel-ip-country") ||
     headerList.get("x-country-code");
 
   if (!countryHeader) return undefined;
