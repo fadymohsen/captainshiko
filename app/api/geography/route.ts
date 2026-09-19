@@ -3,10 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
-  // 1. Check common edge headers first (extremely fast and accurate on Vercel)
-  const countryHeader = 
-    request.headers.get("x-vercel-ip-country") || 
-    request.headers.get("cf-ipcountry") || 
+  // 1. Check common edge headers first. Cloudflare proxies this domain in
+  // front of Vercel, so cf-ipcountry (derived from the real client IP at
+  // Cloudflare's edge) must be checked before x-vercel-ip-country, which
+  // only reflects Cloudflare's connecting IP once it's behind that proxy.
+  const countryHeader =
+    request.headers.get("cf-ipcountry") ||
+    request.headers.get("x-vercel-ip-country") ||
     request.headers.get("x-country-code");
 
   if (countryHeader) {
