@@ -10,6 +10,7 @@ const certificates = [
   "/certficates/3.jpg",
   "/certficates/4.png",
   "/certficates/5.jpg",
+  "/certficates/6.jpeg",
 ];
 
 export function CertificateCarousel() {
