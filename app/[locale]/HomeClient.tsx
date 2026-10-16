@@ -222,6 +222,208 @@ export function HomeClient({
         </div>
       </section>
 
+      {/* ===== PRECISION NUTRITION L1 — STRENGTH BADGE ===== */}
+      <section className="py-28 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/20 via-background to-background pointer-events-none" />
+        <div className="absolute top-[20%] right-[5%] w-[500px] h-[500px] rounded-full bg-cyan-500/5 glow-pulse pointer-events-none" />
+        <div className="relative max-w-7xl mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+
+            {/* ——— Badge ——— */}
+            <FadeUp>
+              <div className="shrink-0 flex flex-col items-center gap-6">
+                <div className="relative w-72 h-72 drop-shadow-[0_0_60px_rgba(0,210,230,0.18)]">
+                  <svg viewBox="0 0 220 220" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="pnRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#00d4e8" />
+                        <stop offset="100%" stopColor="#0097b3" />
+                      </linearGradient>
+                      <linearGradient id="pnHexGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#0c2040" />
+                        <stop offset="100%" stopColor="#061428" />
+                      </linearGradient>
+                      <radialGradient id="pnGlow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stopColor="#00d4e820" />
+                        <stop offset="100%" stopColor="transparent" />
+                      </radialGradient>
+                      <path id="certArc" d="M 26,110 A 84,84 0 0,1 194,110" />
+                    </defs>
+
+                    {/* Outer glow ring */}
+                    <circle cx="110" cy="110" r="104" fill="url(#pnGlow)" />
+
+                    {/* Outer dashed ring */}
+                    <circle cx="110" cy="110" r="103" fill="none" stroke="url(#pnRingGrad)" strokeWidth="2.5" strokeDasharray="5 3.5" opacity="0.85" />
+
+                    {/* Second ring */}
+                    <circle cx="110" cy="110" r="95" fill="none" stroke="#00d4e8" strokeWidth="0.8" opacity="0.3" />
+
+                    {/* Outer circle bg */}
+                    <circle cx="110" cy="110" r="90" fill="#071120" />
+
+                    {/* Hexagon */}
+                    <polygon
+                      points="110,24 176,62 176,158 110,196 44,158 44,62"
+                      fill="url(#pnHexGrad)"
+                      stroke="#00d4e8"
+                      strokeWidth="1.8"
+                      opacity="0.9"
+                    />
+
+                    {/* Inner hexagon accent */}
+                    <polygon
+                      points="110,36 164,67 164,153 110,184 56,153 56,67"
+                      fill="none"
+                      stroke="#00d4e8"
+                      strokeWidth="0.5"
+                      opacity="0.2"
+                    />
+
+                    {/* Pn top badge */}
+                    <rect x="89" y="30" width="42" height="26" rx="5" fill="#00bcd4" />
+                    <text x="110" y="49" textAnchor="middle" fill="#071120" fontSize="14" fontWeight="900" fontFamily="system-ui,sans-serif">Pn</text>
+
+                    {/* L1 */}
+                    <text x="110" y="145" textAnchor="middle" fill="white" fontSize="68" fontWeight="900" fontFamily="system-ui,sans-serif" letterSpacing="-3">L1</text>
+
+                    {/* Coach ribbon */}
+                    <rect x="54" y="166" width="112" height="24" rx="3" fill="white" />
+                    <rect x="44" y="172" width="10" height="12" fill="#e0e0e0" />
+                    <rect x="166" y="172" width="10" height="12" fill="#e0e0e0" />
+                    <text x="110" y="182" textAnchor="middle" fill="#071120" fontSize="11" fontWeight="900" fontFamily="system-ui,sans-serif" letterSpacing="4">COACH</text>
+
+                    {/* Arc text */}
+                    <text fill="#00d4e8" fontSize="9" fontWeight="700" fontFamily="system-ui,sans-serif" letterSpacing="4" opacity="0.9">
+                      <textPath href="#certArc" startOffset="10%">CERTIFIED · NUTRITION ·</textPath>
+                    </text>
+                  </svg>
+                </div>
+
+                {/* Issuer */}
+                <div className="text-center">
+                  <p className="text-xs text-muted uppercase tracking-[0.25em] font-bold">
+                    {locale === "en" ? "Issued by" : "صادرة من"}
+                  </p>
+                  <p className="text-sm font-black text-cyan-400 mt-0.5 tracking-wide">Precision Nutrition</p>
+                </div>
+              </div>
+            </FadeUp>
+
+            {/* ——— Content ——— */}
+            <div className="flex-1 flex flex-col gap-8">
+              <SlideIn direction={dir === "rtl" ? "left" : "right"}>
+                <div className="flex flex-col gap-4">
+                  <span className="inline-flex items-center gap-2 text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase border border-cyan-400/25 px-4 py-1.5 rounded-full w-fit">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    </svg>
+                    {locale === "en" ? "World-Class Credential" : "اعتماد عالمي"}
+                  </span>
+
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
+                    {locale === "en" ? (
+                      <>Precision Nutrition<br /><span className="text-cyan-400">Certified Coach</span></>
+                    ) : (
+                      <>مدرب معتمد من<br /><span className="text-cyan-400">Precision Nutrition</span></>
+                    )}
+                  </h2>
+
+                  <p className="text-muted leading-relaxed text-[1.05rem] max-w-xl">
+                    {locale === "en"
+                      ? "The Precision Nutrition Level 1 certification is the world's most respected nutrition coaching credential — trusted by elite athletes, top coaches, and leading healthcare providers globally."
+                      : "شهادة Precision Nutrition Level 1 هي الاعتماد الأكثر احتراماً في مجال التغذية والتدريب على مستوى العالم — يثق بها كبار الرياضيين والمدربين ومزودي الرعاية الصحية."}
+                  </p>
+                </div>
+              </SlideIn>
+
+              {/* Benefit cards */}
+              <StaggerContainer className="grid sm:grid-cols-2 gap-4 mt-2">
+                {[
+                  {
+                    icon: (
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      </svg>
+                    ),
+                    en_title: "Science-Backed Nutrition",
+                    ar_title: "تغذية مبنية على العلم",
+                    en_desc: "Every plan is grounded in research — not trends, not guesswork.",
+                    ar_desc: "كل خطة مبنية على أبحاث حقيقية — لا موضة ولا تخمين.",
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    ),
+                    en_title: "Habit-Based Coaching",
+                    ar_title: "تدريب قائم على العادات",
+                    en_desc: "Sustainable behavior change — built to last a lifetime, not just 12 weeks.",
+                    ar_desc: "تغيير سلوكي مستدام — مصمم يدوم مدى الحياة، مش بس ١٢ أسبوع.",
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                    ),
+                    en_title: "Personalized for You",
+                    ar_title: "مخصص ليك شخصياً",
+                    en_desc: "Body composition, metabolism, and goal analysis built around you alone.",
+                    ar_desc: "تحليل تركيبة الجسم والتمثيل الغذائي والأهداف، بُني حولك أنت وحدك.",
+                  },
+                  {
+                    icon: (
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                    ),
+                    en_title: "No Crash Diets",
+                    ar_title: "بدون حميات قسرية",
+                    en_desc: "Real results without deprivation — fueled by smart, enjoyable eating.",
+                    ar_desc: "نتائج حقيقية من غير حرمان — مدعومة بأكل ذكي ومستمتع.",
+                  },
+                ].map((benefit) => (
+                  <StaggerItem key={benefit.en_title}>
+                    <div className="flex gap-4 p-5 rounded-2xl bg-cyan-950/20 border border-cyan-400/10 hover:border-cyan-400/25 transition-all duration-300 group">
+                      <div className="w-10 h-10 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400 shrink-0 group-hover:bg-cyan-400/15 transition-colors">
+                        {benefit.icon}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm text-foreground mb-1">
+                          {locale === "en" ? benefit.en_title : benefit.ar_title}
+                        </h4>
+                        <p className="text-xs text-muted leading-relaxed">
+                          {locale === "en" ? benefit.en_desc : benefit.ar_desc}
+                        </p>
+                      </div>
+                    </div>
+                  </StaggerItem>
+                ))}
+              </StaggerContainer>
+
+              {/* Global trust stat */}
+              <FadeUp delay={0.3}>
+                <div className="flex flex-wrap gap-8 pt-2">
+                  {[
+                    { value: "100K+", en_label: "Coaches Certified Worldwide", ar_label: "مدرب معتمد حول العالم" },
+                    { value: "#1", en_label: "Nutrition Coaching Program", ar_label: "برنامج تدريب تغذية في العالم" },
+                  ].map((stat) => (
+                    <div key={stat.value} className="flex flex-col">
+                      <span className="text-3xl font-black text-cyan-400 leading-none">{stat.value}</span>
+                      <span className="text-xs text-muted mt-1 font-medium">
+                        {locale === "en" ? stat.en_label : stat.ar_label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </FadeUp>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ===== TRANSFORMATIONS ===== */}
       <section className="py-28 bg-surface relative noise">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/15 to-transparent" />
