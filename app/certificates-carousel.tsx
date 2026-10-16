@@ -5,12 +5,12 @@ import { ImageWithSkeleton } from "./image-with-skeleton";
 import { motion, AnimatePresence } from "framer-motion";
 
 const certificates = [
+  "/certficates/6.jpeg",
   "/certficates/1.png",
   "/certficates/2.png",
   "/certficates/3.jpg",
   "/certficates/4.png",
   "/certficates/5.jpg",
-  "/certficates/6.jpeg",
 ];
 
 export function CertificateCarousel() {
